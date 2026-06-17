@@ -1,26 +1,229 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-void: #05070D;
+  --bg-deep: #070B16;
+  --navy-deep: #0B1B3A;
+  --navy-soft: #0E1E3F;
+  --blue-electric: #2D6CFF;
+  --gold-accent: #E8B339;
+  --gold-bright: #F5CC6A;
+  --gold-dim: rgba(232, 179, 57, 0.15);
+  --white-warm: #F4F1EA;
+  --white-dim: rgba(244, 241, 234, 0.55);
+  --white-faint: rgba(244, 241, 234, 0.30);
+
+  /* Fluid editorial type scale — tightened so headline copy reads as
+     editorial, not billboard. step-4 (the manifesto peak) pulled down from
+     8.5rem→6rem; step-2/3 eased so left-aligned body copy stays comfortable. */
+  --step--1: clamp(0.76rem, 0.72rem + 0.2vw, 0.86rem);
+  --step-0:  clamp(0.95rem, 0.9rem + 0.25vw, 1.08rem);
+  --step-1:  clamp(1.1rem, 1rem + 0.5vw, 1.4rem);
+  --step-2:  clamp(1.5rem, 1.25rem + 1.1vw, 2.2rem);
+  --step-3:  clamp(1.9rem, 1.5rem + 1.9vw, 3rem);
+  --step-4:  clamp(2.3rem, 1.7rem + 2.9vw, 4.2rem);
+
+  --shell: 78rem; /* shared content max-width */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* Tailwind v4 Preflight already resets margin/padding/box-sizing. Re-adding a
+   universal margin:0 here as an *unlayered* rule would override layered utilities
+   like .mx-auto (which broke desktop centering), so we deliberately omit it. */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg-void);
+  color: var(--white-warm);
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-void);
+  color: var(--white-warm);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--gold-accent); color: var(--bg-void); }
+
+/* ── Typography helpers (Tailwind v4 @utility so they're always emitted) ── */
+@utility font-display { font-family: 'Space Grotesk', sans-serif; }
+@utility font-body    { font-family: 'Inter', sans-serif; }
+
+@utility eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+@utility balance { text-wrap: balance; }
+
+/* Gradient gold text */
+@utility text-gold-grad {
+  background: linear-gradient(100deg, var(--gold-accent) 0%, var(--gold-bright) 55%, var(--gold-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ── Lenis ────────────────────────────────────────────────────────── */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ── Footer links ─────────────────────────────────────────────────── */
+.footer-link {
+  transition: color 0.18s ease;
+}
+.footer-link:hover {
+  color: var(--gold-accent) !important;
+}
+
+/* ── Skip link ────────────────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold-accent);
+  color: var(--bg-void);
+  padding: 0.75rem 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  z-index: 9999;
+  transition: top 0.2s;
+  border-radius: 0 0 8px 8px;
+  white-space: nowrap;
+}
+.skip-link:focus { top: 0; }
+
+/* ── Numerals ─────────────────────────────────────────────────────── */
+@utility tabnum { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* ── Decorative rules ─────────────────────────────────────────────── */
+@utility gold-rule {
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-accent), transparent);
+}
+@utility hairline { height: 1px; background: rgba(244, 241, 234, 0.10); }
+
+/* Vertical side label (editorial margin marker) */
+@utility side-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--white-faint);
+}
+
+/* ── Noise texture overlay ────────────────────────────────────────── */
+@utility noise-overlay {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+  }
+}
+
+/* Star/grain field for void sections */
+@utility starfield {
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(244,241,234,0.5), transparent),
+    radial-gradient(1px 1px at 70% 60%, rgba(244,241,234,0.35), transparent),
+    radial-gradient(1px 1px at 40% 80%, rgba(244,241,234,0.4), transparent),
+    radial-gradient(1px 1px at 85% 20%, rgba(244,241,234,0.3), transparent),
+    radial-gradient(1px 1px at 55% 45%, rgba(244,241,234,0.25), transparent),
+    radial-gradient(1.5px 1.5px at 10% 70%, rgba(232,179,57,0.35), transparent);
+  background-repeat: repeat;
+  background-size: 600px 600px;
+}
+
+/* ── Composition helpers (redesign) ──────────────────────────────────
+   These replace the old "everything is mx-auto + text-center" monotony.
+   chapter-shell = consistent content column; bleed-media = full-bleed
+   cinematic backdrop layer; editorial-grid = asymmetric image/text split. */
+
+@utility chapter-shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: clamp(1.5rem, 5vw, 4rem);
+}
+
+/* Full-bleed image/video backdrop that sits behind a section's content.
+   Pair with a darkening scrim so text stays legible. */
+@utility bleed-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Asymmetric editorial split: image rail + text column. Collapses on mobile. */
+@utility editorial-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: center;
+  @media (min-width: 900px) {
+    grid-template-columns: 1.05fr 1fr;
+  }
+}
+
+/* Vertical scrim that fades a section into the void at top & bottom so
+   adjacent sections seam together with no visible boundary. */
+@utility seam-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    var(--bg-void) 0%,
+    transparent 18%,
+    transparent 82%,
+    var(--bg-void) 100%
+  );
+  z-index: 1;
+}
+
+/* Soft readability wash over a full-bleed image, biased to one side so the
+   opposite side keeps the imagery crisp. Default: darken the left (text side). */
+@utility media-scrim-left {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(100deg, rgba(5,7,13,0.92) 0%, rgba(5,7,13,0.72) 38%, rgba(5,7,13,0.15) 70%, transparent 100%);
+  z-index: 1;
+}
+@utility media-scrim-bottom {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(5,7,13,0.95) 0%, rgba(5,7,13,0.55) 40%, transparent 80%);
+  z-index: 1;
+}
+
+/* Subtle continuous drift for ambient glows */
+@keyframes slowDrift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(2%, -3%, 0); }
+}
+@utility drift { animation: slowDrift 18s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .drift { animation: none; }
 }
