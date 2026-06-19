@@ -1,6 +1,5 @@
 import Image from 'next/image';
 
-// TODO: Replace # hrefs with real destinations before launch.
 const NAV = {
   Mission: [
     { label: 'The Call', href: '#join' },
@@ -8,10 +7,10 @@ const NAV = {
     { label: 'About', href: '#' },
   ],
   Connect: [
-    { label: 'Instagram', href: '#' },
-    { label: 'TikTok', href: '#' },
-    { label: 'LinkedIn', href: '#' },
-    { label: 'X', href: '#' },
+    { label: 'Instagram', href: 'https://www.instagram.com/explorer.233/' },
+    { label: 'TikTok', href: 'https://www.tiktok.com/explorer233' },
+    { label: 'LinkedIn', href: 'https://linkedin.com/company/explorer-233' },
+    { label: 'Facebook', href: 'https://www.facebook.com/explorer233/' },
   ],
   Legal: [
     { label: 'Privacy', href: '#' },

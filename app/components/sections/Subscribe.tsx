@@ -9,12 +9,11 @@ import { useReveal } from '../useReveal';
 
 type State = 'idle' | 'loading' | 'success' | 'duplicate' | 'error';
 
-// TODO: Replace # hrefs with actual social handles before launch
 const SOCIALS = [
-  { label: 'Instagram', href: '#' },
-  { label: 'TikTok', href: '#' },
-  { label: 'LinkedIn', href: '#' },
-  { label: 'Facebook', href: '#' },
+  { label: 'Instagram', href: 'https://www.instagram.com/explorer.233/' },
+  { label: 'TikTok', href: 'https://www.tiktok.com/explorer233' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/company/explorer-233' },
+  { label: 'Facebook', href: 'https://www.facebook.com/explorer233/' },
 ];
 
 export default function Subscribe() {
@@ -169,7 +168,6 @@ export default function Subscribe() {
                 onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--gold-accent)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(244,241,234,0.5)'; }}
               >
-                {/* TODO: Replace href with real handle before launch */}
                 {s.label}
               </a>
             ))}
