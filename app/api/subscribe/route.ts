@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
 
     // Send welcome email
     await getResend().emails.send({
-      from: 'Explorer 233 <hello@explorer233.com>',
+      from: 'Explorer 233 <explorer233@augustwheel.com>',
       to: clean,
       subject: 'The call has been heeded.',
       html: welcomeHtml(clean),
