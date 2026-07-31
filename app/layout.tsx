@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
-import ScrollNav from "./components/ScrollNav";
+import SiteNav from "./components/SiteNav";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://explorer233.com"),
@@ -48,7 +48,7 @@ export default function RootLayout({
           gtag('config', 'G-V1J9NQE6JH');
         `}</Script>
         <SmoothScroll />
-        <ScrollNav />
+        <SiteNav />
         {children}
       </body>
     </html>

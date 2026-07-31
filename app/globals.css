@@ -13,6 +13,21 @@
   --white-dim: rgba(244, 241, 234, 0.55);
   --white-faint: rgba(244, 241, 234, 0.30);
 
+  /* ── Brand palette (2026 brand doc) ────────────────────────────────
+     Added alongside the original tokens rather than replacing them, so
+     nothing that already ships changes appearance until we decide to
+     flip. New sections use these. To adopt the brand palette site-wide,
+     repoint --bg-void / --white-warm / --gold-accent at the three
+     equivalents below — that single edit retunes every existing
+     section. See the audit note: repo gold is warmer//more saturated
+     than Mission Gold, and repo white is cream where Star White is cool. */
+  --deep-space-black: #05070B;
+  --star-white: #F5F7FA;
+  --lunar-silver: #AEB7C2;
+  --mission-gold: #D6A84F;
+  --earth-red-clay: #8A3B2E;
+  --orbit-teal: #1FA6A8;
+
   /* Fluid editorial type scale — tightened so headline copy reads as
      editorial, not billboard. step-4 (the manifesto peak) pulled down from
      8.5rem→6rem; step-2/3 eased so left-aligned body copy stays comfortable. */
@@ -84,6 +99,161 @@ html.lenis, html.lenis body { height: auto; }
 .footer-link:hover {
   color: var(--gold-accent) !important;
 }
+
+/* ── Primary nav ──────────────────────────────────────────────────── */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.85rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 450;
+  letter-spacing: 0.02em;
+  color: var(--lunar-silver);
+  border-radius: 6px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.nav-link:hover { color: var(--star-white); background: rgba(174, 183, 194, 0.07); }
+.nav-link[data-active] { color: var(--mission-gold); }
+
+.nav-dropdown-link {
+  display: block;
+  padding: 0.6rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: var(--lunar-silver);
+  text-decoration: none;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.nav-dropdown-link:hover { color: var(--star-white); background: rgba(174, 183, 194, 0.08); }
+
+.nav-mobile-link {
+  display: block;
+  padding: 0.9rem 0.25rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 19px;
+  color: var(--star-white);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(174, 183, 194, 0.08);
+}
+.nav-mobile-link[data-active] { color: var(--mission-gold); }
+
+.nav-mobile-sublink {
+  display: block;
+  padding: 0.6rem 0.25rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--lunar-silver);
+  text-decoration: none;
+}
+.nav-mobile-sublink:hover { color: var(--star-white); }
+
+.btn-join {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--deep-space-black);
+  background: linear-gradient(100deg, var(--mission-gold), var(--gold-bright));
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: filter 0.18s ease, transform 0.18s ease;
+}
+.btn-join:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+/* ── Text link with trailing arrow ────────────────────────────────── */
+.link-arrow {
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mission-gold);
+  text-decoration: none;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(214, 168, 79, 0.3);
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+.link-arrow::after {
+  content: '→';
+  transition: transform 0.22s ease;
+}
+.link-arrow:hover { color: var(--gold-bright); border-color: var(--gold-bright); }
+.link-arrow:hover::after { transform: translateX(4px); }
+
+/* ── Character cards ──────────────────────────────────────────────── */
+.character-card-img { transition: transform 0.5s ease; }
+.character-card:hover .character-card-img { transform: scale(1.04); }
+
+@media (prefers-reduced-motion: reduce) {
+  .character-card-img { transition: none; }
+  .character-card:hover .character-card-img { transform: none; }
+}
+
+/* ── Inner page shell (routes below the fixed nav) ────────────────── */
+.page-top { padding-top: clamp(9.5rem, 20vh, 14rem); }
+
+/* ── Region toggle (store) ────────────────────────────────────────── */
+.region-tab {
+  padding: 0.5rem 1.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--lunar-silver);
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.region-tab[data-active] {
+  color: var(--deep-space-black);
+  background: linear-gradient(100deg, var(--mission-gold), var(--gold-bright));
+}
+
+/* ── Form fields ──────────────────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.field-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lunar-silver);
+}
+.field-input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--star-white);
+  background: rgba(174, 183, 194, 0.06);
+  border: 1px solid rgba(174, 183, 194, 0.18);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+.field-input::placeholder { color: rgba(174, 183, 194, 0.5); }
+.field-input:focus {
+  border-color: var(--mission-gold);
+  background: rgba(174, 183, 194, 0.09);
+}
+.field-input:disabled { opacity: 0.6; }
+select.field-input { appearance: none; cursor: pointer; }
+select.field-input option { background: #0B0F18; color: var(--star-white); }
+textarea.field-input { resize: vertical; min-height: 5.5rem; }
 
 /* ── Skip link ────────────────────────────────────────────────────── */
 .skip-link {
@@ -182,6 +352,13 @@ html.lenis, html.lenis body { height: auto; }
   @media (min-width: 900px) {
     grid-template-columns: 1.05fr 1fr;
   }
+}
+
+/* Flips an editorial-grid row so the media rail sits on the right. Only takes
+   effect once the grid is actually two columns, so stacked mobile order
+   (image, then text) stays consistent down the page. */
+@media (min-width: 900px) {
+  .editorial-reverse > :first-child { order: 2; }
 }
 
 /* Vertical scrim that fades a section into the void at top & bottom so

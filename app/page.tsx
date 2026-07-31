@@ -1,7 +1,9 @@
 import HeroWrapper from './components/hero/HeroWrapper';
 import StarSky from './components/sections/StarSky';
 import TheCall from './components/sections/TheCall';
-import Interlude from './components/sections/Interlude';
+import BaobabReveal from './components/sections/BaobabReveal';
+import StoryTeaser from './components/sections/StoryTeaser';
+import CharacterRow from './components/sections/CharacterRow';
 import Subscribe from './components/sections/Subscribe';
 import Footer from './components/sections/Footer';
 
@@ -24,8 +26,14 @@ export default function Home() {
       {/* The thesis — one bold line, with the crew standing in the void */}
       <TheCall />
 
-      {/* Wordless interlude — the crew at Earthrise. Pure image, no copy. */}
-      <Interlude />
+      {/* First concrete thing in the universe: the HQ, on a scrubbed parallax */}
+      <BaobabReveal />
+
+      {/* Door into the Dispatches — opens SE1-01, stops before the turn */}
+      <StoryTeaser />
+
+      {/* The people: Laura, Maximus, Mam */}
+      <CharacterRow />
 
       {/* The Call — recruitment CTA + live countdown, over dawn-over-Earth */}
       <Subscribe />
