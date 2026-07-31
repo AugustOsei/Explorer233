@@ -62,7 +62,7 @@ const welcomeHtml = (email: string) => `<!DOCTYPE html>
                 You just proved which kind you are.
               </p>
               <p style="margin:0;font-size:16px;line-height:1.75;color:rgba(244,241,234,0.72);">
-                Explorer 233 opens its doors on <strong style="color:#F4F1EA;">August 1, 2026</strong>.
+                Explorer 233 opens its doors on <strong style="color:#F4F1EA;">August 3, 2026</strong>.
                 When that moment arrives, you'll be among the first to know —
                 and the first through the door.
               </p>

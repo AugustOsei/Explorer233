@@ -43,7 +43,7 @@ export default function Footer() {
             >
               A fictional space agency? A game? A community? A blend of all? Find out soon.
             </p>
-            <span className="eyebrow text-gold-grad">Launching August 1, 2026</span>
+            <span className="eyebrow text-gold-grad">Launching August 3, 2026</span>
           </div>
 
           {/* Spacer on desktop */}

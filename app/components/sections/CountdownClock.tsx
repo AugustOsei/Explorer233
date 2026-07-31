@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-const LAUNCH_DATE = new Date('2026-08-01T00:00:00Z');
+// Monday, August 3 2026 at 9:00 PM ET (EDT = UTC-4)
+const LAUNCH_DATE = new Date('2026-08-04T01:00:00Z');
 
 function getTimeLeft() {
   const diff = Math.max(0, LAUNCH_DATE.getTime() - Date.now());
@@ -60,7 +61,7 @@ export default function CountdownClock() {
         <Unit value={pad(t.seconds)} label="Seconds" />
       </div>
       <p className="text-center mt-5 font-body" style={{ fontSize: '12px', letterSpacing: '0.18em', color: 'rgba(244,241,234,0.4)', textTransform: 'uppercase' }}>
-        August 1, 2026 — 00:00 GMT
+        August 3, 2026 — 9:00 PM ET
       </p>
     </div>
   );

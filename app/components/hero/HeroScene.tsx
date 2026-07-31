@@ -163,7 +163,7 @@ export default function HeroScene({ isMobile, prefersReducedMotion }: HeroSceneP
         style={{ background: 'var(--bg-void)' }}
       >
         <Image src="/logo-master.png" alt="Explorer 233" width={300} height={108} className="object-contain" priority />
-        <p className="eyebrow text-gold-grad">Launching August 1, 2026</p>
+        <p className="eyebrow text-gold-grad">Launching August 3, 2026</p>
         <a href="#join" className="skip-link">Skip to content</a>
       </div>
     );

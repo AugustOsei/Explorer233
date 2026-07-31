@@ -4,7 +4,7 @@
 
 A coming-soon / recruitment teaser for **Explorer 233**, a fictional Ghanaian space agency. The site is designed to leave visitors in awe, curious, and compelled to subscribe. It is NOT a real rocket launch — it is a fictional universe (could be a game, a community, a blend — deliberately mysterious).
 
-**Live date:** August 1, 2026
+**Live date:** August 3, 2026
 **Repo:** https://github.com/AugustOsei/Explorer233
 **Local path:** `/Users/aosei/Documents/explorer233`
 
@@ -59,7 +59,7 @@ app/
       TheCall.tsx             # "Humanity will reach the stars." + bold challenge line + crew image
       Interlude.tsx           # full-bleed crew-wide.png + classified-doc corner caption
       Subscribe.tsx           # CTA headline, body copy, countdown, email form
-      CountdownClock.tsx      # live countdown to 2026-08-01T00:00:00Z
+      CountdownClock.tsx      # live countdown to 2026-08-04T01:00:00Z (9pm ET Mon Aug 3)
       Footer.tsx              # logo, mystery tagline, nav columns, copyright
 lib/
   supabase.ts                 # client-side fetch wrapper → calls /api/subscribe

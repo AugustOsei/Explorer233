@@ -7,16 +7,16 @@ import ScrollNav from "./components/ScrollNav";
 export const metadata: Metadata = {
   metadataBase: new URL("https://explorer233.com"),
   title: "Explorer 233 — Ghana. Space. Now.",
-  description: "A private Ghanaian space agency. Are you ready to be an Explorer? Join the mission — going live August 1, 2026.",
+  description: "A private Ghanaian space agency. Are you ready to be an Explorer? Join the mission — going live August 3, 2026.",
   openGraph: {
     title: "Explorer 233 — Ghana. Space. Now.",
-    description: "Are you curious? Are you ready to be an Explorer? Going live August 1, 2026.",
+    description: "Are you curious? Are you ready to be an Explorer? Going live August 3, 2026.",
     images: [{ url: "/explorer.png", width: 1200, height: 630, alt: "Explorer 233 — A Private Ghanaian Space Agency" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Explorer 233 — Ghana. Space. Now.",
-    description: "Are you curious? Are you ready to be an Explorer? Going live August 1, 2026.",
+    description: "Are you curious? Are you ready to be an Explorer? Going live August 3, 2026.",
     images: ["/explorer.png"],
   },
 };

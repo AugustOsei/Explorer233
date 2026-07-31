@@ -70,7 +70,7 @@ export default function Subscribe() {
         />
 
         <RevealText
-          text="Some people look up at the stars and feel small. Others feel called. Explorer 233 exists for the second kind — the ones who see infinity and want in. We open August 1, 2026. Your seat is waiting."
+          text="Some people look up at the stars and feel small. Others feel called. Explorer 233 exists for the second kind — the ones who see infinity and want in. We open August 3, 2026. Your seat is waiting."
           className="font-body font-light mt-7"
           style={{ fontSize: 'var(--step-0)', lineHeight: 1.75, color: 'rgba(244,241,234,0.7)', maxWidth: '46ch' }}
           stagger={0.012}
