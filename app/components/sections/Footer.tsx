@@ -1,10 +1,12 @@
 import Image from 'next/image';
 
 const NAV = {
-  Mission: [
-    { label: 'The Call', href: '#join' },
-    { label: 'Launch Date', href: '#join' },
-    { label: 'About', href: '#' },
+  Explore: [
+    { label: 'The World', href: '/world' },
+    { label: 'The Story', href: '/story' },
+    { label: 'Games & Events', href: '/games-events' },
+    { label: 'Store', href: '/store' },
+    { label: 'Journal', href: '/about/journal' },
   ],
   Connect: [
     { label: 'Instagram', href: 'https://www.instagram.com/explorer.233/' },
@@ -41,9 +43,9 @@ export default function Footer() {
               className="font-display"
               style={{ fontSize: '14px', color: 'rgba(244,241,234,0.55)', letterSpacing: '0.04em', lineHeight: 1.6, maxWidth: '30ch' }}
             >
-              A fictional space agency? A game? A community? A blend of all? Find out soon.
+              A private Ghanaian space agency, a fleet, and the people who refuse to wait for permission.
             </p>
-            <span className="eyebrow text-gold-grad">Launching August 3, 2026</span>
+            <span className="eyebrow text-gold-grad">Reach and breathe among the stars</span>
           </div>
 
           {/* Spacer on desktop */}

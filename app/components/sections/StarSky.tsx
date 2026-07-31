@@ -6,7 +6,7 @@ import Image from 'next/image';
  * One continuous starry sky shared by every section after the hero.
  *
  * It's a single FIXED layer (the same Milky Way frame the hero rocket vanished
- * into) sitting behind TheCall → Interlude → Subscribe. Because it's fixed, it
+ * into) sitting behind the story sections. Because it is fixed, it
  * never restarts or seams between sections — scrolling reads as one long look
  * into the same sky. The hero ends on this exact starfield, so the moment the
  * hero unpins there is no dark gap: these stars are already behind it.

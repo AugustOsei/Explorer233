@@ -15,6 +15,18 @@
  *   · The ship — Nipa Nsa, EX-233-001. Akan: "one hand cannot lift a load"
  */
 
+/**
+ * The next release the site counts down to. This replaces the old
+ * coming-soon countdown: the site is live, the story is what keeps arriving.
+ *
+ * ⚠️ `releasesAt` is a placeholder — set the real SE1-02 date before launch.
+ */
+export const nextDispatch = {
+  code: 'SE1-02',
+  title: 'Day Zero',
+  releasesAt: '2026-09-07T20:00:00Z',
+};
+
 export type Scene = { id: string; heading?: string; sub?: string; paragraphs: string[] };
 
 export type Dispatch = {

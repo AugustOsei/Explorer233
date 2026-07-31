@@ -8,10 +8,9 @@ import { useEffect, useRef, useState } from 'react';
 /**
  * Primary site navigation.
  *
- * Supersedes the old ScrollNav: it keeps that component's gold scroll-progress
- * line (the one design element worth carrying over) and adds the real IA —
- * seven destinations plus Join, which is deliberately a button and NOT a
- * dropdown item, because enlisting is the site's one conversion.
+ * Seven destinations plus Join, which is deliberately a button and NOT a
+ * dropdown item, because joining is the site's one conversion. Carries a gold
+ * scroll-progress hairline along the top edge.
  *
  * Transparent over the hero, then gains a blurred plate once scrolled so links
  * stay legible over imagery.
@@ -43,7 +42,7 @@ export default function SiteNav() {
   const barRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLLIElement>(null);
 
-  // Scroll progress + plate state, rAF-throttled (same approach as the old ScrollNav).
+  // Scroll progress + plate state, rAF-throttled.
   useEffect(() => {
     let raf = 0;
     const onScroll = () => {

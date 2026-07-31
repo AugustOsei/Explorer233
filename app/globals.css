@@ -255,6 +255,129 @@ select.field-input { appearance: none; cursor: pointer; }
 select.field-input option { background: #0B0F18; color: var(--star-white); }
 textarea.field-input { resize: vertical; min-height: 5.5rem; }
 
+/* ── Secondary / outline button ───────────────────────────────────── */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--star-white);
+  background: rgba(174, 183, 194, 0.06);
+  border: 1px solid rgba(174, 183, 194, 0.28);
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--star-white);
+  background: rgba(174, 183, 194, 0.12);
+  transform: translateY(-1px);
+}
+
+/* ── CTA cards (the two doors) ────────────────────────────────────── */
+.cta-card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  border: 1px solid rgba(174, 183, 194, 0.16);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(174, 183, 194, 0.06), rgba(174, 183, 194, 0.015));
+}
+
+/* ── Story reader ─────────────────────────────────────────────────── */
+.story-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  padding-block: clamp(3rem, 8vh, 5rem);
+}
+@media (min-width: 1100px) {
+  .story-layout {
+    grid-template-columns: 14rem minmax(0, 1fr);
+    gap: 4rem;
+  }
+}
+
+.story-rail { display: none; }
+@media (min-width: 1100px) {
+  .story-rail {
+    display: block;
+    position: sticky;
+    top: 9rem;
+    align-self: start;
+    max-height: calc(100vh - 12rem);
+    overflow-y: auto;
+  }
+}
+.story-rail-link {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  color: var(--lunar-silver);
+  text-decoration: none;
+  padding-left: 0.9rem;
+  border-left: 1px solid rgba(174, 183, 194, 0.2);
+  opacity: 0.6;
+  transition: color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+.story-rail-link:hover { opacity: 1; color: var(--star-white); }
+.story-rail-link[data-active] {
+  opacity: 1;
+  color: var(--mission-gold);
+  border-left-color: var(--mission-gold);
+}
+
+/* Prose column — measure and leading tuned for sustained reading, not for
+   headlines. Slightly warmer than pure Star White to reduce glare on black. */
+.story-prose {
+  max-width: 36rem;
+  margin-inline: auto;
+}
+@media (min-width: 1100px) {
+  .story-prose { margin-inline: 0; }
+}
+.story-p {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.02rem, 0.98rem + 0.25vw, 1.19rem);
+  line-height: 1.9;
+  letter-spacing: 0.003em;
+  color: rgba(245, 247, 250, 0.82);
+  margin-top: 1.45em;
+  text-wrap: pretty;
+}
+.story-p:first-child { margin-top: 0; }
+
+/* Dialogue hangs its opening quote into the margin so exchanges scan as
+   exchanges rather than as more paragraphs. */
+.story-dialogue {
+  text-indent: -0.42em;
+  color: rgba(245, 247, 250, 0.9);
+}
+
+/* Opening drop cap */
+.story-open::first-letter {
+  float: left;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3.6em;
+  line-height: 0.82;
+  font-weight: 500;
+  padding-right: 0.09em;
+  margin-top: 0.06em;
+  color: var(--mission-gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-rail-link { transition: none; }
+}
+
 /* ── Skip link ────────────────────────────────────────────────────── */
 .skip-link {
   position: fixed;
@@ -403,4 +526,13 @@ textarea.field-input { resize: vertical; min-height: 5.5rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .drift { animation: none; }
+}
+
+/* ── Store product cards ──────────────────────────────────────────── */
+.product-card-img { transition: transform 0.45s ease; }
+.product-card:hover .product-card-img { transform: scale(1.05); }
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card-img { transition: none; }
+  .product-card:hover .product-card-img { transform: none; }
 }

@@ -6,7 +6,7 @@ import StoreClient from './StoreClient';
 
 export const metadata: Metadata = {
   title: 'Store — Explorer 233',
-  description: 'Objects from the Explorer 233 world. Ghana delivery by local partner; international via Colourfro.',
+  description: "The Explorer 233 collection — tees and prints. International orders via Colourfro; Ghana delivery by local partner.",
 };
 
 export default function StorePage() {
@@ -17,7 +17,7 @@ export default function StorePage() {
       <PageHeader
         eyebrow="Store"
         title="Carry it with you."
-        lede="A small, deliberate set of objects from this world — starting with one."
+        lede="Wear it. The collection is printed and shipped by Colourfro; in Ghana, reserve here and pay on delivery."
       />
 
       <StoreClient />

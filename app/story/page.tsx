@@ -1,109 +1,101 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import PageHeader from '../components/PageHeader';
-import StarSky from '../components/sections/StarSky';
+import Link from 'next/link';
 import Footer from '../components/sections/Footer';
-import { dispatchSE101 as d } from '../../content/dispatch-se1-01';
+import StoryReader from './StoryReader';
+import { dispatchSE101 as d, nextDispatch } from '../../content/dispatch-se1-01';
 
 export const metadata: Metadata = {
-  title: 'The Story — Explorer 233',
-  description: `Dispatch ${d.code}: ${d.title}. ${d.setting}.`,
+  title: `Dispatch ${d.code}: ${d.title} — Explorer 233`,
+  description: `${d.setting}. The first message from another star was discovered because Dr. Amara Nkrumah wanted tea.`,
 };
+
+const WORDS = d.scenes.reduce((n, s) => n + s.paragraphs.join(' ').split(/\s+/).length, 0);
+const MINUTES = Math.max(1, Math.round(WORDS / 220));
 
 export default function StoryPage() {
   return (
-    <main>
-      <StarSky />
+    <main style={{ background: 'var(--deep-space-black)' }}>
+      {/* Full-bleed opening plate — the cover of the issue */}
+      <header className="relative w-full overflow-hidden" style={{ height: 'clamp(26rem, 76vh, 44rem)' }}>
+        <Image
+          src="/images/baobab-hq.jpg"
+          alt="The Baobab at golden hour on commissioning day"
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover"
+        />
+        <div className="media-scrim-bottom" aria-hidden />
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(to bottom, rgba(5,7,11,0.85) 0%, transparent 45%)' }}
+        />
 
-      <PageHeader eyebrow={`Dispatch ${d.code} · ${d.season}`} title={d.title} />
+        <div className="absolute inset-x-0 bottom-0 z-[2] pb-12 md:pb-16">
+          <div className="chapter-shell">
+            <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
+              {d.season} · Dispatch {d.code}
+            </p>
+            <h1
+              className="font-display font-light mt-4 balance"
+              style={{
+                fontSize: 'var(--step-4)',
+                lineHeight: 1.02,
+                letterSpacing: '-0.03em',
+                color: 'var(--star-white)',
+              }}
+            >
+              {d.title}
+            </h1>
+            <p
+              className="font-body mt-5 tabnum"
+              style={{
+                fontSize: '11.5px',
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+                color: 'var(--lunar-silver)',
+              }}
+            >
+              {d.setting} · {MINUTES} min read · {d.status}
+            </p>
+          </div>
+        </div>
+      </header>
 
-      {/* Masthead strip — the dispatch "template" header */}
-      <div className="chapter-shell relative z-10 mt-10">
-        <dl
-          className="grid grid-cols-2 md:grid-cols-3 gap-6"
-          style={{ borderTop: '1px solid rgba(174,183,194,0.16)', borderBottom: '1px solid rgba(174,183,194,0.16)', paddingBlock: '1.25rem' }}
+      <StoryReader scenes={d.scenes} />
+
+      {/* End matter */}
+      <div className="chapter-shell" style={{ paddingBottom: 'clamp(4rem, 10vh, 7rem)' }}>
+        <div
+          className="mx-auto text-center"
+          style={{
+            maxWidth: '36rem',
+            borderTop: '1px solid rgba(174,183,194,0.16)',
+            paddingTop: 'clamp(2.5rem, 6vh, 4rem)',
+          }}
         >
-          {[
-            ['Dispatch', d.code],
-            ['Setting', d.setting],
-            ['Status', d.status],
-          ].map(([k, v]) => (
-            <div key={k}>
-              <dt className="eyebrow" style={{ color: 'var(--lunar-silver)', opacity: 0.6 }}>
-                {k}
-              </dt>
-              <dd className="font-body mt-2" style={{ fontSize: '13.5px', color: 'var(--star-white)' }}>
-                {v}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-
-      {/* Plate */}
-      <div className="chapter-shell relative z-10 mt-12">
-        <div className="relative w-full overflow-hidden rounded-lg" style={{ aspectRatio: '16 / 9' }}>
-          <Image
-            src="/images/baobab-hq.jpg"
-            alt="The Baobab at golden hour on commissioning day"
-            fill
-            sizes="(max-width: 900px) 92vw, 78rem"
-            className="object-cover"
-            priority
-          />
-        </div>
-      </div>
-
-      {/* Body — measure-constrained reading column */}
-      <article className="chapter-shell relative z-10" style={{ paddingBlock: 'clamp(3.5rem, 8vh, 6rem)' }}>
-        <div style={{ maxWidth: '38rem', marginInline: 'auto' }}>
-          {d.scenes.map((scene, si) => (
-            <section key={scene.id}>
-              {si > 0 && (
-                <div
-                  aria-hidden
-                  className="mx-auto"
-                  style={{ width: '56px', height: '1px', background: 'var(--mission-gold)', opacity: 0.4, marginBlock: 'clamp(2.5rem, 6vh, 4rem)' }}
-                />
-              )}
-
-              {scene.heading && (
-                <div style={{ marginBottom: '2rem' }}>
-                  <h2 className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
-                    {scene.heading}
-                  </h2>
-                  {scene.sub && (
-                    <p className="font-display mt-1" style={{ fontSize: '13px', color: 'var(--lunar-silver)', letterSpacing: '0.14em' }}>
-                      {scene.sub}
-                    </p>
-                  )}
-                </div>
-              )}
-              {scene.paragraphs.map((p, pi) => (
-                <p
-                  key={pi}
-                  className="font-body"
-                  style={{
-                    fontSize: 'var(--step-1)',
-                    lineHeight: 1.85,
-                    color: 'rgba(245,247,250,0.86)',
-                    marginTop: pi === 0 ? 0 : '1.35em',
-                  }}
-                >
-                  {p}
-                </p>
-              ))}
-            </section>
-          ))}
-
-          <p
-            className="eyebrow text-center"
-            style={{ color: 'var(--mission-gold)', marginTop: 'clamp(3rem, 7vh, 5rem)' }}
-          >
-            Dispatch {d.code} continues
+          <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
+            End of Dispatch {d.code}
           </p>
+          <h2
+            className="font-display font-light mt-4"
+            style={{ fontSize: 'var(--step-2)', letterSpacing: '-0.02em', color: 'var(--star-white)' }}
+          >
+            {nextDispatch.code} — {nextDispatch.title}
+          </h2>
+          <p
+            className="font-body mt-4"
+            style={{ fontSize: 'var(--step-0)', lineHeight: 1.7, color: 'var(--lunar-silver)' }}
+          >
+            The next dispatch lands soon. Join the mission and it reaches you the moment it does.
+          </p>
+          <Link href="/#join" className="btn-join mt-8">
+            Join the mission
+          </Link>
         </div>
-      </article>
+      </div>
 
       <Footer />
     </main>
