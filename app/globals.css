@@ -868,3 +868,15 @@ textarea.field-input { resize: vertical; min-height: 5.5rem; }
   letter-spacing: 0.14em;
   color: var(--reader-dim);
 }
+
+/* ── Crew payoff (end of the departure sequence) ──────────────────── */
+.crew-orb {
+  position: relative;
+  width: clamp(5.5rem, 22vw, 11rem);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid rgba(214, 168, 79, 0.35);
+  box-shadow: 0 0 40px -12px rgba(214, 168, 79, 0.5);
+}
+
