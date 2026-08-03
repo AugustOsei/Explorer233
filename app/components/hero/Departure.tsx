@@ -24,7 +24,7 @@ gsap.registerPlugin(ScrollTrigger);
  * state here would re-render the tree hundreds of times a second.
  */
 
-const FRAMES = 487;
+const FRAMES = 472;
 const framePath = (i: number) => `/hero-frames/f${String(i).padStart(3, '0')}.jpg`;
 
 const CREW = [
