@@ -13,9 +13,9 @@ gsap.registerPlugin(ScrollTrigger);
  *
  *   0.00–0.16  closed chamber doors; the agency states itself
  *   0.16–0.30  doors withdraw, light seam blooms, the vessel is revealed ONCE
- *   0.30–0.88  455 frames: ignition, ascent through the roof, the vessel banks
+ *   0.30–0.88  487 frames: ignition, ascent through the roof, the vessel banks
  *              and turns until the camera is behind its four fusion nozzles,
- *              then it boosts away into orbit
+ *              then launches away into hyperspeed and is gone
  *   0.88–1.00  Laura, Maximus and Mam resolve out of the frame it leaves behind
  *
  * Everything lives on a single canvas plus DOM layers driven from one scrub
@@ -24,7 +24,7 @@ gsap.registerPlugin(ScrollTrigger);
  * state here would re-render the tree hundreds of times a second.
  */
 
-const FRAMES = 455;
+const FRAMES = 487;
 const framePath = (i: number) => `/hero-frames/f${String(i).padStart(3, '0')}.jpg`;
 
 const CREW = [
@@ -195,9 +195,9 @@ export default function Departure() {
 
         <p className="sr-only">
           The chamber doors open on the Nipa Nsa. It ignites, climbs out of the Baobab, turns
-          away until only its four fusion engines face the viewer, and boosts into orbit above
-          Earth — then Explorer 233&rsquo;s crew appear: Laura Osei Baako, Maximus Boateng and
-          Menaye Ama Mensah.
+          away until only its four fusion engines face the viewer, then launches into hyperspeed
+          until nothing is left but streaking starlight — and Explorer 233&rsquo;s crew appear:
+          Laura Osei Baako, Maximus Boateng and Menaye Ama Mensah.
         </p>
 
         {/* Engine bloom */}
