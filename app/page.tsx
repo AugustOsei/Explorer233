@@ -1,5 +1,6 @@
-import SignalHero from './components/hero/SignalHero';
+import SignalSequence from './components/hero/SignalSequence';
 import StarSky from './components/sections/StarSky';
+import ShipReveal from './components/sections/ShipReveal';
 import CinematicPlate from './components/sections/CinematicPlate';
 import StoryTeaser from './components/sections/StoryTeaser';
 import CharacterRow from './components/sections/CharacterRow';
@@ -23,19 +24,9 @@ export default function Home() {
       {/* One continuous sky behind the non-plate sections */}
       <StarSky />
 
-      <SignalHero />
+      <SignalSequence />
 
-      <CinematicPlate
-        src="/images/nipa-nsa.jpg"
-        alt="The Nipa Nsa suspended in the Baobab's assembly chamber"
-        eyebrow="Nipa Nsa · EX-233-001"
-        title="One hand cannot lift a load."
-        body="The first vessel built in Africa for travel beyond the Solar System. It will never land on a planet. It was assembled in orbit, tested there, and brought home in sections to be shown to the people who paid for it in belief."
-        meta="Assembled in orbit · Commissioned Accra, 2048"
-        href="/world"
-        cta="Enter the world"
-        priority
-      />
+      <ShipReveal />
 
       <CinematicPlate
         src="/images/the-current.jpg"

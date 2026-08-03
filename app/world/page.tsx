@@ -14,21 +14,21 @@ const PEOPLE = [
   {
     name: 'Laura Osei Baako',
     role: 'Founder, Explorer 233',
-    src: '/images/laura-maximus.jpg',
-    pos: '32% 24%',
+    src: '/images/char-laura-full.jpg',
+    pos: '50% 16%',
     body: [
-      'White braids framing her face, a plain white shirt beneath a dark jacket, black trousers, glasses, and one black glove. She crosses press lines without slowing.',
+      'White braids framing her face, a plain white shirt, tailored black trousers, red shoes, and a single glove — red, most days. She crosses press lines without slowing.',
       'She founded MellaniumORBIT before she was thirty, sold it for an amount no news channel could agree upon, then came home to Ghana and spent much of that fortune building the Baobab. She is either one of the most important people alive or completely insane — and both may be true.',
       'Her case is not that Ghana should own the stars. No country can. It is that humanity will reach them, and Africa must arrive as a builder, not a passenger.',
     ],
   },
   {
     name: 'Maximus Boateng',
-    role: 'Mission Director',
-    src: '/images/laura-maximus.jpg',
-    pos: '70% 24%',
+    role: 'Mission Director · Second-in-command',
+    src: '/images/char-maximus.jpg',
+    pos: '50% 18%',
     body: [
-      'Bald, broad-shouldered and bearded, with an earring, dark glasses and a small cowry pendant at his throat. He looks exactly as he does in interviews, except more tired.',
+      'Bald, broad-shouldered and bearded, with an earring, dark glasses and a small cowrie pendant on a black cord. He looks exactly as he does in interviews, except more tired.',
       'He is the person who tells Laura the thing she does not want to hear on the morning she least wants to hear it — and the one who does not flinch when she decides to go ahead anyway. He notices who leaves a room, and when.',
     ],
   },
@@ -36,7 +36,7 @@ const PEOPLE = [
     name: 'Menaye Ama Mensah',
     role: 'Physics student, Accra',
     src: '/images/char-mam.jpg',
-    pos: '50% 28%',
+    pos: '50% 20%',
     body: [
       'Eighteen, sharp, and unwilling to let anyone repeat a rumour sloppily in her presence. She has read every public paper Laura has written and argued online with strangers who insist a computer scientist has no business building an interstellar programme.',
       'She is the reason the agency matters. Not the funding, not the facilities — a student in Accra doing her own arithmetic on everything the sky owes her, and deciding to go and collect it herself.',

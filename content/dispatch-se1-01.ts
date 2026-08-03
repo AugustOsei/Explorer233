@@ -8,10 +8,12 @@
  *
  * Canon details that other pages must match:
  *   · Timeline — Mars contact 2047, Baobab opening 2048 (NOT 2037)
- *   · Laura — white braids, glasses, ONE BLACK GLOVE, red shoes; founded
- *     MellaniumORBIT before Explorer 233
- *   · Maximus — Mission Director (not head of security); bald, bearded,
- *     earring, dark glasses, cowry pendant
+ *   · Laura — white braids, glasses, red shoes, and a single glove. RED is the
+ *     default; she changes the colour sometimes, so it is not fixed. (This
+ *     dispatch happens to describe a black one — that is her, not an error.)
+ *     Founded MellaniumORBIT before Explorer 233.
+ *   · Maximus — Mission Director AND second-in-command; both are correct. Bald,
+ *     bearded, earring, dark glasses, cowrie pendant on a black cord.
  *   · The ship — Nipa Nsa, EX-233-001. Akan: "one hand cannot lift a load"
  */
 

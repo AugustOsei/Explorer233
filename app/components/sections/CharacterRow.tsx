@@ -6,10 +6,6 @@ import { useReveal } from '../useReveal';
 
 /**
  * The people of the world — Laura, Maximus, Mam. Three only, by design.
- *
- * Laura and Maximus are framed out of the same corridor plate via
- * object-position rather than separate renders: same scene, two windows. If we
- * later commission solo portraits, only `src`/`pos` below need to change.
  */
 
 type Character = {
@@ -20,27 +16,33 @@ type Character = {
   pos: string;
 };
 
+/**
+ * Portraits are the approved visual-lock references from the Character Bible,
+ * not scene stills — neutral backdrops, consistent framing, canon wardrobe.
+ * Maximus's lock ships as a three-panel contact sheet, so his portrait is cut
+ * from the front three-quarter panel (clear of the sheet's baked-in caption).
+ */
 const CHARACTERS: Character[] = [
   {
     name: 'Laura Osei Baako',
     role: 'Founder, Explorer 233',
-    line: 'White braids, one black glove, and a refusal to make the future smaller so it fits.',
-    src: '/images/laura-maximus.jpg',
-    pos: '32% 26%',
+    line: 'White braids, one red glove, and a refusal to make the future smaller so it fits.',
+    src: '/images/char-laura-full.jpg',
+    pos: '50% 18%',
   },
   {
     name: 'Maximus Boateng',
-    role: 'Mission Director',
+    role: 'Mission Director · Second-in-command',
     line: 'Notices who leaves the room, and when. Tells Laura what she does not want to hear.',
-    src: '/images/laura-maximus.jpg',
-    pos: '70% 26%',
+    src: '/images/char-maximus.jpg',
+    pos: '50% 18%',
   },
   {
     name: 'Menaye Ama Mensah',
     role: 'Physics student, Accra',
     line: 'Eighteen, and already keeping her own count of everything the sky owes her.',
     src: '/images/char-mam.jpg',
-    pos: '50% 30%',
+    pos: '50% 22%',
   },
 ];
 
