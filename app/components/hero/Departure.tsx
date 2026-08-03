@@ -13,8 +13,10 @@ gsap.registerPlugin(ScrollTrigger);
  *
  *   0.00–0.16  closed chamber doors; the agency states itself
  *   0.16–0.30  doors withdraw, light seam blooms, the vessel is revealed ONCE
- *   0.30–0.86  361 frames: ignition, ascent through the roof, sky to black
- *   0.86–1.00  the starfield holds and Laura, Maximus and Mam resolve out of it
+ *   0.30–0.88  455 frames: ignition, ascent through the roof, the vessel banks
+ *              and turns until the camera is behind its four fusion nozzles,
+ *              then it boosts away into orbit
+ *   0.88–1.00  Laura, Maximus and Mam resolve out of the frame it leaves behind
  *
  * Everything lives on a single canvas plus DOM layers driven from one scrub
  * callback, so the ship is never re-introduced and the reader never restarts.
@@ -22,7 +24,7 @@ gsap.registerPlugin(ScrollTrigger);
  * state here would re-render the tree hundreds of times a second.
  */
 
-const FRAMES = 361;
+const FRAMES = 455;
 const framePath = (i: number) => `/hero-frames/f${String(i).padStart(3, '0')}.jpg`;
 
 const CREW = [
@@ -135,8 +137,8 @@ export default function Departure() {
         layers.titles.style.transform = `translateY(${-out * 30}px)`;
       }
 
-      // The sequence itself.
-      draw(span(p, 0.3, 0.86) * (FRAMES - 1));
+      // The sequence itself: ignition → ascent → turn to stern → departure.
+      draw(span(p, 0.3, 0.88) * (FRAMES - 1));
 
       if (layers.bloom) {
         layers.bloom.style.opacity = String(Math.sin(span(p, 0.3, 0.46) * Math.PI) * 0.5);
@@ -152,7 +154,7 @@ export default function Departure() {
 
       // The payoff: the crew resolve out of the starfield the ship vanished into.
       if (layers.crew) {
-        const inn = span(p, 0.87, 0.97);
+        const inn = span(p, 0.89, 0.98);
         layers.crew.style.opacity = String(inn);
         layers.crew.style.transform = `translateY(${(1 - inn) * 26}px)`;
         layers.crew.style.pointerEvents = inn > 0.6 ? 'auto' : 'none';
@@ -192,9 +194,10 @@ export default function Departure() {
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
 
         <p className="sr-only">
-          The chamber doors open on the Nipa Nsa. It ignites, climbs out of the Baobab and away
-          from Earth until it is one point of light among the stars — and Explorer 233&rsquo;s crew
-          appear: Laura Osei Baako, Maximus Boateng and Menaye Ama Mensah.
+          The chamber doors open on the Nipa Nsa. It ignites, climbs out of the Baobab, turns
+          away until only its four fusion engines face the viewer, and boosts into orbit above
+          Earth — then Explorer 233&rsquo;s crew appear: Laura Osei Baako, Maximus Boateng and
+          Menaye Ama Mensah.
         </p>
 
         {/* Engine bloom */}
