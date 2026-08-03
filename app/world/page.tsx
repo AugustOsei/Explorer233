@@ -49,14 +49,14 @@ export default function WorldPage() {
             maxWidth: '16ch',
           }}
         >
-          Someone has to be first.
+          Builders, not passengers.
         </h1>
         <p
           className="font-body mt-6"
           style={{ fontSize: 'var(--step-1)', lineHeight: 1.6, color: 'var(--lunar-silver)', maxWidth: '54ch' }}
         >
-          Explorer 233 is a private Ghanaian space agency. These are the people carrying it — and
-          the people who intend to stop them.
+          Inside the story, Explorer 233 is a Ghanaian-led private exploration institution. These are
+          the people carrying it — and the people who intend to stop them.
         </p>
       </header>
 

@@ -20,7 +20,7 @@ export const creator = {
     'Explorer 233 is built by a small team out of one stubborn question: what does the future look like when Africa is holding the pen?',
   paragraphs: [
     'I did not set out to build a space agency. I set out to build a world where a girl on a rooftop in Accra looks up and does not have to imagine herself into someone else’s story to belong in it.',
-    'Explorer 233 is that world — a private Ghanaian space agency, a cast of people carrying it, and a growing body of dispatches, games, and objects that let you stand inside it rather than watch it from outside.',
+    'Explorer 233 is that world — an African science-fiction universe told in monthly dispatches, with a cast carrying it and a growing body of games and objects that let you stand inside it rather than watch from outside.',
     'The number is Ghana’s calling code. It is on the front of the building for the same reason it is in the name: this comes from somewhere specific, and it is not apologising for that.',
     'If any of this reaches you, the thing I would most like you to do is not applaud. It is to join, and then to build something of your own.',
   ],

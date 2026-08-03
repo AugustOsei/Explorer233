@@ -7,11 +7,11 @@ import SiteNav from "./components/SiteNav";
 export const metadata: Metadata = {
   metadataBase: new URL("https://explorer233.com"),
   title: "Explorer 233 — We Are Here",
-  description: "A private Ghanaian space agency, and the science-fiction universe around it. Read the dispatches, meet the crew, join the mission.",
+  description: "An original African science-fiction universe. Monthly dispatches, a world to explore, and a story that keeps arriving.",
   openGraph: {
     title: "Explorer 233 — We Are Here",
     description: "In 2047 dozens of nearby stars sent the same three words. Ghana answered. Read Dispatch One.",
-    images: [{ url: "/explorer.png", width: 1200, height: 630, alt: "Explorer 233 — A Private Ghanaian Space Agency" }],
+    images: [{ url: "/explorer.png", width: 1200, height: 630, alt: "Explorer 233 — An African science-fiction universe" }],
   },
   twitter: {
     card: "summary_large_image",

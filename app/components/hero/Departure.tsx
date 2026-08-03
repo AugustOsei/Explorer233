@@ -120,7 +120,10 @@ export default function Departure() {
       if (layers.left) layers.left.style.transform = `translateX(${-100 * open}%)`;
       if (layers.right) layers.right.style.transform = `translateX(${100 * open}%)`;
       if (layers.seam) {
-        layers.seam.style.opacity = String(Math.sin(open * Math.PI) * 0.9);
+        // Burns off well before the doors finish, so no light bar is left lying
+        // across the revealed vessel.
+        const seam = Math.sin(Math.min(open / 0.55, 1) * Math.PI);
+        layers.seam.style.opacity = String(seam * 0.85);
         layers.seam.style.transform = `translateX(-50%) scaleX(${0.2 + open * 0.8})`;
       }
 
@@ -232,7 +235,7 @@ export default function Departure() {
           style={{ opacity: 0 }}
         >
           <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
-            Accra, Ghana · 2048
+            An African science-fiction universe
           </p>
           <h1
             className="font-display mt-4"
@@ -250,7 +253,7 @@ export default function Departure() {
             className="font-body mt-5"
             style={{ fontSize: 'var(--step-1)', color: 'var(--lunar-silver)', maxWidth: '30ch' }}
           >
-            A private Ghanaian space agency, on the morning it opens its doors.
+            Africa belongs in humanity’s future as a builder, not a passenger.
           </p>
         </div>
 
@@ -270,7 +273,7 @@ export default function Departure() {
                   color: 'var(--star-white)',
                 }}
               >
-                If we keep waiting for permission, who writes the future while we wait?
+                If we keep waiting for permission, who will write the future while we wait?
               </h2>
             </div>
           </div>
@@ -283,7 +286,7 @@ export default function Departure() {
           style={{ opacity: 0, pointerEvents: 'none' }}
         >
           <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
-            Someone has to be first
+            The World
           </p>
           <ul className="mt-8 flex flex-wrap items-end justify-center gap-5 md:gap-8">
             {CREW.map((c) => (

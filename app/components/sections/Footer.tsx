@@ -43,7 +43,7 @@ export default function Footer() {
               className="font-display"
               style={{ fontSize: '14px', color: 'rgba(244,241,234,0.55)', letterSpacing: '0.04em', lineHeight: 1.6, maxWidth: '30ch' }}
             >
-              A private Ghanaian space agency, a fleet, and the people who refuse to wait for permission.
+              An original African science-fiction universe. Dispatches, characters, and a story still arriving.
             </p>
             <span className="eyebrow text-gold-grad">Reach and breathe among the stars</span>
           </div>
