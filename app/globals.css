@@ -290,94 +290,6 @@ textarea.field-input { resize: vertical; min-height: 5.5rem; }
   background: linear-gradient(180deg, rgba(174, 183, 194, 0.06), rgba(174, 183, 194, 0.015));
 }
 
-/* ── Story reader ─────────────────────────────────────────────────── */
-.story-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 3rem;
-  padding-block: clamp(3rem, 8vh, 5rem);
-}
-@media (min-width: 1100px) {
-  .story-layout {
-    grid-template-columns: 14rem minmax(0, 1fr);
-    gap: 4rem;
-  }
-}
-
-.story-rail { display: none; }
-@media (min-width: 1100px) {
-  .story-rail {
-    display: block;
-    position: sticky;
-    top: 9rem;
-    align-self: start;
-    max-height: calc(100vh - 12rem);
-    overflow-y: auto;
-  }
-}
-.story-rail-link {
-  display: block;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  line-height: 1.45;
-  letter-spacing: 0.02em;
-  color: var(--lunar-silver);
-  text-decoration: none;
-  padding-left: 0.9rem;
-  border-left: 1px solid rgba(174, 183, 194, 0.2);
-  opacity: 0.6;
-  transition: color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
-}
-.story-rail-link:hover { opacity: 1; color: var(--star-white); }
-.story-rail-link[data-active] {
-  opacity: 1;
-  color: var(--mission-gold);
-  border-left-color: var(--mission-gold);
-}
-
-/* Prose column — measure and leading tuned for sustained reading, not for
-   headlines. Slightly warmer than pure Star White to reduce glare on black. */
-.story-prose {
-  max-width: 36rem;
-  margin-inline: auto;
-}
-@media (min-width: 1100px) {
-  .story-prose { margin-inline: 0; }
-}
-.story-p {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(1.02rem, 0.98rem + 0.25vw, 1.19rem);
-  line-height: 1.9;
-  letter-spacing: 0.003em;
-  color: rgba(245, 247, 250, 0.82);
-  margin-top: 1.45em;
-  text-wrap: pretty;
-}
-.story-p:first-child { margin-top: 0; }
-
-/* Dialogue hangs its opening quote into the margin so exchanges scan as
-   exchanges rather than as more paragraphs. */
-.story-dialogue {
-  text-indent: -0.42em;
-  color: rgba(245, 247, 250, 0.9);
-}
-
-/* Opening drop cap */
-.story-open::first-letter {
-  float: left;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 3.6em;
-  line-height: 0.82;
-  font-weight: 500;
-  padding-right: 0.09em;
-  margin-top: 0.06em;
-  color: var(--mission-gold);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .story-rail-link { transition: none; }
-}
-
 /* ── Skip link ────────────────────────────────────────────────────── */
 .skip-link {
   position: fixed;
@@ -756,4 +668,203 @@ textarea.field-input { resize: vertical; min-height: 5.5rem; }
   inset: 0;
   pointer-events: none;
   background: radial-gradient(ellipse 78% 68% at 50% 45%, transparent 40%, rgba(5, 7, 11, 0.75) 100%);
+}
+
+/* ── Story: article mode ──────────────────────────────────────────── */
+.story-progress {
+  position: fixed;
+  top: 68px; left: 0; right: 0;
+  height: 2px;
+  z-index: 40;
+  background: rgba(174, 183, 194, 0.1);
+}
+.story-progress > div {
+  height: 100%;
+  background: linear-gradient(90deg, var(--orbit-teal), var(--mission-gold));
+}
+
+.story-open-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+  border-bottom: 1px solid rgba(174, 183, 194, 0.14);
+}
+.story-open-hint {
+  font-size: 12.5px;
+  color: var(--lunar-silver);
+  opacity: 0.75;
+}
+
+.story-scene { padding-block: clamp(2.5rem, 7vh, 4.5rem); }
+
+.story-plate {
+  position: relative;
+  width: 100%;
+  height: clamp(16rem, 52vh, 30rem);
+  overflow: hidden;
+  margin-bottom: clamp(2rem, 5vh, 3.5rem);
+}
+.story-plate-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(5,7,11,0.55), transparent 35%, rgba(5,7,11,0.85));
+}
+
+.story-column { max-width: 36rem; margin-inline: auto; }
+.story-scene-head { margin-bottom: 2rem; }
+.story-scene-sub {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--lunar-silver);
+  margin-top: 0.4rem;
+}
+
+.story-p {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.02rem, 0.98rem + 0.25vw, 1.19rem);
+  line-height: 1.9;
+  color: rgba(245, 247, 250, 0.84);
+  margin-top: 1.45em;
+  text-wrap: pretty;
+}
+.story-p:first-of-type { margin-top: 0; }
+.story-dialogue { text-indent: -0.42em; color: rgba(245, 247, 250, 0.92); }
+
+/* ── Story: reading mode ──────────────────────────────────────────── */
+.reader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--reader-bg);
+  color: var(--reader-fg);
+}
+.reader[data-theme='void']  { --reader-bg: #05070B; --reader-fg: rgba(245,247,250,0.86); --reader-dim: rgba(174,183,194,0.75); --reader-rule: rgba(174,183,194,0.16); }
+.reader[data-theme='sepia'] { --reader-bg: #1C1710; --reader-fg: #E8DCC6; --reader-dim: rgba(232,220,198,0.7); --reader-rule: rgba(232,220,198,0.18); }
+.reader[data-theme='paper'] { --reader-bg: #F4F1EA; --reader-fg: #1A1A18; --reader-dim: rgba(26,26,24,0.66); --reader-rule: rgba(26,26,24,0.16); }
+
+.reader-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem clamp(1rem, 4vw, 2.5rem);
+  border-bottom: 1px solid var(--reader-rule);
+}
+.reader-bar-left { display: flex; align-items: baseline; gap: 0.75rem; min-width: 0; }
+.reader-code {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--mission-gold);
+}
+.reader-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  color: var(--reader-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.reader-tools { display: flex; align-items: center; gap: 0.5rem; }
+.reader-group {
+  display: flex;
+  border: 1px solid var(--reader-rule);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.reader-group button {
+  padding: 0.35rem 0.7rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--reader-dim);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.reader-group button[data-active] { color: var(--reader-bg); background: var(--mission-gold); }
+.reader-close {
+  padding: 0.4rem 0.9rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--reader-dim);
+  background: none;
+  border: 1px solid var(--reader-rule);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.reader-close:hover { color: var(--reader-fg); }
+
+.reader-stage { position: relative; overflow: hidden; }
+.reader-viewport {
+  position: absolute;
+  inset: 0;
+  margin-inline: auto;
+  padding: clamp(1.5rem, 5vh, 3rem) clamp(1.25rem, 5vw, 3rem);
+  max-width: 42rem;
+  overflow: hidden;
+}
+.reader-flow {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.85;
+  color: var(--reader-fg);
+  transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) { .reader-flow { transition: none; } }
+
+.reader-scene {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62em;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--mission-gold);
+  margin-bottom: 1.6em;
+  break-after: avoid;
+}
+.reader-scene-sub {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: 0.16em;
+  color: var(--reader-dim);
+  margin-top: 0.5em;
+}
+.reader-p { margin-bottom: 1.15em; text-wrap: pretty; }
+.reader-p--dialogue { text-indent: -0.42em; }
+
+/* Generous invisible paging targets down each side */
+.reader-edge {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: clamp(3rem, 12vw, 9rem);
+  z-index: 2;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.reader-edge--prev { left: 0; }
+.reader-edge--next { right: 0; }
+
+.reader-foot {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem clamp(1rem, 4vw, 2.5rem);
+  border-top: 1px solid var(--reader-rule);
+}
+.reader-progress { flex: 1; height: 2px; background: var(--reader-rule); }
+.reader-progress > div { height: 100%; background: var(--mission-gold); transition: width 0.3s ease; }
+.reader-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--reader-dim);
 }

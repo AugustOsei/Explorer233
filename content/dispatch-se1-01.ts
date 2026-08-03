@@ -29,7 +29,14 @@ export const nextDispatch = {
   releasesAt: '2026-09-07T20:00:00Z',
 };
 
-export type Scene = { id: string; heading?: string; sub?: string; paragraphs: string[] };
+export type Scene = {
+  id: string;
+  heading?: string;
+  sub?: string;
+  /** Full-bleed plate that opens the scene. Existing Trailer 01 art, mapped by beat. */
+  art?: { src: string; alt: string };
+  paragraphs: string[];
+};
 
 export type Dispatch = {
   code: string;
@@ -49,6 +56,7 @@ export const dispatchSE101: Dispatch = {
   scenes: [
     {
       id: 'mars',
+      art: { src: '/images/scene-mars.jpg', alt: 'A signal resolving on the settlement displays' },
       heading: 'Mars International Research Settlement',
       sub: '2047',
       paragraphs: [
@@ -74,6 +82,7 @@ export const dispatchSE101: Dispatch = {
     },
     {
       id: 'accra',
+      art: { src: '/images/scene-accra.jpg', alt: 'Accra on the morning of the commissioning' },
       heading: 'Six months later — Accra, Ghana',
       sub: '2048',
       paragraphs: [
@@ -99,6 +108,7 @@ export const dispatchSE101: Dispatch = {
     },
     {
       id: 'the-building',
+      art: { src: '/images/baobab-hq.jpg', alt: 'The Baobab rising on the eastern edge of Accra' },
       heading: 'The Baobab',
       paragraphs: [
         'The road to the Baobab had become a festival.',
@@ -117,6 +127,7 @@ export const dispatchSE101: Dispatch = {
     },
     {
       id: 'nipa-nsa',
+      art: { src: '/images/nipa-nsa.jpg', alt: 'The Nipa Nsa in the assembly chamber' },
       heading: 'Nipa Nsa',
       paragraphs: [
         'Laura stood beneath the first vessel humanity had built in Africa for travel beyond the Solar System and listened to three different people tell her the ceremony was running perfectly. This was how she knew something was wrong.',
@@ -140,6 +151,7 @@ export const dispatchSE101: Dispatch = {
     },
     {
       id: 'ceremony',
+      art: { src: '/images/scene-laura-maximus.jpg', alt: 'Laura and Maximus at the commissioning' },
       heading: 'The commissioning',
       paragraphs: [
         'Mam had expected a speech. Instead, the lights inside the main hall faded until the ceiling became a field of stars, and the crowd fell silent.',
@@ -163,6 +175,7 @@ export const dispatchSE101: Dispatch = {
     },
     {
       id: 'midnight',
+      art: { src: '/images/scene-dayzero.jpg', alt: 'The message that opened itself on Laura’s wall' },
       heading: 'Near midnight',
       paragraphs: [
         'The celebration continued into the evening. Music rose from the plaza. Children queued to enter shuttle simulators while adults argued about the cost of the program beside tables serving jollof, waakye and drinks named after planets.',

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../components/sections/Footer';
-import StoryReader from './StoryReader';
+import StoryBody from './StoryBody';
 import { dispatchSE101 as d, nextDispatch } from '../../content/dispatch-se1-01';
 
 export const metadata: Metadata = {
@@ -64,7 +64,7 @@ export default function StoryPage() {
         </div>
       </header>
 
-      <StoryReader scenes={d.scenes} />
+      <StoryBody scenes={d.scenes} title={d.title} code={d.code} />
 
       {/* End matter */}
       <div className="chapter-shell" style={{ paddingBottom: 'clamp(4rem, 10vh, 7rem)' }}>
