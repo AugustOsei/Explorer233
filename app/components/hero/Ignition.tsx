@@ -10,13 +10,19 @@ import FrameScrub from './FrameScrub';
  * Picks up exactly where ShipReveal leaves off: that section ends on the full
  * frame of the Nipa Nsa in its chamber, and this sequence's first frame *is*
  * that same plate, because the clip was generated from it. The segmented doors
- * are DOM, the lift-off is 121 decoded frames — the cut between them is
+ * are DOM, the departure is 361 decoded frames — the cut between them is
  * invisible.
+ *
+ * Those frames are three chained 5s clips, each generated from the previous
+ * one's final frame, so the run is continuous: ignition (0–⅓), ascent through
+ * the roof into open sky (⅓–⅔), then the sky going black until the ship is one
+ * point of light among stars (⅔–1). Each clip's duplicated first frame was
+ * dropped when stitching, otherwise the joins stutter.
  *
  * Overlay copy is written straight to the DOM from the scrub callback. Putting
  * it in React state would re-render the tree on every scroll tick.
  */
-const FRAMES = 121;
+const FRAMES = 361;
 const framePath = (i: number) => `/hero-frames/f${String(i).padStart(3, '0')}.jpg`;
 
 export default function Ignition() {
@@ -27,17 +33,18 @@ export default function Ignition() {
   const onProgress = useCallback((p: number) => {
     const span = (a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)));
 
-    // Engine bloom peaks with the ignition, then burns off.
+    // Engine bloom peaks during ignition (first third) and burns off as the
+    // vessel climbs away from the chamber lighting.
     if (bloom.current) {
-      const b = Math.sin(span(0.05, 0.45) * Math.PI);
+      const b = Math.sin(span(0.02, 0.3) * Math.PI);
       bloom.current.style.opacity = String(b * 0.5);
     }
 
-    // Copy arrives once the vessel is clearly moving, and clears before the end
-    // so the next section never shares the screen with it.
+    // Copy rides the ascent, then clears well before the end — the last thing
+    // on screen should be the ship becoming a star, not a paragraph over it.
     if (copy.current) {
-      const inn = span(0.3, 0.52);
-      const out = span(0.82, 0.96);
+      const inn = span(0.36, 0.5);
+      const out = span(0.64, 0.76);
       copy.current.style.opacity = String(inn * (1 - out));
       copy.current.style.transform = `translateY(${(1 - inn) * 24 - out * 40}px)`;
     }
@@ -49,7 +56,7 @@ export default function Ignition() {
     <FrameScrub
       count={FRAMES}
       src={framePath}
-      runway="+=260%"
+      runway="+=320%"
       className="relative"
       onProgress={onProgress}
     >
