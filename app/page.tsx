@@ -1,6 +1,7 @@
 import SignalSequence from './components/hero/SignalSequence';
 import StarSky from './components/sections/StarSky';
 import ShipReveal from './components/sections/ShipReveal';
+import Ignition from './components/hero/Ignition';
 import CinematicPlate from './components/sections/CinematicPlate';
 import StoryTeaser from './components/sections/StoryTeaser';
 import CharacterRow from './components/sections/CharacterRow';
@@ -27,6 +28,8 @@ export default function Home() {
       <SignalSequence />
 
       <ShipReveal />
+
+      <Ignition />
 
       <CinematicPlate
         src="/images/the-current.jpg"
