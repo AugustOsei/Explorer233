@@ -569,3 +569,191 @@ textarea.field-input { resize: vertical; min-height: 5.5rem; }
   will-change: transform;
 }
 .wall-panel--right { box-shadow: inset 18px 0 40px -18px rgba(0, 0, 0, 0.9); }
+
+/* ── Personnel dossier ────────────────────────────────────────────── */
+.dossier {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+@media (min-width: 900px) {
+  .dossier { grid-template-columns: 16rem minmax(0, 1fr); gap: 3.5rem; }
+}
+
+.dossier-roster-head { color: var(--lunar-silver); opacity: 0.55; margin-bottom: 1.1rem; }
+.dossier-roster ul { display: flex; flex-direction: column; }
+@media (min-width: 900px) {
+  .dossier-roster { position: sticky; top: 8.5rem; align-self: start; }
+}
+
+.dossier-roster-item {
+  display: flex;
+  gap: 0.85rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.85rem 0.25rem;
+  background: none;
+  border: 0;
+  border-top: 1px solid rgba(174, 183, 194, 0.14);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  opacity: 0.55;
+}
+.dossier-roster-item:hover { opacity: 0.85; }
+.dossier-roster-item[data-active] { opacity: 1; }
+
+.dossier-roster-index {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--mission-gold);
+  padding-top: 0.28rem;
+}
+.dossier-roster-name {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  color: var(--star-white);
+  letter-spacing: -0.01em;
+}
+.dossier-roster-role {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--lunar-silver);
+  margin-top: 0.2rem;
+}
+
+/* Open file */
+.dossier-file {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  animation: dossier-in 0.45s ease both;
+}
+@media (min-width: 700px) {
+  .dossier-file { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); gap: 2.5rem; }
+}
+@keyframes dossier-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dossier-file { animation: none; }
+}
+
+.dossier-plate {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(174, 183, 194, 0.16);
+  background: rgba(174, 183, 194, 0.05);
+}
+.dossier-noimage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--lunar-silver);
+  opacity: 0.45;
+  background:
+    repeating-linear-gradient(135deg, rgba(174,183,194,0.05) 0 10px, transparent 10px 20px);
+}
+.dossier-stamp {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.7rem;
+  border-radius: 4px;
+  backdrop-filter: blur(6px);
+}
+.dossier-stamp[data-clearance='open'] { color: var(--orbit-teal); border: 1px solid rgba(31,166,168,0.45); background: rgba(31,166,168,0.12); }
+.dossier-stamp[data-clearance='restricted'] { color: var(--mission-gold); border: 1px solid rgba(214,168,79,0.45); background: rgba(214,168,79,0.12); }
+.dossier-stamp[data-clearance='redacted'] { color: #D98A78; border: 1px solid rgba(138,59,46,0.6); background: rgba(138,59,46,0.22); }
+
+.dossier-name { font-size: var(--step-2); letter-spacing: -0.02em; color: var(--star-white); line-height: 1.1; }
+.dossier-designation { color: var(--mission-gold); margin-top: 0.6rem; }
+
+.dossier-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  margin: 1.75rem 0;
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(174, 183, 194, 0.14);
+  border-bottom: 1px solid rgba(174, 183, 194, 0.14);
+}
+.dossier-meta dt {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lunar-silver);
+  opacity: 0.6;
+}
+.dossier-meta dd {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: var(--star-white);
+  margin-top: 0.3rem;
+}
+.dossier-para {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--step-0);
+  line-height: 1.8;
+  color: var(--lunar-silver);
+  max-width: 56ch;
+  margin-top: 1.15em;
+}
+.dossier-para:first-of-type { margin-top: 0; }
+
+/* ── Day Zero: the figure that notices you ────────────────────────── */
+.dz-section {
+  padding-block: clamp(4rem, 11vh, 8rem);
+  background:
+    radial-gradient(ellipse 70% 55% at 30% 40%, rgba(138, 59, 46, 0.16), transparent 70%),
+    var(--deep-space-black);
+  border-top: 1px solid rgba(174, 183, 194, 0.1);
+  border-bottom: 1px solid rgba(174, 183, 194, 0.1);
+}
+.dz-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: center; }
+@media (min-width: 900px) { .dz-grid { grid-template-columns: minmax(0, 26rem) minmax(0, 1fr); gap: 4rem; } }
+
+.dz-watch {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(174, 183, 194, 0.18);
+  background: #05070B;
+}
+.dz-frame { transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+@media (prefers-reduced-motion: reduce) { .dz-frame { transition: none; } }
+
+.dz-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.22) 0px,
+    rgba(0, 0, 0, 0.22) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+.dz-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 78% 68% at 50% 45%, transparent 40%, rgba(5, 7, 11, 0.75) 100%);
+}

@@ -1,64 +1,31 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import PageHeader from '../components/PageHeader';
 import StarSky from '../components/sections/StarSky';
 import Footer from '../components/sections/Footer';
+import DossierRoster from './DossierRoster';
+import DayZeroWatch from './DayZeroWatch';
+import { AGENCY, OPPOSITION } from '../../content/personnel';
 
 export const metadata: Metadata = {
   title: 'The World — Explorer 233',
   description:
-    'The people and places of Explorer 233: Laura Osei Baako, Maximus Boateng, Menaye Ama Mensah, and the Baobab in Accra.',
+    'Personnel files: Laura Osei Baako, Maximus Boateng, Menaye Ama Mensah — and the people who want the whole thing stopped.',
 };
 
-const PEOPLE = [
-  {
-    name: 'Laura Osei Baako',
-    role: 'Founder, Explorer 233',
-    src: '/images/char-laura-full.jpg',
-    pos: '50% 16%',
-    body: [
-      'White braids framing her face, a plain white shirt, tailored black trousers, red shoes, and a single glove — red, most days. She crosses press lines without slowing.',
-      'She founded MellaniumORBIT before she was thirty, sold it for an amount no news channel could agree upon, then came home to Ghana and spent much of that fortune building the Baobab. She is either one of the most important people alive or completely insane — and both may be true.',
-      'Her case is not that Ghana should own the stars. No country can. It is that humanity will reach them, and Africa must arrive as a builder, not a passenger.',
-    ],
-  },
-  {
-    name: 'Maximus Boateng',
-    role: 'Mission Director · Second-in-command',
-    src: '/images/char-maximus.jpg',
-    pos: '50% 18%',
-    body: [
-      'Bald, broad-shouldered and bearded, with an earring, dark glasses and a small cowrie pendant on a black cord. He looks exactly as he does in interviews, except more tired.',
-      'He is the person who tells Laura the thing she does not want to hear on the morning she least wants to hear it — and the one who does not flinch when she decides to go ahead anyway. He notices who leaves a room, and when.',
-    ],
-  },
-  {
-    name: 'Menaye Ama Mensah',
-    role: 'Physics student, Accra',
-    src: '/images/char-mam.jpg',
-    pos: '50% 20%',
-    body: [
-      'Eighteen, sharp, and unwilling to let anyone repeat a rumour sloppily in her presence. She has read every public paper Laura has written and argued online with strangers who insist a computer scientist has no business building an interstellar programme.',
-      'She is the reason the agency matters. Not the funding, not the facilities — a student in Accra doing her own arithmetic on everything the sky owes her, and deciding to go and collect it herself.',
-    ],
-  },
-];
-
-const PLACES = [
+const FACILITIES = [
   {
     name: 'The Baobab',
     where: 'Accra, Ghana',
-    line: 'Headquarters. Concrete, wood, glass and ambition, spreading like a living trunk into research wings and public halls. Adinkra geometry runs through the facade without ever becoming decoration.',
+    line: 'Headquarters. Pale concrete, warm wood and shaded glass curved around courtyards and young trees. Adinkra geometry runs through the facade without becoming decoration. It looks less like a machine than something planted.',
   },
   {
     name: 'Explorer Coastal Launch Complex',
     where: 'Western Region, Ghana',
-    line: 'The ECLC — where the agency meets the Atlantic, and where everything that leaves Ghana for orbit begins its count.',
+    line: 'The ECLC — where the agency meets the Atlantic, and where everything leaving Ghana for orbit begins its count.',
   },
   {
-    name: 'The Moon',
-    where: 'Phase One',
-    line: 'The first destination, and deliberately not the last. Phase One is the Agency Era: lunar missions, crew selection, and a Mission Control that answers to Accra.',
+    name: 'Nipa Nsa',
+    where: 'EX-233-001',
+    line: 'Broad through the centre, reinforced spine, rotating habitat sections, smaller craft locked beneath the hull. Assembled in orbit. It will never land on a planet.',
   },
 ];
 
@@ -67,74 +34,106 @@ export default function WorldPage() {
     <main>
       <StarSky />
 
-      <PageHeader
-        eyebrow="The World"
-        title="Someone has to be first."
-        lede="Explorer 233 is a private Ghanaian space agency. These are the people who carry it, and the places it is built from."
-      />
+      {/* Masthead */}
+      <header className="chapter-shell page-top relative z-10">
+        <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
+          The World · Personnel
+        </p>
+        <h1
+          className="font-display font-light mt-4 balance"
+          style={{
+            fontSize: 'var(--step-4)',
+            lineHeight: 1.02,
+            letterSpacing: '-0.03em',
+            color: 'var(--star-white)',
+            maxWidth: '16ch',
+          }}
+        >
+          Someone has to be first.
+        </h1>
+        <p
+          className="font-body mt-6"
+          style={{ fontSize: 'var(--step-1)', lineHeight: 1.6, color: 'var(--lunar-silver)', maxWidth: '54ch' }}
+        >
+          Explorer 233 is a private Ghanaian space agency. These are the people carrying it — and
+          the people who intend to stop them.
+        </p>
+      </header>
 
-      {/* People */}
-      <section className="chapter-shell relative z-10" style={{ paddingBlock: 'clamp(4rem, 9vh, 7rem)' }}>
-        <ul className="flex flex-col gap-16 md:gap-24">
-          {PEOPLE.map((p, i) => (
-            <li key={p.name}>
-              <article className={`editorial-grid${i % 2 === 1 ? ' editorial-reverse' : ''}`}>
-                <div className="relative w-full overflow-hidden rounded-lg" style={{ aspectRatio: '4 / 5' }}>
-                  <Image
-                    src={p.src}
-                    alt={p.name}
-                    fill
-                    sizes="(max-width: 900px) 92vw, 46vw"
-                    className="object-cover"
-                    style={{ objectPosition: p.pos }}
-                  />
-                </div>
-                <div>
-                  <h2
-                    className="font-display font-light"
-                    style={{ fontSize: 'var(--step-3)', lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--star-white)' }}
-                  >
-                    {p.name}
-                  </h2>
-                  <p className="eyebrow mt-3" style={{ color: 'var(--mission-gold)' }}>
-                    {p.role}
-                  </p>
-                  {p.body.map((para) => (
-                    <p
-                      key={para.slice(0, 24)}
-                      className="font-body mt-5"
-                      style={{ fontSize: 'var(--step-0)', lineHeight: 1.8, color: 'var(--lunar-silver)', maxWidth: '52ch' }}
-                    >
-                      {para}
-                    </p>
-                  ))}
-                </div>
-              </article>
-            </li>
-          ))}
-        </ul>
+      {/* Agency files */}
+      <section className="chapter-shell relative z-10" style={{ paddingBlock: 'clamp(3rem, 8vh, 5rem)' }}>
+        <DossierRoster records={AGENCY} />
       </section>
 
-      {/* Places */}
+      {/* The turn */}
+      <section className="dz-section relative z-10">
+        <div className="chapter-shell">
+          <div className="dz-grid">
+            <DayZeroWatch />
+
+            <div>
+              <p className="eyebrow" style={{ color: 'var(--earth-red-clay)' }}>
+                Opposition
+              </p>
+              <h2
+                className="font-display font-light mt-3 balance"
+                style={{
+                  fontSize: 'var(--step-3)',
+                  lineHeight: 1.12,
+                  letterSpacing: '-0.02em',
+                  color: 'var(--star-white)',
+                }}
+              >
+                Not everyone wants the door opened.
+              </h2>
+              <p
+                className="font-body mt-5"
+                style={{ fontSize: 'var(--step-0)', lineHeight: 1.8, color: 'var(--lunar-silver)', maxWidth: '46ch' }}
+              >
+                They wear black cloth and one white zero. They believe humanity has already gone too
+                far, and that the correction has to come before we carry ourselves any further out.
+              </p>
+              <p
+                className="font-body mt-4"
+                style={{
+                  fontSize: '13px',
+                  lineHeight: 1.7,
+                  color: 'var(--lunar-silver)',
+                  opacity: 0.62,
+                  maxWidth: '46ch',
+                }}
+              >
+                Move closer, and it will look back at you.
+              </p>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 'clamp(3rem, 7vh, 5rem)' }}>
+            <DossierRoster records={OPPOSITION} />
+          </div>
+        </div>
+      </section>
+
+      {/* Facilities */}
       <section className="relative z-10" style={{ paddingBlock: 'clamp(3rem, 8vh, 6rem)' }}>
         <div className="chapter-shell">
           <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
-            The mission begins
+            Facilities &amp; assets
           </p>
           <ul className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-            {PLACES.map((place) => (
-              <li key={place.name} style={{ borderTop: '1px solid rgba(174,183,194,0.16)', paddingTop: '1.5rem' }}>
+            {FACILITIES.map((f) => (
+              <li key={f.name} style={{ borderTop: '1px solid rgba(174,183,194,0.16)', paddingTop: '1.5rem' }}>
                 <h3 className="font-display" style={{ fontSize: 'var(--step-1)', color: 'var(--star-white)' }}>
-                  {place.name}
+                  {f.name}
                 </h3>
-                <p className="eyebrow mt-2" style={{ color: 'var(--lunar-silver)', opacity: 0.7 }}>
-                  {place.where}
+                <p className="eyebrow mt-2 tabnum" style={{ color: 'var(--lunar-silver)', opacity: 0.7 }}>
+                  {f.where}
                 </p>
                 <p
                   className="font-body mt-4"
                   style={{ fontSize: 'var(--step-0)', lineHeight: 1.7, color: 'var(--lunar-silver)' }}
                 >
-                  {place.line}
+                  {f.line}
                 </p>
               </li>
             ))}
