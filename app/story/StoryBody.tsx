@@ -3,33 +3,17 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import type { Scene } from '../../content/dispatch-se1-01';
-
-const STORE_KEY = 'e233.dispatch.se1-01.v2';
-
-const THEMES = [
-  { id: 'void', label: 'Void' },
-  { id: 'sepia', label: 'Sepia' },
-  { id: 'paper', label: 'Paper' },
-] as const;
-
-const SIZES = [
-  { id: 'compact', label: 'Small' },
-  { id: 'standard', label: 'Standard' },
-  { id: 'large', label: 'Large' },
-] as const;
-
-type ThemeId = (typeof THEMES)[number]['id'];
-type SizeId = (typeof SIZES)[number]['id'];
-
-type SavedReader = {
-  theme?: ThemeId;
-  size?: SizeId;
-  illustrations?: boolean;
-  sceneId?: string;
-  sceneLabel?: string;
-  paragraphId?: string;
-  progress?: number;
-};
+import {
+  READER_ENTER_EVENT,
+  READER_PREFERENCES_EVENT,
+  READER_SIZES,
+  READER_STORE_KEY,
+  READER_THEMES,
+  type ReaderPreferences,
+  type ReaderSize,
+  type ReaderTheme,
+  type SavedReader,
+} from './readerPreferences';
 
 function isSignalMoment(paragraph: string) {
   return paragraph.trim().toUpperCase() === 'WE ARE HERE.';
@@ -47,15 +31,17 @@ export default function StoryBody({
   const articleRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   const saveTimer = useRef<number | null>(null);
+  const chromePreviewTimer = useRef<number | null>(null);
   const restored = useRef(false);
 
-  const [theme, setTheme] = useState<ThemeId>('void');
-  const [size, setSize] = useState<SizeId>('standard');
+  const [theme, setTheme] = useState<ReaderTheme>('void');
+  const [size, setSize] = useState<ReaderSize>('standard');
   const [illustrations, setIllustrations] = useState(true);
   const [progress, setProgress] = useState(0);
   const [activeScene, setActiveScene] = useState(scenes[0]?.id ?? '');
   const [readerActive, setReaderActive] = useState(false);
   const [chromeVisible, setChromeVisible] = useState(true);
+  const [chromePreview, setChromePreview] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [contentsOpen, setContentsOpen] = useState(false);
 
@@ -64,7 +50,7 @@ export default function StoryBody({
   useEffect(() => {
     const id = window.setTimeout(() => {
       try {
-        const raw = localStorage.getItem(STORE_KEY);
+        const raw = localStorage.getItem(READER_STORE_KEY);
         if (raw) {
           const saved = JSON.parse(raw) as SavedReader;
           if (saved.theme) setTheme(saved.theme);
@@ -83,13 +69,41 @@ export default function StoryBody({
   useEffect(() => {
     if (!restored.current) return;
     try {
-      const raw = localStorage.getItem(STORE_KEY);
+      const raw = localStorage.getItem(READER_STORE_KEY);
       const saved = raw ? (JSON.parse(raw) as SavedReader) : {};
-      localStorage.setItem(STORE_KEY, JSON.stringify({ ...saved, theme, size, illustrations }));
+      localStorage.setItem(READER_STORE_KEY, JSON.stringify({ ...saved, theme, size, illustrations }));
     } catch {
       /* Reader preferences are optional. */
     }
+    window.dispatchEvent(
+      new CustomEvent<ReaderPreferences>(READER_PREFERENCES_EVENT, {
+        detail: { theme, size, illustrations },
+      }),
+    );
   }, [theme, size, illustrations]);
+
+  useEffect(() => {
+    const onPreferences = (event: Event) => {
+      const preferences = (event as CustomEvent<ReaderPreferences>).detail;
+      setTheme(preferences.theme);
+      setSize(preferences.size);
+      setIllustrations(preferences.illustrations);
+    };
+    const onEnter = () => {
+      setChromePreview(true);
+      setChromeVisible(true);
+      if (chromePreviewTimer.current) window.clearTimeout(chromePreviewTimer.current);
+      chromePreviewTimer.current = window.setTimeout(() => setChromePreview(false), 3200);
+    };
+
+    window.addEventListener(READER_PREFERENCES_EVENT, onPreferences);
+    window.addEventListener(READER_ENTER_EVENT, onEnter);
+    return () => {
+      window.removeEventListener(READER_PREFERENCES_EVENT, onPreferences);
+      window.removeEventListener(READER_ENTER_EVENT, onEnter);
+      if (chromePreviewTimer.current) window.clearTimeout(chromePreviewTimer.current);
+    };
+  }, []);
 
   useEffect(() => {
     document.body.classList.toggle('dispatch-reading', readerActive);
@@ -133,7 +147,7 @@ export default function StoryBody({
           saveTimer.current = window.setTimeout(() => {
             try {
               localStorage.setItem(
-                STORE_KEY,
+                READER_STORE_KEY,
                 JSON.stringify({
                   theme,
                   size,
@@ -182,7 +196,7 @@ export default function StoryBody({
       <div
         className="dispatch-reader-chrome"
         data-active={readerActive || undefined}
-        data-visible={chromeVisible || settingsOpen || contentsOpen || undefined}
+        data-visible={chromeVisible || chromePreview || settingsOpen || contentsOpen || undefined}
       >
         <div className="dispatch-progress" aria-hidden>
           <div style={{ width: `${progress * 100}%` }} />
@@ -219,7 +233,7 @@ export default function StoryBody({
           <fieldset>
             <legend>Text size</legend>
             <div className="dispatch-choice-row">
-              {SIZES.map((option) => (
+              {READER_SIZES.map((option) => (
                 <button key={option.id} type="button" data-active={size === option.id || undefined} onClick={() => setSize(option.id)}>
                   {option.label}
                 </button>
@@ -229,7 +243,7 @@ export default function StoryBody({
           <fieldset>
             <legend>Reading theme</legend>
             <div className="dispatch-choice-row">
-              {THEMES.map((option) => (
+              {READER_THEMES.map((option) => (
                 <button key={option.id} type="button" data-active={theme === option.id || undefined} onClick={() => setTheme(option.id)}>
                   {option.label}
                 </button>
