@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useReveal } from '../useReveal';
 import SignalConvergence from './SignalConvergence';
 
@@ -38,9 +37,8 @@ export default function TheSignal() {
               messages calling directly to humanity.
             </p>
             <p>
-              For generations, humanity faced a haunting question: in a universe this vast,
-              why had we never heard from anyone else? Scientists called this mystery the Fermi
-              paradox.
+              For generations, scientists asked why a universe this vast seemed silent. That
+              mystery is known as the Fermi paradox.
             </p>
           </div>
         </div>
@@ -48,19 +46,6 @@ export default function TheSignal() {
     </section>
 
     <SignalConvergence />
-
-    <section className="signal-resolution-section">
-      <div className="chapter-shell">
-        <p className="premise-close">
-          That message changes humanity’s future. Explorer 233 is created to find its senders —
-          and must survive those determined to keep humanity home.
-        </p>
-        <div className="premise-actions">
-          <Link href="/story" className="btn-join">Read Dispatch One</Link>
-          <Link href="/world" className="btn-ghost">Explore the World</Link>
-        </div>
-      </div>
-    </section>
     </>
   );
 }

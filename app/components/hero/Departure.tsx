@@ -58,15 +58,37 @@ export default function Departure() {
       linescrim: q('[data-l="linescrim"]'),
     };
 
-    const frames: HTMLImageElement[] = new Array(FRAMES);
+    const frames: Array<HTMLImageElement | undefined> = new Array(FRAMES);
+    const frameLoads: Array<Promise<void> | undefined> = new Array(FRAMES);
     let current = -1;
-    let ready = false;
+    let desired = 0;
+    let disposed = false;
+    let pumpTimer: number | undefined;
+
+    const isReady = (image: HTMLImageElement | undefined) =>
+      Boolean(image?.complete && image.naturalWidth > 0);
 
     const draw = (index: number, force = false) => {
-      const i = Math.min(Math.max(Math.round(index), 0), FRAMES - 1);
+      const target = Math.min(Math.max(Math.round(index), 0), FRAMES - 1);
+      desired = target;
+      let i = target;
+      if (!isReady(frames[i])) {
+        for (let distance = 1; distance < FRAMES; distance++) {
+          const before = target - distance;
+          const after = target + distance;
+          if (before >= 0 && isReady(frames[before])) {
+            i = before;
+            break;
+          }
+          if (after < FRAMES && isReady(frames[after])) {
+            i = after;
+            break;
+          }
+        }
+      }
       if (i === current && !force) return;
       const img = frames[i];
-      if (!img || !img.complete || img.naturalWidth === 0) return;
+      if (!img || !isReady(img)) return;
       current = i;
       const cw = canvas.width;
       const ch = canvas.height;
@@ -87,6 +109,27 @@ export default function Departure() {
       ctx.drawImage(img, dx, dy, dw, dh);
     };
 
+    const loadFrame = (index: number) => {
+      const i = Math.min(Math.max(index, 0), FRAMES - 1);
+      const existing = frames[i];
+      if (existing && isReady(existing)) return Promise.resolve();
+      if (frameLoads[i]) return frameLoads[i];
+
+      const request = new Promise<void>((resolve) => {
+        const image = new window.Image();
+        image.decoding = 'async';
+        image.onload = () => {
+          if (!disposed && Math.abs(i - desired) <= 8) draw(desired, true);
+          resolve();
+        };
+        image.onerror = () => resolve();
+        frames[i] = image;
+        image.src = framePath(i + 1);
+      });
+      frameLoads[i] = request;
+      return request;
+    };
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.floor(window.innerWidth * dpr);
@@ -94,19 +137,6 @@ export default function Departure() {
       draw(current < 0 ? 0 : current, true);
     };
 
-    for (let i = 0; i < FRAMES; i++) {
-      const img = new window.Image();
-      img.src = framePath(i + 1);
-      if (i === 0) {
-        img.onload = () => {
-          if (!ready) {
-            ready = true;
-            resize();
-          }
-        };
-      }
-      frames[i] = img;
-    }
     resize();
     window.addEventListener('resize', resize);
 
@@ -142,7 +172,15 @@ export default function Departure() {
       // almost to the pin release. The former held beat of empty starlight made
       // the next section feel late, so the premise now follows the launch
       // without a waiting room.
-      draw(span(p, 0.3, 0.985) * (FRAMES - 1));
+      const targetFrame = Math.round(span(p, 0.3, 0.985) * (FRAMES - 1));
+      void loadFrame(targetFrame);
+      if (p > 0.01) {
+        for (let offset = 1; offset <= 4; offset++) {
+          void loadFrame(targetFrame - offset);
+          void loadFrame(targetFrame + offset);
+        }
+      }
+      draw(targetFrame);
 
       if (layers.bloom) {
         layers.bloom.style.opacity = String(Math.sin(span(p, 0.3, 0.46) * Math.PI) * 0.5);
@@ -169,10 +207,37 @@ export default function Departure() {
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
-      draw(FRAMES - 1, true);
-      apply(1);
-      return () => window.removeEventListener('resize', resize);
+      void loadFrame(0).then(() => resize());
+      return () => {
+        disposed = true;
+        window.removeEventListener('resize', resize);
+      };
     }
+
+    // Preserve the 472-frame master sequence on desktop, but avoid opening 472
+    // simultaneous requests. Mobile uses every second frame and both variants
+    // load in small sequential batches; the active scroll position is always
+    // requested immediately above, so fast scrolling still has a nearby frame.
+    const frameStep = window.innerWidth <= 640 ? 2 : 1;
+    const queue: number[] = [];
+    for (let i = 0; i < FRAMES; i += frameStep) queue.push(i);
+    if (queue[queue.length - 1] !== FRAMES - 1) queue.push(FRAMES - 1);
+    let queueCursor = 0;
+    let backgroundStarted = false;
+
+    const pumpFrames = () => {
+      if (disposed || queueCursor >= queue.length) return;
+      const batch = queue.slice(queueCursor, queueCursor + 10);
+      queueCursor += batch.length;
+      void Promise.all(batch.map(loadFrame)).then(() => {
+        if (!disposed) pumpTimer = window.setTimeout(pumpFrames, 90);
+      });
+    };
+
+    void loadFrame(0).then(() => {
+      if (disposed) return;
+      resize();
+    });
 
     const st = ScrollTrigger.create({
       trigger: el,
@@ -181,12 +246,20 @@ export default function Departure() {
       pin: true,
       anticipatePin: 1,
       scrub: 0.8,
-      onUpdate: (self) => apply(self.progress),
+      onUpdate: (self) => {
+        if (!backgroundStarted && self.progress > 0.01) {
+          backgroundStarted = true;
+          pumpFrames();
+        }
+        apply(self.progress);
+      },
     });
 
     apply(0);
 
     return () => {
+      disposed = true;
+      if (pumpTimer !== undefined) window.clearTimeout(pumpTimer);
       window.removeEventListener('resize', resize);
       st.kill();
     };

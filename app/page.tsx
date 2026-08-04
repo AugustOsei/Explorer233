@@ -2,6 +2,7 @@ import Departure from './components/hero/Departure';
 import TheSignal from './components/sections/TheSignal';
 import StoryTeaser from './components/sections/StoryTeaser';
 import ExploreDoors from './components/sections/ExploreDoors';
+import BeyondDispatches from './components/sections/BeyondDispatches';
 import JoinPartner from './components/sections/JoinPartner';
 import Footer from './components/sections/Footer';
 import { pageMetadata, SITE_DESCRIPTION } from '../lib/seo';
@@ -27,6 +28,8 @@ export default function Home() {
       <StoryTeaser />
 
       <ExploreDoors />
+
+      <BeyondDispatches />
 
       <JoinPartner />
 
