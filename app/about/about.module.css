@@ -21,13 +21,15 @@
 .heroContent > p:last-child { max-width: 48rem; margin: 0; color: rgba(243,240,232,.82); font: 400 clamp(1.05rem, 1.5vw, 1.35rem)/1.65 var(--font-inter), sans-serif; }
 
 .creator { display: grid; grid-template-columns: minmax(16rem, .78fr) 1.35fr; gap: clamp(3rem, 8vw, 8.5rem); padding-block: clamp(6rem, 12vw, 10rem); }
-.creatorMark { aspect-ratio: .78; align-self: start; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(1.5rem, 3vw, 2.5rem); border: 1px solid var(--line); border-radius: 1.25rem; overflow: hidden; background: radial-gradient(circle at 65% 30%, rgba(214,168,79,.18), transparent 38%), linear-gradient(145deg,#1a211b,#090a08 70%); box-shadow: 0 2rem 5rem rgba(0,0,0,.25); }
-.creatorMark span { color: var(--gold); font: 350 clamp(5rem, 12vw, 10rem)/.85 var(--font-space-grotesk),sans-serif; letter-spacing: -.08em; }
-.creatorMark small { color: rgba(243,240,232,.48); font: 500 .65rem/1 var(--font-inter),sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+.creatorMark { position: relative; aspect-ratio: .78; align-self: start; padding: clamp(1.5rem, 3vw, 2.5rem); border: 1px solid var(--line); border-radius: 1.25rem; overflow: hidden; background: linear-gradient(145deg,#1a211b,#090a08 70%); box-shadow: 0 2rem 5rem rgba(0,0,0,.25); }
+.creatorPhoto { object-fit: cover; }
+.creatorMarkScrim { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 55%, rgba(9,10,8,.88) 100%); }
+.creatorMark small { position: absolute; left: clamp(1.5rem, 3vw, 2.5rem); bottom: clamp(1.5rem, 3vw, 2.5rem); color: rgba(243,240,232,.7); font: 500 .65rem/1 var(--font-inter),sans-serif; letter-spacing: .18em; text-transform: uppercase; }
 .creatorCopy { max-width: 39rem; padding-top: 1rem; }
 .creatorCopy h2, .sectionHeading h2, .collaborate h2 { margin: .75rem 0 0; font: 450 clamp(2.3rem,5vw,4.75rem)/1 var(--font-space-grotesk),sans-serif; letter-spacing: -.05em; text-wrap: balance; }
 .creatorCopy .role { margin: .9rem 0 2.5rem; color: var(--gold); font-size: .82rem; letter-spacing: .09em; text-transform: uppercase; }
 .creatorCopy > p:not(.kicker):not(.role) { margin: 0 0 1.25rem; color: rgba(243,240,232,.72); font-size: clamp(1rem,1.35vw,1.15rem); line-height: 1.8; }
+.creatorLinks { display: flex; flex-direction: column; align-items: flex-start; }
 .arrowLink { display: inline-flex; gap: .6rem; align-items: center; margin-top: 1.4rem; padding-bottom: .35rem; border-bottom: 1px solid rgba(214,168,79,.5); color: var(--ink); font-size: .84rem; letter-spacing: .04em; text-decoration: none; transition: color .2s,border-color .2s; }
 .arrowLink:hover { color: var(--gold); border-color: var(--gold); }
 

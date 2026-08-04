@@ -110,8 +110,15 @@ export default function AboutPage() {
       </header>
 
       <section className={`${styles.creator} ${styles.shell}`} aria-labelledby="creator-title">
-        <div className={styles.creatorMark} aria-hidden="true">
-          <span>AP</span>
+        <div className={styles.creatorMark}>
+          <Image
+            src="/images/august-peekay.jpg"
+            alt={creator.name}
+            fill
+            sizes="(max-width: 700px) 90vw, 30vw"
+            className={styles.creatorPhoto}
+          />
+          <div className={styles.creatorMarkScrim} aria-hidden="true" />
           <small>Accra · 233</small>
         </div>
         <div className={styles.creatorCopy}>
@@ -121,9 +128,14 @@ export default function AboutPage() {
           {creator.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
-          <Link href="/about/journal" className={styles.arrowLink}>
-            Read August’s journal <span aria-hidden="true">↗</span>
-          </Link>
+          <div className={styles.creatorLinks}>
+            <Link href="/about/journal" className={styles.arrowLink}>
+              Read August’s journal <span aria-hidden="true">↗</span>
+            </Link>
+            <Link href="https://theaugustdispatch.com/" className={styles.arrowLink}>
+              Read The August Dispatch <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
         </div>
       </section>
 

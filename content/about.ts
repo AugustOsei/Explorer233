@@ -5,6 +5,8 @@ export const creator = {
     'Explorer 233 is an African science-fiction franchise created in Ghana and built to move across fiction, art, games, merchandise and shared experiences.',
   paragraphs: [
     'August Peekay is the pen name of the creator behind Explorer 233. The project began with a question: what might the future look like when Africa is not the background, but one of the places shaping it?',
+    'The pull toward this story is a long-standing one—a career in technology alongside a lifelong interest in science fiction, astronomy and writing. Ghanaian American, he divides his time between Ghana, the United States and the United Kingdom.',
+    'Explorer 233 is not a first attempt at fiction. He writes poetry occasionally, self-published a collection of short stories some years earlier, and writes more regularly at The August Dispatch.',
     'Explorer 233 is being developed as a connected story IP—one that can move between serialized fiction, visual art, games, products and live experiences without losing its Ghanaian point of origin.',
   ],
 };
