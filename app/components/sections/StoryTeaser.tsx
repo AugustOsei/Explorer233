@@ -11,11 +11,7 @@ export default function StoryTeaser() {
   return (
     <section ref={ref} className="home-dispatch">
       <div className="chapter-shell">
-        <p data-reveal className="home-dispatch-bridge" style={{ opacity: 0 }}>
-          Explorer 233 is created to find the senders. Not everyone wants humanity to answer.
-        </p>
-
-        <article data-reveal data-reveal-delay="0.05" className="home-dispatch-feature" style={{ opacity: 0 }}>
+        <article data-reveal className="home-dispatch-feature" style={{ opacity: 0 }}>
           <div className="home-dispatch-art">
             <Image
               src="/images/home-dispatch.jpg"
