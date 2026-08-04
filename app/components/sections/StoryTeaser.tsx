@@ -7,6 +7,9 @@ import { useReveal } from '../useReveal';
 /**
  * Story teaser — the door into the Dispatches. Shows the opening beat of
  * SE1-01 and stops before the turn, so the reader has to follow it to /story.
+ *
+ * A wide story plate gives the launch artwork room to read on desktop before
+ * the compact editorial pitch below it.
  */
 export default function StoryTeaser() {
   const ref = useReveal<HTMLElement>();
@@ -14,64 +17,59 @@ export default function StoryTeaser() {
   return (
     <section ref={ref} className="relative" style={{ paddingBlock: 'clamp(5rem, 12vh, 8rem)' }}>
       <div className="chapter-shell relative z-10">
-        <div className="editorial-grid">
-          {/* Media rail */}
-          <div data-reveal className="relative w-full overflow-hidden rounded-lg" style={{ aspectRatio: '16 / 9', opacity: 0 }}>
-            <Image
-              src="/images/baobab-lockdown.jpg"
-              alt="The Baobab under lockdown, emergency lighting along the facade"
-              fill
-              sizes="(max-width: 900px) 92vw, 52vw"
-              className="object-cover"
-            />
-            <div
-              className="absolute inset-0 pointer-events-none"
-              aria-hidden
-              style={{ background: 'linear-gradient(to top, rgba(5,7,11,0.55), transparent 60%)' }}
-            />
-          </div>
+        <div
+          data-reveal
+          className="dispatch-wide-art"
+          style={{ opacity: 0 }}
+        >
+          <Image
+            src="/images/dispatch-one-wide.png"
+            alt="Explorer 233 personnel, the Baobab headquarters and spacecraft beneath Earth and the Moon"
+            fill
+            sizes="(max-width: 1280px) 100vw, 1248px"
+            className="object-cover"
+          />
+          <div className="dispatch-wide-scrim" aria-hidden />
+        </div>
 
-          {/* Text column */}
+        <div className="dispatch-pitch">
           <div>
-            <p data-reveal className="eyebrow" style={{ color: 'var(--mission-gold)', opacity: 0 }}>
-              The Story · Dispatch SE1-01
-            </p>
             <h2
               data-reveal
-              data-reveal-delay="0.06"
-              className="font-display font-light mt-3 balance"
+              className="section-title balance"
               style={{
-                fontSize: 'var(--step-3)',
-                lineHeight: 1.14,
-                letterSpacing: '-0.02em',
-                color: 'var(--star-white)',
                 maxWidth: '18ch',
                 opacity: 0,
               }}
             >
-              The Baobab
+              The Grand Opening
             </h2>
+            <p data-reveal data-reveal-delay="0.04" className="caption-meta mt-4" style={{ opacity: 0 }}>
+              Dispatch One · 10-minute read · Free
+            </p>
+          </div>
+          <div>
             <p
               data-reveal
-              data-reveal-delay="0.1"
+              data-reveal-delay="0.08"
               className="font-body mt-6"
               style={{ fontSize: 'var(--step-0)', lineHeight: 1.75, color: 'var(--lunar-silver)', maxWidth: '46ch', opacity: 0 }}
             >
-              The first message from another star was discovered because Dr. Amara Nkrumah
-              wanted tea. Six months later, Accra opened a building, and a girl who had read
-              every paper Laura Osei Baako ever published went to watch.
+              Explorer 233 unveils its first interstellar ship in Accra while the world is
+              still deciding whether the signals from the stars are a greeting or a warning.
             </p>
             <p
               data-reveal
-              data-reveal-delay="0.14"
+              data-reveal-delay="0.12"
               className="font-body mt-4"
               style={{ fontSize: 'var(--step-0)', lineHeight: 1.75, color: 'var(--lunar-silver)', maxWidth: '46ch', opacity: 0 }}
             >
-              The day went perfectly. It was near midnight that it did not.
+              Before the night is over, an impossible file opens on founder Laura Osei
+              Baako’s desk — and someone promises to kill one of her scientists.
             </p>
 
-            <Link href="/story" className="link-arrow mt-8 inline-flex" data-reveal data-reveal-delay="0.18" style={{ opacity: 0 }}>
-              Read the dispatch
+            <Link href="/story" className="link-arrow mt-8 inline-flex" data-reveal data-reveal-delay="0.16" style={{ opacity: 0 }}>
+              Start reading
             </Link>
           </div>
         </div>

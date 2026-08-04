@@ -1,7 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -13,10 +11,14 @@ gsap.registerPlugin(ScrollTrigger);
  *
  *   0.00–0.16  closed chamber doors; the agency states itself
  *   0.16–0.30  doors withdraw, light seam blooms, the vessel is revealed ONCE
- *   0.30–0.88  487 frames: ignition, ascent through the roof, the vessel banks
+ *   0.30–0.94  472 frames: ignition, ascent through the roof, the vessel banks
  *              and turns until the camera is behind its four fusion nozzles,
  *              then launches away into hyperspeed and is gone
- *   0.88–1.00  Laura, Maximus and Mam resolve out of the frame it leaves behind
+ *   0.94–1.00  held starlight, then the pin releases
+ *
+ * The shot ends on the departure. A crew grid used to fade up over the last
+ * 12% — it has moved to its own section (TheWorld), because the ending of this
+ * sequence is the ship leaving, not a cast list appearing in the exhaust.
  *
  * Everything lives on a single canvas plus DOM layers driven from one scrub
  * callback, so the ship is never re-introduced and the reader never restarts.
@@ -26,12 +28,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FRAMES = 472;
 const framePath = (i: number) => `/hero-frames/f${String(i).padStart(3, '0')}.jpg`;
-
-const CREW = [
-  { src: '/images/char-laura-full.jpg', name: 'Laura Osei Baako', role: 'Founder', pos: '50% 14%' },
-  { src: '/images/char-maximus.jpg', name: 'Maximus Boateng', role: 'Mission Director', pos: '50% 18%' },
-  { src: '/images/char-mam.jpg', name: 'Menaye Ama Mensah', role: 'Physics student', pos: '50% 20%' },
-];
 
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 /** Eased progress across [a,b] so beats settle instead of snapping. */
@@ -59,8 +55,7 @@ export default function Departure() {
       right: q('[data-l="right"]'),
       bloom: q('[data-l="bloom"]'),
       line: q('[data-l="line"]'),
-      crew: q('[data-l="crew"]'),
-      cue: q('[data-l="cue"]'),
+      linescrim: q('[data-l="linescrim"]'),
     };
 
     const frames: HTMLImageElement[] = new Array(FRAMES);
@@ -129,38 +124,47 @@ export default function Departure() {
         layers.seam.style.transform = `translateX(-50%) scaleX(${0.2 + open * 0.8})`;
       }
 
-      // Opening titles sit on the closed doors and clear as they part.
+      // Opening titles sit on the closed doors and clear as they part. Fully
+      // legible at p=0 — they used to ramp in from 0.02, so the page loaded on a
+      // blank dark screen and you had to scroll before anything said what this
+      // was. The first frame is the title card now.
       if (layers.titles) {
-        const inn = span(p, 0.02, 0.1);
         const out = span(p, 0.14, 0.24);
-        layers.titles.style.opacity = String(inn * (1 - out));
+        layers.titles.style.opacity = String(1 - out);
         layers.titles.style.transform = `translateY(${-out * 30}px)`;
+        // The card holds a real link now, and it covers the whole viewport.
+        // Opacity 0 does not stop clicks, so once it has cleared it must stop
+        // accepting them or an invisible CTA sits over the entire sequence.
+        layers.titles.style.pointerEvents = out > 0.5 ? 'none' : 'auto';
       }
 
-      // The sequence itself: ignition → ascent → turn to stern → departure.
-      draw(span(p, 0.3, 0.88) * (FRAMES - 1));
+      // The sequence itself: ignition → ascent → turn to stern → departure. Runs
+      // almost to the pin release. The former held beat of empty starlight made
+      // the next section feel late, so the premise now follows the launch
+      // without a waiting room.
+      draw(span(p, 0.3, 0.985) * (FRAMES - 1));
 
       if (layers.bloom) {
         layers.bloom.style.opacity = String(Math.sin(span(p, 0.3, 0.46) * Math.PI) * 0.5);
       }
 
-      // One line, over the ascent, gone before the stars.
+      // One caption, over the ascent, gone before the stars. The scrim rides
+      // the same curve: at this point in the sequence the frame is a white hull
+      // against daylit sky, and the caption was illegible over it.
       if (layers.line) {
         const inn = span(p, 0.46, 0.56);
         const out = span(p, 0.68, 0.78);
-        layers.line.style.opacity = String(inn * (1 - out));
+        const vis = inn * (1 - out);
+        layers.line.style.opacity = String(vis);
         layers.line.style.transform = `translateY(${(1 - inn) * 22 - out * 30}px)`;
+        if (layers.linescrim) layers.linescrim.style.opacity = String(vis);
       }
 
-      // The payoff: the crew resolve out of the starfield the ship vanished into.
-      if (layers.crew) {
-        const inn = span(p, 0.89, 0.98);
-        layers.crew.style.opacity = String(inn);
-        layers.crew.style.transform = `translateY(${(1 - inn) * 26}px)`;
-        layers.crew.style.pointerEvents = inn > 0.6 ? 'auto' : 'none';
-      }
+      // Hold the final frame until the pin releases. Fading the canvas before
+      // the next section arrived created an empty starfield waiting room.
+      canvas.style.opacity = '1';
+      canvas.style.transform = 'none';
 
-      if (layers.cue) layers.cue.style.opacity = String((1 - span(p, 0.02, 0.12)) * 0.5);
     };
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -173,7 +177,7 @@ export default function Departure() {
     const st = ScrollTrigger.create({
       trigger: el,
       start: 'top top',
-      end: '+=420%',
+      end: '+=215%',
       pin: true,
       anticipatePin: 1,
       scrub: 0.8,
@@ -188,16 +192,24 @@ export default function Departure() {
     };
   }, []);
 
+  // Transparent, not deep-space-black: the canvas covers the viewport for the
+  // whole shot, and once it dissolves at the end the shared StarSky behind the
+  // page has to show through. An opaque background here would fade the streaks
+  // into a black rectangle instead.
   return (
     <section ref={root} className="relative" style={{ background: 'var(--deep-space-black)' }}>
       <div className="relative h-[100svh] w-full overflow-hidden">
-        <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 h-full w-full"
+          style={{ willChange: 'opacity, transform' }}
+          aria-hidden
+        />
 
         <p className="sr-only">
-          The chamber doors open on the Nipa Nsa. It ignites, climbs out of the Baobab, turns
-          away until only its four fusion engines face the viewer, then launches into hyperspeed
-          until nothing is left but streaking starlight — and Explorer 233&rsquo;s crew appear:
-          Laura Osei Baako, Maximus Boateng and Menaye Ama Mensah.
+          Chamber doors open on the Nipa Nsa, Explorer 233’s first ship. It ignites, climbs
+          out of the agency’s headquarters in Accra, turns away until only its four engines
+          face the viewer, then accelerates until nothing is left but streaking starlight.
         </p>
 
         {/* Engine bloom */}
@@ -231,44 +243,82 @@ export default function Departure() {
         <div data-l="left" className="wall-panel absolute inset-y-0 left-0 w-1/2 z-[4]" aria-hidden />
         <div data-l="right" className="wall-panel wall-panel--right absolute inset-y-0 right-0 w-1/2 z-[4]" aria-hidden />
 
-        {/* Opening titles, on the closed doors */}
+        {/* Opening titles, on the closed doors. Opaque in the markup, not just
+            once GSAP runs: this is the first thing painted, and it has to be
+            readable before hydration. */}
         <div
           data-l="titles"
           className="absolute inset-0 z-[5] flex flex-col items-center justify-center px-6 text-center"
-          style={{ opacity: 0 }}
+          style={{ opacity: 1 }}
         >
-          <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
-            An African science-fiction universe
-          </p>
+          {/* Say the premise. Plainly.
+
+              Several earlier passes here were atmosphere — "an original
+              science-fiction universe from Ghana", "for all of history we
+              listened to a silent sky", "the sky is no longer silent". They
+              were written under the old brief's rule that canon must stay
+              hidden because "the mystery IS the product". That rule suits a
+              pre-launch teaser and actively harms a live front door: a stranger
+              cannot be intrigued by a thing they cannot identify.
+
+              The bar for this block: someone who reads only this should be able
+              to describe Explorer 233 to a friend. Company, signals, the three
+              words, and the fact that it is opposed. Keep it concrete. */}
           <h1
-            className="font-display mt-4"
+            className="font-display balance"
             style={{
-              fontSize: 'clamp(1.9rem, 6vw, 4.2rem)',
-              fontWeight: 700,
+              fontSize: 'clamp(2.4rem, 7vw, 5.8rem)',
+              fontWeight: 450,
               letterSpacing: '-0.03em',
-              lineHeight: 1,
+              lineHeight: 1.02,
               color: 'var(--star-white)',
+              maxWidth: '18ch',
             }}
           >
-            EXPLORER 233
+            Welcome to Explorer 233
           </h1>
           <p
             className="font-body mt-5"
-            style={{ fontSize: 'var(--step-1)', color: 'var(--lunar-silver)', maxWidth: '30ch' }}
+            style={{
+              fontSize: 'clamp(0.85rem, 1.5vw, 1rem)',
+              lineHeight: 1.5,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'rgba(245,247,250,0.7)',
+            }}
           >
-            Africa belongs in humanity’s future as a builder, not a passenger.
+            An African science-fiction saga
           </p>
+          <p className="hero-enter mt-10">Scroll to enter</p>
         </div>
 
-        {/* The line, over the ascent */}
+        {/* Legibility scrim for the caption below. Full-bleed, so it cannot be
+            constrained by the content column. */}
+        <div
+          data-l="linescrim"
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 z-[4] pointer-events-none"
+          style={{
+            height: '52%',
+            opacity: 0,
+            background:
+              'linear-gradient(to top, rgba(5,7,11,0.94) 0%, rgba(5,7,11,0.72) 32%, rgba(5,7,11,0.3) 62%, transparent 100%)',
+          }}
+        />
+
+        {/* The caption, over the ascent */}
         <div className="absolute inset-x-0 bottom-0 z-[5] pb-12 md:pb-16">
           <div className="chapter-shell">
             <div data-l="line" style={{ opacity: 0, maxWidth: '34rem' }}>
-              <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
-                Nipa Nsa · EX-233-001
-              </p>
+              {/* This captions what is on screen. It used to be a line of
+                  Laura's commissioning speech — "if we keep waiting for
+                  permission…" — which is a fine line but captioned nothing: the
+                  reader is watching a ship leave a building and being handed an
+                  abstract rhetorical question by someone they have not met.
+                  Name the ship, say what it is, translate the name. The proverb
+                  also sets up the collaborate card's headline further down. */}
               <h2
-                className="font-display font-light mt-3 balance"
+                className="font-display font-medium balance"
                 style={{
                   fontSize: 'var(--step-3)',
                   lineHeight: 1.12,
@@ -276,71 +326,20 @@ export default function Departure() {
                   color: 'var(--star-white)',
                 }}
               >
-                If we keep waiting for permission, who will write the future while we wait?
+                Nipa Nsa
               </h2>
+              <p
+                className="font-body mt-4"
+                style={{ fontSize: 'var(--step-0)', lineHeight: 1.65, color: 'var(--star-white)', maxWidth: '44ch' }}
+              >
+                Explorer 233’s first interstellar ship, built to leave the Solar System and
+                return with an answer.
+              </p>
+              <p className="caption-meta mt-4">Akan proverb · One hand cannot lift a load</p>
             </div>
           </div>
         </div>
 
-        {/* The payoff — crew out of the starfield */}
-        <div
-          data-l="crew"
-          className="absolute inset-0 z-[6] flex flex-col items-center justify-center px-6"
-          style={{ opacity: 0, pointerEvents: 'none' }}
-        >
-          <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
-            The World
-          </p>
-          <ul className="mt-8 flex flex-wrap items-end justify-center gap-5 md:gap-8">
-            {CREW.map((c) => (
-              <li key={c.name} className="text-center">
-                {/* Sizing is inline, not left to a stylesheet class: these hold
-                    `fill` images, so if the class ever fails to load the images
-                    escape to the pinned container and cover the screen. */}
-                <div
-                  className="crew-orb"
-                  style={{
-                    position: 'relative',
-                    width: 'clamp(5.5rem, 22vw, 11rem)',
-                    aspectRatio: '1 / 1',
-                    overflow: 'hidden',
-                    borderRadius: '999px',
-                  }}
-                >
-                  <Image
-                    src={c.src}
-                    alt={c.name}
-                    fill
-                    sizes="(max-width: 640px) 28vw, 190px"
-                    className="object-cover"
-                    style={{ objectPosition: c.pos }}
-                  />
-                </div>
-                <p
-                  className="font-display mt-3"
-                  style={{ fontSize: '14px', color: 'var(--star-white)', letterSpacing: '-0.01em' }}
-                >
-                  {c.name}
-                </p>
-                <p className="eyebrow mt-1" style={{ color: 'var(--lunar-silver)', fontSize: '9.5px' }}>
-                  {c.role}
-                </p>
-              </li>
-            ))}
-          </ul>
-          <Link href="/world" className="link-arrow mt-10 inline-flex">
-            Enter the world
-          </Link>
-        </div>
-
-        <div
-          data-l="cue"
-          aria-hidden
-          className="eyebrow absolute inset-x-0 bottom-8 z-[5] text-center"
-          style={{ color: 'var(--lunar-silver)', fontSize: '10px' }}
-        >
-          Scroll
-        </div>
       </div>
     </section>
   );
