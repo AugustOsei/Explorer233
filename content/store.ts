@@ -1,65 +1,96 @@
 /**
- * The Explorer 233 collection, mirrored from the live Colourfro storefront
- * (colourfro.com/collections/explorer-233), which is where every buyer is
- * ultimately sent. Titles, prices and imagery read from that shop on
- * 31 July 2026 — re-check before launch if the collection changes.
- *
- * Note: "Star Sutff" is spelled that way on the shop itself, and the
- * Explorer 233 Poster currently shows a tee as its featured image over
- * there — both worth fixing on the Colourfro side rather than papering
- * over here.
+ * Explorer 233 merchandise mirrored from the live Colourfro collection on
+ * 4 August 2026. International checkout happens on the linked Colourfro
+ * product page. Shirts can also be produced in Ghana by RUD Clothing.
  */
 
 export type Product = {
+  id: string;
   name: string;
-  price: string;
+  category: 'Tee' | 'Accessory';
+  internationalPrice: string;
   href: string;
   image: string;
+  ghanaAvailable: boolean;
+  featured?: boolean;
 };
 
 export const COLLECTION_URL = 'https://colourfro.com/collections/explorer-233';
+export const RUD_WHATSAPP_NUMBER = '233246240669';
+export const GHANA_TEE_PRICE = 250;
 
 export const products: Product[] = [
   {
-    name: 'Explorer 233',
-    price: '$25.00',
-    href: 'https://colourfro.com/products/explorer-233',
-    image: 'https://colourfro.com/cdn/shop/files/unisex-classic-tee-daisy-front-6a6585c23d390.jpg?v=1785038289',
+    id: 'explorer-233-classic-black',
+    name: 'Explorer 233 — Classic Tee',
+    category: 'Tee',
+    internationalPrice: '$25.50',
+    href: 'https://colourfro.com/products/explorer-233-unisex-classic-tee?variant=48096142917783',
+    image: '/images/store/classic-tee-black.jpg',
+    ghanaAvailable: true,
+    featured: true,
   },
   {
+    id: 'explorer-233-yellow',
+    name: 'Explorer 233 — Orbit Tee',
+    category: 'Tee',
+    internationalPrice: '$25.00',
+    href: 'https://colourfro.com/products/explorer-233?variant=48067705766039',
+    image: '/images/store/explorer-yellow.jpg',
+    ghanaAvailable: true,
+  },
+  {
+    id: 'explorer-233-i-am',
     name: 'Explorer 233 — I Am',
-    price: '$25.50',
-    href: 'https://colourfro.com/products/explorer-233-i-am',
-    image: 'https://colourfro.com/cdn/shop/files/unisex-classic-tee-black-front-6a65745850326.jpg?v=1785033836',
+    category: 'Tee',
+    internationalPrice: '$25.50',
+    href: 'https://colourfro.com/products/explorer-233-i-am?variant=48067674505367',
+    image: '/images/store/i-am-black.jpg',
+    ghanaAvailable: true,
   },
   {
+    id: 'star-stuff-2',
     name: 'Star Stuff 2.0',
-    price: '$24.99',
-    href: 'https://colourfro.com/products/star-stuff-2-0',
-    image: 'https://colourfro.com/cdn/shop/files/unisex-classic-tee-forest-green-front-6a65798610dee.jpg?v=1785035163',
+    category: 'Tee',
+    internationalPrice: '$24.99',
+    href: 'https://colourfro.com/products/star-stuff-2-0?variant=48067684663447',
+    image: '/images/store/star-stuff-green.jpg',
+    ghanaAvailable: true,
   },
   {
-    name: 'Star Sutff',
-    price: '$25.00',
-    href: 'https://colourfro.com/products/star-sutff',
-    image: 'https://colourfro.com/cdn/shop/files/unisex-classic-tee-black-front-6a6575b59719d.png?v=1785034192',
-  },
-  {
+    id: 'i-heart-start',
     name: 'I Heart Start',
-    price: '$25.00',
-    href: 'https://colourfro.com/products/i-heart-start',
-    image: 'https://colourfro.com/cdn/shop/files/unisex-classic-tee-black-front-6a657e849072e.jpg?v=1785036440',
+    category: 'Tee',
+    internationalPrice: '$25.00',
+    href: 'https://colourfro.com/products/i-heart-start?variant=48067699343511',
+    image: '/images/store/i-heart-start-black.jpg',
+    ghanaAvailable: true,
   },
   {
-    name: 'Unisex classic tee',
-    price: '$25.00',
-    href: 'https://colourfro.com/products/unisex-classic-tee',
-    image: 'https://colourfro.com/cdn/shop/files/unisex-classic-tee-maroon-front-6a6576e5ea394.jpg?v=1785034497',
+    id: 'star-stuff',
+    name: 'Star Stuff',
+    category: 'Tee',
+    internationalPrice: '$25.00',
+    href: 'https://colourfro.com/products/star-sutff?variant=48067679420567',
+    image: '/images/store/star-stuff-black.png',
+    ghanaAvailable: true,
   },
   {
-    name: 'Explorer 233 Poster',
-    price: '$24.99',
-    href: 'https://colourfro.com/products/explorer-233-poster',
-    image: 'https://colourfro.com/cdn/shop/files/unisex-classic-tee-gold-front-6a658650c036f.jpg?v=1785038439',
+    id: 'classic-maroon',
+    name: 'Explorer 233 — Maroon Tee',
+    category: 'Tee',
+    internationalPrice: '$25.00',
+    href: 'https://colourfro.com/products/unisex-classic-tee?variant=48067680993431',
+    image: '/images/store/classic-tee-maroon.jpg',
+    ghanaAvailable: true,
+  },
+  {
+    id: 'corduroy-cap',
+    name: 'Explorer 233 — Corduroy Cap',
+    category: 'Accessory',
+    internationalPrice: '$27.00',
+    href: 'https://colourfro.com/products/explorer-233-vintage-corduroy-cap?variant=48096139477143',
+    image: '/images/store/corduroy-cap-black.jpg',
+    ghanaAvailable: false,
   },
 ];

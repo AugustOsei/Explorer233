@@ -1,258 +1,313 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
-import { products, COLLECTION_URL, type Product } from '../../content/store';
-
-/**
- * One grid, two ways to buy.
- *
- * International goes straight to Colourfro, which already handles payment and
- * shipping — no reason to rebuild a checkout we would only do worse. Ghana takes
- * no payment here at all: picking a piece opens an intake sheet, and a local
- * partner settles mobile money by hand. No card data touches this site.
- */
+import { useEffect, useState } from 'react';
+import {
+  COLLECTION_URL,
+  GHANA_TEE_PRICE,
+  products,
+  RUD_WHATSAPP_NUMBER,
+  type Product,
+} from '../../content/store';
+import styles from './store.module.css';
 
 const SIZES = ['S', 'M', 'L', 'XL', '2XL'];
+const QUANTITIES = [1, 2, 3, 4, 5];
 
 type Region = 'ghana' | 'international';
-type Status = 'idle' | 'sending' | 'done' | 'error';
+
+function ArrowIcon() {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M4 10h11M11 5l5 5-5 5" />
+    </svg>
+  );
+}
+
+function ProductCard({
+  product,
+  region,
+  onOrder,
+}: {
+  product: Product;
+  region: Region;
+  onOrder: (product: Product) => void;
+}) {
+  const isGhana = region === 'ghana';
+
+  return (
+    <li className={product.featured ? styles.featuredProduct : undefined}>
+      <article className={styles.productCard}>
+        <div className={styles.productImage}>
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes={product.featured ? '(max-width: 720px) 100vw, 50vw' : '(max-width: 720px) 50vw, 30vw'}
+          />
+          <span>{product.category}</span>
+        </div>
+
+        <div className={styles.productDetails}>
+          <div>
+            <h3>{product.name}</h3>
+            <p>{isGhana ? `GH₵${GHANA_TEE_PRICE}` : product.internationalPrice}</p>
+          </div>
+
+          {isGhana ? (
+            <button type="button" onClick={() => onOrder(product)} className={styles.cardAction}>
+              Order on WhatsApp
+              <ArrowIcon />
+            </button>
+          ) : (
+            <a href={product.href} target="_blank" rel="noopener noreferrer" className={styles.cardAction}>
+              Buy on Colourfro
+              <ArrowIcon />
+            </a>
+          )}
+        </div>
+      </article>
+    </li>
+  );
+}
 
 export default function StoreClient() {
   const [region, setRegion] = useState<Region>('ghana');
   const [selected, setSelected] = useState<Product | null>(null);
-  const [status, setStatus] = useState<Status>('idle');
-  const [error, setError] = useState('');
+  const [size, setSize] = useState('M');
+  const [quantity, setQuantity] = useState(1);
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+  const isGhana = region === 'ghana';
+  const visibleProducts = isGhana ? products.filter((product) => product.ghanaAvailable) : products;
 
-    setStatus('sending');
-    setError('');
-    try {
-      const res = await fetch('/api/store-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, product: selected?.name ?? 'unspecified' }),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Something went wrong.');
-      setStatus('done');
-      form.reset();
-    } catch (err) {
-      setStatus('error');
-      setError(err instanceof Error ? err.message : 'Something went wrong.');
-    }
-  }
+  useEffect(() => {
+    if (!selected) return;
 
-  function closeSheet() {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSelected(null);
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [selected]);
+
+  function selectRegion(nextRegion: Region) {
+    setRegion(nextRegion);
     setSelected(null);
-    setStatus('idle');
-    setError('');
   }
+
+  function beginGhanaOrder(product: Product) {
+    setSize('M');
+    setQuantity(1);
+    setSelected(product);
+  }
+
+  const whatsappMessage = selected
+    ? [
+        'Hello RUD Clothing, I would like to order an Explorer 233 item.',
+        '',
+        `Product: ${selected.name}`,
+        `Size: ${size}`,
+        `Quantity: ${quantity}`,
+        `Item price: GH₵${GHANA_TEE_PRICE} each`,
+        '',
+        'Please confirm the delivery fee, MoMo payment details and estimated delivery date.',
+      ].join('\n')
+    : '';
+
+  const whatsappUrl = `https://wa.me/${RUD_WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
-    <div className="chapter-shell relative z-10" style={{ paddingBottom: 'clamp(4rem, 10vh, 7rem)' }}>
-      {/* Region toggle */}
-      <div className="flex flex-wrap items-center justify-between gap-5">
-        <div
-          role="tablist"
-          aria-label="Shipping region"
-          className="inline-flex rounded-full p-1"
-          style={{ border: '1px solid rgba(174,183,194,0.18)', background: 'rgba(174,183,194,0.04)' }}
-        >
-          {([
-            ['ghana', 'Ghana'],
-            ['international', 'International'],
-          ] as const).map(([key, label]) => (
+    <>
+      <section id="collection" className={styles.collection} aria-labelledby="collection-title">
+        <div className={styles.shell}>
+          <div className={styles.collectionHeader}>
+            <div>
+              <p className={styles.kicker}>The collection</p>
+              <h2 id="collection-title">Choose how you are ordering.</h2>
+            </div>
+            <p>
+              The selection, prices and checkout route adapt to where the order is going.
+            </p>
+          </div>
+
+          <div className={styles.regionSelector} role="tablist" aria-label="Order destination">
             <button
-              key={key}
-              role="tab"
               type="button"
-              aria-selected={region === key}
-              onClick={() => {
-                setRegion(key);
-                closeSheet();
-              }}
-              className="region-tab"
-              data-active={region === key || undefined}
+              role="tab"
+              aria-selected={isGhana}
+              aria-controls="product-collection"
+              onClick={() => selectRegion('ghana')}
+              className={isGhana ? styles.activeRegion : undefined}
             >
-              {label}
+              <span>Ordering from</span>
+              Ghana
+              <small>RUD Clothing · MoMo · nationwide delivery</small>
             </button>
-          ))}
+            <button
+              type="button"
+              role="tab"
+              aria-selected={!isGhana}
+              aria-controls="product-collection"
+              onClick={() => selectRegion('international')}
+              className={!isGhana ? styles.activeRegion : undefined}
+            >
+              <span>Ordering from</span>
+              Outside Ghana
+              <small>Colourfro · online checkout · international shipping</small>
+            </button>
+          </div>
+
+          <div className={styles.regionNotice} role="status">
+            <span>{isGhana ? 'Ghana orders' : 'International orders'}</span>
+            <p>
+              {isGhana
+                ? 'All tees are GH₵250. RUD confirms the delivery fee and MoMo details in WhatsApp before production begins.'
+                : 'Prices are shown in USD. Payment, shipping and order support are completed securely on Colourfro.'}
+            </p>
+          </div>
+
+          <ul id="product-collection" className={styles.productGrid}>
+            {visibleProducts.map((product) => (
+              <ProductCard key={product.id} product={product} region={region} onOrder={beginGhanaOrder} />
+            ))}
+          </ul>
+
+          {!isGhana && (
+            <a href={COLLECTION_URL} target="_blank" rel="noopener noreferrer" className={styles.collectionLink}>
+              View the full Explorer 233 collection on Colourfro
+              <ArrowIcon />
+            </a>
+          )}
         </div>
+      </section>
 
-        <p className="font-body" style={{ fontSize: '13px', color: 'var(--lunar-silver)', maxWidth: '42ch' }}>
-          {region === 'ghana'
-            ? 'No payment here — reserve a piece and our Accra partner arranges mobile money and delivery.'
-            : 'Shipped worldwide by Colourfro, who print and fulfil the collection.'}
-        </p>
-      </div>
+      <section className={styles.orderGuide} aria-labelledby="order-guide-title">
+        <div className={styles.shell}>
+          <div className={styles.guideHeading}>
+            <p className={styles.kicker}>Before you order</p>
+            <h2 id="order-guide-title">A clear path from selection to delivery.</h2>
+          </div>
 
-      {/* Product grid */}
-      <ul className="mt-10 grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7">
-        {products.map((p) => (
-          <li key={p.href}>
-            <article className="product-card flex flex-col">
-              <div
-                className="relative w-full overflow-hidden rounded-lg"
-                style={{ aspectRatio: '1 / 1', background: 'rgba(174,183,194,0.05)' }}
-              >
-                <Image
-                  src={p.image}
-                  alt={p.name}
-                  fill
-                  sizes="(max-width: 640px) 46vw, (max-width: 1024px) 30vw, 24vw"
-                  className="object-cover product-card-img"
-                />
-              </div>
-              <h3
-                className="font-display mt-4"
-                style={{ fontSize: 'var(--step-0)', color: 'var(--star-white)', letterSpacing: '-0.01em' }}
-              >
-                {p.name}
-              </h3>
-              <p className="font-body mt-1 tabnum" style={{ fontSize: '13px', color: 'var(--lunar-silver)' }}>
-                {p.price}
-              </p>
+          {isGhana ? (
+            <ol className={styles.steps}>
+              <li>
+                <span>01</span>
+                <h3>Choose your tee</h3>
+                <p>Select your design, size and quantity. Every locally produced tee is GH₵250.</p>
+              </li>
+              <li>
+                <span>02</span>
+                <h3>Confirm on WhatsApp</h3>
+                <p>RUD Clothing confirms nationwide delivery cost, production timing and MoMo payment details.</p>
+              </li>
+              <li>
+                <span>03</span>
+                <h3>Produced and delivered</h3>
+                <p>Your order is printed after payment and delivered within an estimated 7–14 days.</p>
+              </li>
+            </ol>
+          ) : (
+            <ol className={styles.steps}>
+              <li>
+                <span>01</span>
+                <h3>Choose a product</h3>
+                <p>Open the exact product on Colourfro to select the available colour and size.</p>
+              </li>
+              <li>
+                <span>02</span>
+                <h3>Checkout on Colourfro</h3>
+                <p>Colourfro securely handles payment, supported destinations and shipping rates.</p>
+              </li>
+              <li>
+                <span>03</span>
+                <h3>Track with Colourfro</h3>
+                <p>Order confirmation, fulfilment updates and international support come from Colourfro.</p>
+              </li>
+            </ol>
+          )}
 
-              {region === 'international' ? (
-                <a
-                  href={p.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="link-arrow mt-4 self-start inline-flex"
-                  style={{ fontSize: '11px' }}
-                >
-                  Buy
-                </a>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelected(p);
-                    setStatus('idle');
-                  }}
-                  className="link-arrow mt-4 self-start inline-flex"
-                  style={{ fontSize: '11px', background: 'none', cursor: 'pointer' }}
-                >
-                  Reserve
-                </button>
-              )}
-            </article>
-          </li>
-        ))}
-      </ul>
+          <div className={styles.policyBar}>
+            <div>
+              <span>{isGhana ? 'Ghana fulfilment' : 'International fulfilment'}</span>
+              <strong>{isGhana ? 'RUD Clothing' : 'Colourfro'}</strong>
+            </div>
+            <p>
+              {isGhana
+                ? 'Please confirm your size carefully. Wrong-size exchanges are not available. Items that arrive damaged are eligible for a refund.'
+                : 'Colourfro’s shipping, returns and refund policies apply to every international purchase.'}
+            </p>
+          </div>
+        </div>
+      </section>
 
-      <a href={COLLECTION_URL} target="_blank" rel="noopener noreferrer" className="link-arrow mt-12 inline-flex">
-        See the full collection on Colourfro
-      </a>
-
-      {/* Ghana intake sheet */}
-      {selected && (
+      {selected ? (
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={`Reserve ${selected.name}`}
-          className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center sm:p-6"
-          style={{ background: 'rgba(5,7,11,0.82)', backdropFilter: 'blur(6px)' }}
-          onClick={closeSheet}
+          aria-labelledby="ghana-order-title"
+          aria-describedby="ghana-order-description"
+          className={styles.dialogBackdrop}
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setSelected(null);
+          }}
         >
-          <div
-            className="w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl p-6 md:p-8"
-            style={{
-              background: '#0B0F18',
-              border: '1px solid rgba(174,183,194,0.18)',
-              maxHeight: '92dvh',
-              overflowY: 'auto',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
-                  Reserve · Ghana
-                </p>
-                <h3 className="font-display mt-2" style={{ fontSize: 'var(--step-1)', color: 'var(--star-white)' }}>
-                  {selected.name}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={closeSheet}
-                aria-label="Close"
-                style={{ color: 'var(--lunar-silver)', fontSize: '22px', lineHeight: 1, cursor: 'pointer' }}
-              >
-                ×
-              </button>
+          <div className={styles.orderSheet}>
+            <button type="button" onClick={() => setSelected(null)} className={styles.closeButton} aria-label="Close order form" autoFocus>
+              ×
+            </button>
+
+            <div className={styles.sheetImage}>
+              <Image src={selected.image} alt={selected.name} fill sizes="(max-width: 640px) 100vw, 42vw" />
             </div>
 
-            {status === 'done' ? (
-              <div className="mt-7">
-                <p className="font-display" style={{ fontSize: 'var(--step-1)', color: 'var(--star-white)' }}>
-                  Reserved.
-                </p>
-                <p className="font-body mt-2" style={{ fontSize: 'var(--step-0)', color: 'var(--lunar-silver)' }}>
-                  Someone will reach you shortly to confirm and take payment.
-                </p>
-                <button type="button" onClick={closeSheet} className="btn-ghost mt-6 self-start">
-                  Done
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4">
-                <label className="field">
-                  <span className="field-label">Full name</span>
-                  <input name="name" required autoComplete="name" className="field-input" />
-                </label>
-                <label className="field">
-                  <span className="field-label">Phone (WhatsApp preferred)</span>
-                  <input
-                    name="phone"
-                    required
-                    inputMode="tel"
-                    autoComplete="tel"
-                    placeholder="+233 …"
-                    className="field-input"
-                  />
-                </label>
-                <label className="field">
-                  <span className="field-label">Delivery address</span>
-                  <textarea name="address" required rows={3} autoComplete="street-address" className="field-input" />
-                </label>
-                <label className="field">
-                  <span className="field-label">Size</span>
-                  <select name="size" required defaultValue="M" className="field-input">
-                    {SIZES.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
+            <div className={styles.sheetContent}>
+              <p className={styles.kicker}>Order in Ghana</p>
+              <h2 id="ghana-order-title">{selected.name}</h2>
+              <p className={styles.sheetPrice}>GH₵{GHANA_TEE_PRICE}</p>
+              <p id="ghana-order-description" className={styles.sheetIntro}>
+                Choose your size and quantity, then continue to WhatsApp. RUD Clothing will confirm delivery and send the MoMo payment details.
+              </p>
+
+              <div className={styles.optionGrid}>
+                <label>
+                  <span>Size</span>
+                  <select value={size} onChange={(event) => setSize(event.target.value)}>
+                    {SIZES.map((option) => (
+                      <option key={option} value={option}>{option}</option>
                     ))}
                   </select>
                 </label>
+                <label>
+                  <span>Quantity</span>
+                  <select value={quantity} onChange={(event) => setQuantity(Number(event.target.value))}>
+                    {QUANTITIES.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+              </div>
 
-                {status === 'error' && (
-                  <p className="font-body" style={{ fontSize: '13px', color: 'var(--earth-red-clay)' }} role="alert">
-                    {error}
-                  </p>
-                )}
+              <div className={styles.orderSummary}>
+                <span>Item total</span>
+                <strong>GH₵{GHANA_TEE_PRICE * quantity}</strong>
+                <small>Delivery is confirmed separately by RUD.</small>
+              </div>
 
-                <button type="submit" className="btn-join mt-1 justify-center" disabled={status === 'sending'}>
-                  {status === 'sending' ? 'Sending…' : 'Reserve mine'}
-                </button>
-                <p
-                  className="font-body"
-                  style={{ fontSize: '11.5px', lineHeight: 1.6, color: 'var(--lunar-silver)', opacity: 0.7 }}
-                >
-                  We store your name, phone and address only to fulfil this order.
-                </p>
-              </form>
-            )}
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={styles.whatsappButton}>
+                Continue in WhatsApp
+                <ArrowIcon />
+              </a>
+              <p className={styles.sheetPolicy}>Production and nationwide delivery take approximately 7–14 days after payment.</p>
+            </div>
           </div>
         </div>
-      )}
-    </div>
+      ) : null}
+    </>
   );
 }
