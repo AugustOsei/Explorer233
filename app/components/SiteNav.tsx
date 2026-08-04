@@ -64,12 +64,6 @@ export default function SiteNav() {
     };
   }, []);
 
-  // Route change closes everything.
-  useEffect(() => {
-    setMenuOpen(false);
-    setAboutOpen(false);
-  }, [pathname]);
-
   // Escape closes; outside-click closes the About dropdown.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -130,19 +124,11 @@ export default function SiteNav() {
         className="relative mx-auto flex items-center justify-between gap-6 px-5 md:px-8 lg:px-12"
         style={{ maxWidth: '90rem', height: '68px' }}
       >
-        <Link href="/" aria-label="Explorer 233 — home" className="shrink-0">
-          <Image
-            src="/logo-master.png"
-            alt="Explorer 233"
-            width={124}
-            height={44}
-            className="object-contain"
-            /* The master logo is a PNG with a baked-in black plate. Screen
-               blending drops that plate out against the dark page — a stopgap
-               until we have a real transparent SVG wordmark. */
-            style={{ mixBlendMode: 'screen' }}
-            priority
-          />
+        <Link href="/" aria-label="Explorer 233 — home" className="brand-lockup shrink-0">
+          <span className="brand-emblem" aria-hidden>
+            <Image src="/logo-emblem.png" alt="" width={36} height={30} className="object-contain" priority />
+          </span>
+          <span className="brand-wordmark">Explorer 233</span>
         </Link>
 
         {/* Desktop links */}
@@ -175,7 +161,7 @@ export default function SiteNav() {
                   >
                     {item.children.map((child) => (
                       <li key={child.href}>
-                        <Link href={child.href} className="nav-dropdown-link">
+                        <Link href={child.href} className="nav-dropdown-link" onClick={() => setAboutOpen(false)}>
                           {child.label}
                         </Link>
                       </li>
@@ -245,14 +231,14 @@ export default function SiteNav() {
           <ul className="flex flex-col">
             {NAV.map((item) => (
               <li key={item.label}>
-                <Link href={item.href} className="nav-mobile-link" data-active={isActive(item.href) || undefined}>
+                <Link href={item.href} className="nav-mobile-link" data-active={isActive(item.href) || undefined} onClick={() => setMenuOpen(false)}>
                   {item.label}
                 </Link>
                 {item.children && (
                   <ul className="pl-4 pb-1">
                     {item.children.map((child) => (
                       <li key={child.href}>
-                        <Link href={child.href} className="nav-mobile-sublink">
+                        <Link href={child.href} className="nav-mobile-sublink" onClick={() => setMenuOpen(false)}>
                           {child.label}
                         </Link>
                       </li>
@@ -262,7 +248,7 @@ export default function SiteNav() {
               </li>
             ))}
           </ul>
-          <Link href="/#join" className="btn-join mt-5 w-full justify-center">
+          <Link href="/#join" className="btn-join mt-5 w-full justify-center" onClick={() => setMenuOpen(false)}>
             Join
           </Link>
         </div>

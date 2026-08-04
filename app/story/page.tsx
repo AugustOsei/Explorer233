@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../components/sections/Footer';
@@ -6,18 +5,44 @@ import DispatchCountdown from '../components/sections/DispatchCountdown';
 import StoryBody from './StoryBody';
 import StoryEntry from './StoryEntry';
 import { dispatchSE101 as d, nextDispatch } from '../../content/dispatch-se1-01';
+import { pageMetadata, SITE_URL } from '../../lib/seo';
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: `Dispatch ${d.code}: ${d.title} — Explorer 233`,
   description: `${d.setting}. The first message from another star was discovered because Dr. Amara Nkrumah wanted tea.`,
-};
+  path: '/story',
+  image: '/images/dispatch-one-wide.png',
+  imageAlt: 'Explorer 233 Dispatch One artwork',
+  imageWidth: 1672,
+  imageHeight: 941,
+  type: 'article',
+  publishedTime: '2026-08-03',
+});
 
 const WORDS = d.scenes.reduce((n, s) => n + s.paragraphs.join(' ').split(/\s+/).length, 0);
 const MINUTES = Math.max(1, Math.round(WORDS / 220));
 
+const storyJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ShortStory',
+  '@id': `${SITE_URL}/story#dispatch-one`,
+  url: `${SITE_URL}/story`,
+  name: `${d.code}: ${d.title}`,
+  headline: d.title,
+  description: 'Explorer 233 unveils its first interstellar ship in Accra. Before the night is over, someone promises to kill one of its scientists.',
+  image: `${SITE_URL}/images/dispatch-one-wide.png`,
+  inLanguage: 'en',
+  datePublished: '2026-08-03',
+  isAccessibleForFree: true,
+  author: { '@id': `${SITE_URL}/#august-peekay` },
+  publisher: { '@id': `${SITE_URL}/#organization` },
+  isPartOf: { '@type': 'CreativeWorkSeries', '@id': `${SITE_URL}/#story-world`, name: 'Explorer 233' },
+};
+
 export default function StoryPage() {
   return (
     <main className="story-page">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(storyJsonLd) }} />
       <header className="story-cover">
         <Image
           src="/images/dispatch-one-wide.png"

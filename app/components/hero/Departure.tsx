@@ -214,11 +214,11 @@ export default function Departure() {
       };
     }
 
-    // Preserve the 472-frame master sequence on desktop, but avoid opening 472
-    // simultaneous requests. Mobile uses every second frame and both variants
-    // load in small sequential batches; the active scroll position is always
-    // requested immediately above, so fast scrolling still has a nearby frame.
-    const frameStep = window.innerWidth <= 640 ? 2 : 1;
+    // Keep the full master sequence available, but background-load only sparse
+    // anchor frames. The exact current frame and its neighbours are requested
+    // above as the visitor scrolls. This preserves visual continuity while
+    // avoiding a compulsory download of all 472 frames (roughly 21 MB).
+    const frameStep = window.innerWidth <= 640 ? 10 : 8;
     const queue: number[] = [];
     for (let i = 0; i < FRAMES; i += frameStep) queue.push(i);
     if (queue[queue.length - 1] !== FRAMES - 1) queue.push(FRAMES - 1);
@@ -227,10 +227,10 @@ export default function Departure() {
 
     const pumpFrames = () => {
       if (disposed || queueCursor >= queue.length) return;
-      const batch = queue.slice(queueCursor, queueCursor + 10);
+      const batch = queue.slice(queueCursor, queueCursor + 6);
       queueCursor += batch.length;
       void Promise.all(batch.map(loadFrame)).then(() => {
-        if (!disposed) pumpTimer = window.setTimeout(pumpFrames, 90);
+        if (!disposed) pumpTimer = window.setTimeout(pumpFrames, 120);
       });
     };
 

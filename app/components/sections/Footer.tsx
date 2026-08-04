@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const NAV = {
   Explore: [
@@ -6,6 +7,7 @@ const NAV = {
     { label: 'The Story', href: '/story' },
     { label: 'Games & Events', href: '/games-events' },
     { label: 'Store', href: '/store' },
+    { label: 'About', href: '/about' },
     { label: 'Journal', href: '/about/journal' },
   ],
   Connect: [
@@ -15,8 +17,8 @@ const NAV = {
     { label: 'Facebook', href: 'https://www.facebook.com/explorer233/' },
   ],
   Legal: [
-    { label: 'Privacy', href: '#' },
-    { label: 'Terms', href: '#' },
+    { label: 'Privacy', href: '/privacy' },
+    { label: 'Terms', href: '/terms' },
     { label: 'Contact', href: 'mailto:hello@explorer233.com' },
   ],
 };
@@ -32,20 +34,19 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 pt-16 pb-12">
           {/* Brand */}
           <div className="md:col-span-5 flex flex-col gap-5 items-center md:items-start text-center md:text-left">
-            <Image
-              src="/logo-master.png"
-              alt="Explorer 233"
-              width={140}
-              height={50}
-              className="object-contain opacity-80"
-            />
+            <Link href="/" aria-label="Explorer 233 — home" className="brand-lockup">
+              <span className="brand-emblem brand-emblem--footer" aria-hidden>
+                <Image src="/logo-emblem.png" alt="" width={44} height={37} className="object-contain" />
+              </span>
+              <span className="brand-wordmark brand-wordmark--footer">Explorer 233</span>
+            </Link>
             <p
               className="font-display"
               style={{ fontSize: '14px', color: 'rgba(244,241,234,0.55)', letterSpacing: '0.04em', lineHeight: 1.6, maxWidth: '30ch' }}
             >
-              An original African science-fiction universe. Dispatches, characters, and a story still arriving.
+              Reach and breathe among the stars.
             </p>
-            <span className="eyebrow text-gold-grad">Reach and breathe among the stars</span>
+            <span className="eyebrow text-gold-grad">The Baobab · Accra, Ghana</span>
           </div>
 
           {/* Spacer on desktop */}

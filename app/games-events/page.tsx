@@ -1,14 +1,19 @@
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../components/sections/Footer';
 import styles from './games-events.module.css';
+import { pageMetadata, SITE_URL } from '../../lib/seo';
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Games & Events — Explorer 233',
   description:
     'Play games created by Explorer 233 and our collaborators, and find online and in-person events we organize or attend.',
-};
+  path: '/games-events',
+  image: '/images/games/chop-first/cover-orbital.jpg',
+  imageAlt: 'Chop First racing game from Explorer 233',
+  imageWidth: 1376,
+  imageHeight: 768,
+});
 
 const GAME_URL = 'https://chop-first.vercel.app/';
 
@@ -34,8 +39,19 @@ function ArrowIcon() {
 }
 
 export default function GamesEventsPage() {
+  const pageJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${SITE_URL}/games-events`,
+    name: 'Explorer 233 Games & Events',
+    description: 'Games made by Explorer 233 and collaborators, plus online and in-person event announcements.',
+    mainEntity: { '@id': `${SITE_URL}/games-events/chop-first#game` },
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+  };
+
   return (
     <main className={styles.page}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }} />
       <header className={styles.hero}>
         <div className={styles.heroGlow} aria-hidden="true" />
         <div className={styles.shell}>
@@ -114,9 +130,9 @@ export default function GamesEventsPage() {
                     Play now
                     <ArrowIcon />
                   </a>
-                  <a href={GAME_URL} target="_blank" rel="noopener noreferrer" className={styles.secondaryButton}>
-                    Explore the game
-                  </a>
+                  <Link href="/games-events/chop-first" className={styles.secondaryButton}>
+                    Game details
+                  </Link>
                 </div>
                 <p className={styles.externalNote}>Opens the game in a new tab</p>
               </div>

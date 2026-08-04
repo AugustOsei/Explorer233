@@ -1,0 +1,24 @@
+.page { min-height: 100vh; background: #efede6; color: #121211; }
+.product { position: relative; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(28rem, .88fr); min-height: 100svh; padding-top: 4.25rem; }
+.product::before { content: ''; position: absolute; z-index: 2; inset: 0 0 auto; height: 4.25rem; background: #151714; }
+.mediaShell { position: sticky; top: 4.25rem; height: calc(100svh - 4.25rem); background: #d9d6ce; }
+.media { position: relative; width: 100%; height: 100%; }
+.media img { object-fit: cover; }
+.details { padding: clamp(4rem, 8vw, 8rem) clamp(2rem, 6vw, 6rem); }
+.back { display: inline-block; margin-bottom: clamp(4rem, 9vw, 7rem); color: #62605b; font: 650 .72rem/1 var(--font-inter), sans-serif; letter-spacing: .08em; text-decoration: none; text-transform: uppercase; }
+.kicker { margin: 0; color: #85651f; font: 650 .68rem/1 var(--font-inter), sans-serif; letter-spacing: .15em; text-transform: uppercase; }
+.details > h1 { max-width: 12ch; margin: 1.15rem 0 0; font: 450 clamp(3rem, 6vw, 6rem)/.94 var(--font-space-grotesk), sans-serif; letter-spacing: -.06em; }
+.description { max-width: 44ch; margin: 2rem 0 3.5rem; color: #5e5c57; font: 400 1rem/1.75 var(--font-inter), sans-serif; }
+.route { padding: 1.8rem 0; border-top: 1px solid rgba(18,18,17,.16); }
+.route > div { display: flex; justify-content: space-between; gap: 1rem; color: #615f59; font: 650 .68rem/1 var(--font-inter), sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.route > div strong { color: #121211; }
+.route h2 { margin: 1.25rem 0 0; font: 520 1.25rem/1.25 var(--font-space-grotesk), sans-serif; }
+.route p { max-width: 48ch; margin: .7rem 0 1.25rem; color: #67645f; font: 400 .88rem/1.65 var(--font-inter), sans-serif; }
+.route a { color: #121211; font: 700 .76rem/1 var(--font-inter), sans-serif; text-underline-offset: .35rem; }
+.policy { padding-top: 1.5rem; border-top: 1px solid rgba(18,18,17,.16); color: #77746d; font: 400 .74rem/1.65 var(--font-inter), sans-serif; }
+@media (max-width: 800px) {
+  .product { grid-template-columns: 1fr; }
+  .mediaShell { position: relative; top: auto; height: auto; aspect-ratio: 1; }
+  .details { padding-top: 2.5rem; }
+  .back { margin-bottom: 4rem; }
+}

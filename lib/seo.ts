@@ -11,7 +11,11 @@ type PageMetadata = {
   path: string;
   image?: string;
   imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
 };
 
 export function pageMetadata({
@@ -20,7 +24,11 @@ export function pageMetadata({
   path,
   image = '/explorer.png',
   imageAlt = 'Explorer 233 — an African science-fiction saga',
+  imageWidth = 1200,
+  imageHeight = 630,
   type = 'website',
+  publishedTime,
+  modifiedTime,
 }: PageMetadata): Metadata {
   return {
     title,
@@ -32,7 +40,15 @@ export function pageMetadata({
       url: path,
       siteName: SITE_NAME,
       type,
-      images: [{ url: image, width: 1200, height: 630, alt: imageAlt }],
+      locale: 'en_GH',
+      images: [{ url: image, width: imageWidth, height: imageHeight, alt: imageAlt }],
+      ...(type === 'article'
+        ? {
+            publishedTime,
+            modifiedTime: modifiedTime ?? publishedTime,
+            authors: [`${SITE_URL}/about`],
+          }
+        : {}),
     },
     twitter: {
       card: 'summary_large_image',
@@ -41,4 +57,8 @@ export function pageMetadata({
       images: [image],
     },
   };
+}
+
+export function absoluteUrl(path: string) {
+  return new URL(path, SITE_URL).toString();
 }

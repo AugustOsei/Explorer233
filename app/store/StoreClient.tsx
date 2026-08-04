@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import {
   COLLECTION_URL,
@@ -53,6 +54,10 @@ function ProductCard({
             <h3>{product.name}</h3>
             <p>{isGhana ? `GH₵${GHANA_TEE_PRICE}` : product.internationalPrice}</p>
           </div>
+
+          <Link href={`/store/${product.id}`} className={styles.detailsLink}>
+            View details
+          </Link>
 
           {isGhana ? (
             <button type="button" onClick={() => onOrder(product)} className={styles.cardAction}>

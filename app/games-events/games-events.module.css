@@ -54,7 +54,7 @@
 
 .kicker {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
   line-height: 1;
@@ -74,7 +74,7 @@
 .hero h1 {
   max-width: 12ch;
   margin: 0;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
   font-size: clamp(3.6rem, 7.4vw, 7.4rem);
   font-weight: 450;
   line-height: 0.93;
@@ -88,7 +88,7 @@
 
 .heroCopy > p {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-size: clamp(1rem, 1.35vw, 1.18rem);
   line-height: 1.72;
   color: rgba(245, 247, 250, 0.72);
@@ -101,7 +101,7 @@
   margin-top: 1.75rem;
   padding-bottom: 0.35rem;
   border-bottom: 1px solid rgba(245, 247, 250, 0.3);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-size: 0.88rem;
   font-weight: 600;
   line-height: 1.4;
@@ -147,7 +147,7 @@
 .eventsMain h2,
 .collaboration h2 {
   margin: 1rem 0 0;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
   font-size: clamp(2.3rem, 4.5vw, 4.2rem);
   font-weight: 450;
   line-height: 1;
@@ -282,7 +282,7 @@
 
 .gamePitch h3 {
   margin: 0.7rem 0 1.3rem;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
   font-size: clamp(3.2rem, 7.2vw, 6.8rem);
   font-weight: 700;
   font-style: italic;
@@ -380,7 +380,7 @@
 }
 
 .gameFacts dt {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
   font-size: clamp(1.65rem, 2.8vw, 2.5rem);
   font-weight: 500;
   line-height: 1;

@@ -19,7 +19,6 @@ export default function StoryTeaser() {
               fill
               sizes="(max-width: 800px) 100vw, 58vw"
               className="object-cover"
-              unoptimized
             />
             <div className="home-dispatch-scrim" aria-hidden="true" />
             <p className="home-dispatch-art-label">Season One · Dispatch SE1-01</p>

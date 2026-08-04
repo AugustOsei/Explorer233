@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import { unsubscribeUrl } from '../../../lib/unsubscribeToken';
 
 function getResend() {
   const key = process.env.RESEND_API_KEY;
@@ -15,7 +16,7 @@ function getSupabase() {
   return createClient(url, key);
 }
 
-const welcomeHtml = (email: string) => `<!DOCTYPE html>
+const welcomeHtml = (email: string, unsubscribeLink: string) => `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -89,8 +90,11 @@ const welcomeHtml = (email: string) => `<!DOCTYPE html>
               <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,234,0.25);">
                 © 2026 Explorer 233 · Accra, Ghana
               </p>
-              <p style="margin:0;font-size:11px;color:rgba(244,241,234,0.2);">
+              <p style="margin:0 0 6px;font-size:11px;color:rgba(244,241,234,0.2);">
                 You're receiving this because ${email} signed up at explorer233.com
+              </p>
+              <p style="margin:0;font-size:11px;color:rgba(244,241,234,0.2);">
+                <a href="${unsubscribeLink}" style="color:rgba(244,241,234,0.35);">Unsubscribe</a>
               </p>
             </td>
           </tr>
@@ -119,9 +123,28 @@ export async function POST(req: NextRequest) {
 
     if (dbError) {
       if (dbError.code === '23505') {
-        return NextResponse.json({ duplicate: true }, { status: 200 });
+        // Already on the list. If they'd unsubscribed, reactivate them.
+        const { data: existing, error: fetchError } = await supabase
+          .from('subscribers')
+          .select('unsubscribed')
+          .eq('email', clean)
+          .single();
+
+        if (fetchError) throw new Error(fetchError.message);
+
+        if (!existing?.unsubscribed) {
+          return NextResponse.json({ duplicate: true }, { status: 200 });
+        }
+
+        const { error: updateError } = await supabase
+          .from('subscribers')
+          .update({ unsubscribed: false })
+          .eq('email', clean);
+
+        if (updateError) throw new Error(updateError.message);
+      } else {
+        throw new Error(dbError.message);
       }
-      throw new Error(dbError.message);
     }
 
     // Send welcome email
@@ -129,7 +152,7 @@ export async function POST(req: NextRequest) {
       from: 'Explorer 233 <explorer233@augustwheel.com>',
       to: clean,
       subject: 'The call has been heeded.',
-      html: welcomeHtml(clean),
+      html: welcomeHtml(clean, unsubscribeUrl(clean)),
     });
 
     return NextResponse.json({ success: true }, { status: 200 });

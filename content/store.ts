@@ -19,6 +19,14 @@ export const COLLECTION_URL = 'https://colourfro.com/collections/explorer-233';
 export const RUD_WHATSAPP_NUMBER = '233246240669';
 export const GHANA_TEE_PRICE = 250;
 
+export function getProductDescription(product: Product) {
+  if (product.category === 'Accessory') {
+    return `${product.name} from the official Explorer 233 merchandise collection.`;
+  }
+
+  return `${product.name}, an official Explorer 233 graphic T-shirt available for local production in Ghana and international fulfilment through Colourfro.`;
+}
+
 export const products: Product[] = [
   {
     id: 'explorer-233-classic-black',

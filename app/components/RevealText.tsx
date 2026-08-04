@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, type ElementType, type CSSProperties } from 'react';
+import { Fragment, useEffect, useRef, type ElementType, type CSSProperties } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -80,19 +80,25 @@ export default function RevealText({
 
   return (
     <Tag ref={ref} className={className} style={style}>
+      {/* A real space between words, not a right margin. Margins look identical
+          but leave no whitespace in the DOM, so selecting the line and copying
+          it — or a crawler, or a screen reader — got "WEAREHERE". The space sits
+          outside the clip-masked span, so it never animates. */}
       {words.map((w, i) => (
-        <span
-          key={i}
-          style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'top', paddingBottom: '0.08em', marginRight: i < words.length - 1 ? '0.26em' : 0 }}
-        >
+        <Fragment key={i}>
+          {i > 0 && ' '}
           <span
-            data-word-inner
-            className={hi.has(norm(w)) ? 'text-gold-grad' : undefined}
-            style={{ display: 'inline-block', opacity: 0, willChange: 'transform, opacity' }}
+            style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'top', paddingBottom: '0.08em' }}
           >
-            {w}
+            <span
+              data-word-inner
+              className={hi.has(norm(w)) ? 'text-gold-grad' : undefined}
+              style={{ display: 'inline-block', opacity: 0, willChange: 'transform, opacity' }}
+            >
+              {w}
+            </span>
           </span>
-        </span>
+        </Fragment>
       ))}
     </Tag>
   );
