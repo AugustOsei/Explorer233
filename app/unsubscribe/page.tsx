@@ -37,7 +37,7 @@ export default async function UnsubscribePage({
       <article className="legal-copy chapter-shell">
         <p>
           Questions can be sent to{' '}
-          <a href="mailto:hello@explorer233.com">hello@explorer233.com</a>.
+          <a href="mailto:theteam@augustwheel.com">theteam@augustwheel.com</a>.
         </p>
       </article>
       <Footer />

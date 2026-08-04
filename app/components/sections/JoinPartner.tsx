@@ -7,7 +7,7 @@ import { useReveal } from '../useReveal';
 /** One focused conversion moment after the story and world have been introduced. */
 
 const PARTNER_MAILTO =
-  'mailto:hello@explorer233.com?subject=Explorer%20233&body=Tell%20us%20who%20you%20are%20and%20how%20you%20would%20like%20to%20be%20involved.';
+  'mailto:theteam@augustwheel.com?subject=Explorer%20233&body=Tell%20us%20who%20you%20are%20and%20how%20you%20would%20like%20to%20be%20involved.';
 
 export default function JoinPartner() {
   const scope = useReveal<HTMLElement>();
@@ -56,9 +56,17 @@ export default function JoinPartner() {
 
           <div className="join-single-form">
             {state === 'done' || state === 'dupe' ? (
-              <p className="font-display mt-8" style={{ fontSize: 'var(--step-1)', color: 'var(--star-white)' }}>
-                {state === 'done' ? 'You’re on the list. Welcome aboard.' : 'You’re already with us.'}
-              </p>
+              <>
+                <p className="font-display mt-8" style={{ fontSize: 'var(--step-1)', color: 'var(--star-white)' }}>
+                  {state === 'done' ? 'You’re on the list. Welcome aboard.' : 'You’re already with us.'}
+                </p>
+                {state === 'done' && (
+                  <p className="font-body mt-3" style={{ fontSize: '13px', color: 'var(--lunar-silver)', opacity: 0.75 }}>
+                    Look out for a welcome email — if it’s not in your inbox, check Promotions
+                    or Spam.
+                  </p>
+                )}
+              </>
             ) : (
               <form onSubmit={onSubmit} className="flex flex-col sm:flex-row gap-3">
                 <input

@@ -193,7 +193,7 @@ export default function GamesEventsPage() {
                 We collaborate with game developers, artists, cultural organizations and event producers to create new experiences around Explorer 233.
               </p>
               <a
-                href="mailto:hello@explorer233.com?subject=Explorer%20233%20collaboration"
+                href="mailto:theteam@augustwheel.com?subject=Explorer%20233%20collaboration"
                 className={styles.textLink}
               >
                 Propose a collaboration

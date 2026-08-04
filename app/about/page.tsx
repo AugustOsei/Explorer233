@@ -191,7 +191,7 @@ export default function AboutPage() {
           </div>
           <div>
             <p>Explorer 233 is open to thoughtful collaborations with artists, developers, publishers, cultural organisations, makers and event partners.</p>
-            <a href="mailto:hello@explorer233.com?subject=Explorer%20233%20partnership" className={styles.primaryButton}>
+            <a href="mailto:theteam@augustwheel.com?subject=Explorer%20233%20partnership" className={styles.primaryButton}>
               Propose a partnership <span aria-hidden="true">↗</span>
             </a>
           </div>

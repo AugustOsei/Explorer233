@@ -19,7 +19,7 @@ const NAV = {
   Legal: [
     { label: 'Privacy', href: '/privacy' },
     { label: 'Terms', href: '/terms' },
-    { label: 'Contact', href: 'mailto:hello@explorer233.com' },
+    { label: 'Contact', href: 'mailto:theteam@augustwheel.com' },
   ],
 };
 

@@ -20,7 +20,7 @@ export default function PrivacyPage() {
         <h2>Orders and enquiries</h2>
         <p>Store orders and messages may require additional contact or fulfilment information. That information is used only to provide the service you requested and meet applicable legal obligations.</p>
         <h2>Contact</h2>
-        <p>Questions or data requests can be sent to <a href="mailto:hello@explorer233.com">hello@explorer233.com</a>.</p>
+        <p>Questions or data requests can be sent to <a href="mailto:theteam@augustwheel.com">theteam@augustwheel.com</a>.</p>
       </article>
       <Footer />
     </main>

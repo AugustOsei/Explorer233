@@ -20,7 +20,7 @@ export default function TermsPage() {
         <h2>Store and events</h2>
         <p>Purchases, tickets and partner services may include additional terms shown at checkout or registration. Those specific terms apply to that transaction.</p>
         <h2>Contact</h2>
-        <p>For permissions or questions, contact <a href="mailto:hello@explorer233.com">hello@explorer233.com</a>.</p>
+        <p>For permissions or questions, contact <a href="mailto:theteam@augustwheel.com">theteam@augustwheel.com</a>.</p>
       </article>
       <Footer />
     </main>

@@ -84,7 +84,7 @@ const welcomeHtml = (email: string, unsubscribeLink: string) => `<!DOCTYPE html>
             <td style="padding-bottom:32px;text-align:center;">
               <p style="margin:0;font-size:14px;line-height:1.6;color:#8A8F98;">
                 Want to collaborate or support the project?
-                <a href="mailto:hello@explorer233.com?subject=Explorer%20233&body=Tell%20us%20who%20you%20are%20and%20how%20you%20would%20like%20to%20be%20involved." style="color:#1A1D24;text-decoration:underline;">Get in touch.</a>
+                <a href="mailto:theteam@augustwheel.com?subject=Explorer%20233&body=Tell%20us%20who%20you%20are%20and%20how%20you%20would%20like%20to%20be%20involved." style="color:#1A1D24;text-decoration:underline;">Get in touch.</a>
               </p>
             </td>
           </tr>
@@ -123,7 +123,7 @@ there's something worth sharing, never just noise.
 
 Begin Dispatch One: ${SITE_URL}/story
 
-Want to collaborate or support the project? Get in touch: hello@explorer233.com
+Want to collaborate or support the project? Get in touch: theteam@augustwheel.com
 
 —
 You're receiving this because ${email} signed up at explorer233.com
