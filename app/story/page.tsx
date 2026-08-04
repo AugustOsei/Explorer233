@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Footer from '../components/sections/Footer';
 import DispatchCountdown from '../components/sections/DispatchCountdown';
 import StoryBody from './StoryBody';
+import StoryEntry from './StoryEntry';
 import { dispatchSE101 as d, nextDispatch } from '../../content/dispatch-se1-01';
 
 export const metadata: Metadata = {
@@ -16,99 +17,54 @@ const MINUTES = Math.max(1, Math.round(WORDS / 220));
 
 export default function StoryPage() {
   return (
-    <main style={{ background: 'var(--deep-space-black)' }}>
-      {/* Full-bleed opening plate — the cover of the issue */}
-      <header className="relative w-full overflow-hidden" style={{ height: 'clamp(26rem, 76vh, 44rem)' }}>
+    <main className="story-page">
+      <header className="story-cover">
         <Image
-          src="/images/baobab-hq.jpg"
-          alt="The Baobab at golden hour on commissioning day"
+          src="/images/dispatch-one-wide.png"
+          alt="Explorer 233 characters, spacecraft and the Baobab gathered beneath a signal-filled sky"
           fill
           sizes="100vw"
-          priority
-          className="object-cover"
+          preload
+          className="story-cover-image object-cover"
         />
-        <div className="media-scrim-bottom" aria-hidden />
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(to bottom, rgba(5,7,11,0.85) 0%, transparent 45%)' }}
-        />
+        <div className="story-cover-scrim" aria-hidden />
 
-        <div className="absolute inset-x-0 bottom-0 z-[2] pb-12 md:pb-16">
-          <div className="chapter-shell">
-            <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
-              {d.season} · Dispatch {d.code}
-            </p>
-            <h1
-              className="font-display font-light mt-4 balance"
-              style={{
-                fontSize: 'var(--step-4)',
-                lineHeight: 1.02,
-                letterSpacing: '-0.03em',
-                color: 'var(--star-white)',
-              }}
-            >
-              {d.title}
-            </h1>
-            <p className="story-synopsis font-body mt-5">
+        <div className="story-cover-content chapter-shell">
+          <div className="story-cover-copy">
+            <p className="story-cover-kicker">{d.season} · {d.code}</p>
+            <h1>{d.title}</h1>
+            <p className="story-cover-synopsis">
               Explorer 233 unveils its first interstellar ship in Accra. Before the night is
               over, someone promises to kill one of its scientists.
             </p>
-            <p
-              className="font-body mt-5 tabnum"
-              style={{
-                fontSize: '11.5px',
-                letterSpacing: '0.22em',
-                textTransform: 'uppercase',
-                color: 'var(--lunar-silver)',
-              }}
-            >
+            <p className="story-cover-meta tabnum">
               {d.setting} · {MINUTES} min read
             </p>
-            <a href="#read-dispatch" className="btn-join mt-7">
-              Start reading
-            </a>
+            <StoryEntry firstSceneId={d.scenes[0].id} />
           </div>
         </div>
       </header>
 
       <StoryBody scenes={d.scenes} title={d.title} code={d.code} />
 
-      {/* End matter */}
-      <div className="chapter-shell" style={{ paddingBottom: 'clamp(4rem, 10vh, 7rem)' }}>
-        <div
-          className="mx-auto text-center"
-          style={{
-            maxWidth: '36rem',
-            borderTop: '1px solid rgba(174,183,194,0.16)',
-            paddingTop: 'clamp(2.5rem, 6vh, 4rem)',
-          }}
-        >
-          <p className="eyebrow" style={{ color: 'var(--mission-gold)' }}>
-            End of Dispatch {d.code}
-          </p>
-          <h2
-            className="font-display font-light mt-4"
-            style={{ fontSize: 'var(--step-2)', letterSpacing: '-0.02em', color: 'var(--star-white)' }}
-          >
-            {nextDispatch.code} — {nextDispatch.title}
-          </h2>
-
-          <div className="mt-10">
+      <section className="dispatch-end">
+        <div className="chapter-shell">
+          <div className="dispatch-end-inner">
+            <p className="dispatch-end-kicker">End of Dispatch {d.code}</p>
+            <h2>The opening is over.<br />The threat has begun.</h2>
+            <p className="dispatch-end-teaser">
+              The Baobab is sealed. Somewhere in Accra, a twenty-four-hour countdown has already started.
+            </p>
+            <div className="dispatch-next">
+              <span>Next transmission</span>
+              <strong>{nextDispatch.code} — {nextDispatch.title}</strong>
+            </div>
             <DispatchCountdown />
+            <p className="dispatch-end-join">Join Explorer 233 for new dispatches, project news, events and member benefits.</p>
+            <Link href="/#join" className="btn-join">Join Explorer 233</Link>
           </div>
-
-          <p
-            className="font-body mt-10"
-            style={{ fontSize: 'var(--step-0)', lineHeight: 1.7, color: 'var(--lunar-silver)' }}
-          >
-            Join the mission and it reaches you the moment it lands.
-          </p>
-          <Link href="/#join" className="btn-join mt-8">
-            Join the mission
-          </Link>
         </div>
-      </div>
+      </section>
 
       <Footer />
     </main>
