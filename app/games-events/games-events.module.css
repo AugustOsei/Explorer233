@@ -1,0 +1,652 @@
+.page {
+  --page-bg: #07090d;
+  --panel: #0d1118;
+  --panel-light: #121821;
+  --game-yellow: #ffd45e;
+  --game-orange: #ff9b2e;
+  --game-red: #ff3b4e;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--page-bg);
+  color: var(--star-white);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 52rem;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 77% 14%, rgba(31, 166, 168, 0.11), transparent 28rem),
+    radial-gradient(circle at 15% 9%, rgba(214, 168, 79, 0.09), transparent 24rem);
+}
+
+.shell {
+  position: relative;
+  width: min(100% - 3rem, 78rem);
+  margin-inline: auto;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: min(42rem, 82vh);
+  padding: 10rem 0 6.5rem;
+  border-bottom: 1px solid rgba(245, 247, 250, 0.09);
+}
+
+.heroGlow {
+  position: absolute;
+  right: -8rem;
+  bottom: -17rem;
+  width: 43rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(31, 166, 168, 0.09);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 5rem rgba(31, 166, 168, 0.018),
+    0 0 0 10rem rgba(31, 166, 168, 0.012);
+  pointer-events: none;
+}
+
+.kicker {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mission-gold);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.55fr);
+  gap: clamp(3rem, 8vw, 8rem);
+  align-items: end;
+  margin-top: 2rem;
+}
+
+.hero h1 {
+  max-width: 12ch;
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(3.6rem, 7.4vw, 7.4rem);
+  font-weight: 450;
+  line-height: 0.93;
+  letter-spacing: -0.065em;
+  text-wrap: balance;
+}
+
+.heroCopy {
+  padding-bottom: 0.3rem;
+}
+
+.heroCopy > p {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  line-height: 1.72;
+  color: rgba(245, 247, 250, 0.72);
+}
+
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(245, 247, 250, 0.3);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--star-white);
+  text-decoration: none;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+
+.textLink svg,
+.primaryButton svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  transition: transform 180ms ease;
+}
+
+.textLink:hover {
+  color: var(--mission-gold);
+  border-color: var(--mission-gold);
+}
+
+.textLink:hover svg,
+.primaryButton:hover svg {
+  transform: translateX(0.2rem);
+}
+
+.gameSection {
+  position: relative;
+  padding: clamp(5.5rem, 10vw, 9rem) 0;
+}
+
+.sectionIntro {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 3rem;
+  margin-bottom: 2.6rem;
+}
+
+.sectionIntro h2,
+.eventsMain h2,
+.collaboration h2 {
+  margin: 1rem 0 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.3rem, 4.5vw, 4.2rem);
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.sectionIntro > p {
+  max-width: 30ch;
+  margin: 0 0 0.3rem;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: rgba(245, 247, 250, 0.5);
+  text-align: right;
+}
+
+.gameFeature {
+  overflow: hidden;
+  border: 1px solid rgba(245, 247, 250, 0.12);
+  border-radius: 1.5rem;
+  background: var(--panel);
+  box-shadow: 0 2.2rem 6rem rgba(0, 0, 0, 0.34);
+}
+
+.gameMedia {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(14rem, 0.8fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem;
+  min-height: clamp(30rem, 54vw, 43rem);
+  padding: 0.35rem;
+  background: #05070b;
+}
+
+.gameMedia figure {
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  margin: 0;
+  background: #111722;
+}
+
+.primaryArt {
+  grid-row: 1 / 3;
+  border-radius: 1.1rem 0 0 0;
+}
+
+.secondaryArt:first-of-type {
+  border-radius: 0 1.1rem 0 0;
+}
+
+.gameMedia img {
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.gameMedia:hover .primaryArt img {
+  transform: scale(1.018);
+}
+
+.secondaryArt::after,
+.primaryArt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(5, 7, 11, 0.38));
+  pointer-events: none;
+}
+
+.secondaryArt figcaption {
+  position: absolute;
+  z-index: 1;
+  right: 1rem;
+  bottom: 0.85rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(5, 7, 11, 0.55);
+  backdrop-filter: blur(10px);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.liveBadge {
+  position: absolute;
+  z-index: 2;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 999px;
+  background: rgba(5, 7, 11, 0.6);
+  backdrop-filter: blur(12px);
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.liveBadge span {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 50%;
+  background: #73e48f;
+  box-shadow: 0 0 0 0.25rem rgba(115, 228, 143, 0.13);
+}
+
+.gameContent {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(20rem, 0.6fr);
+  gap: clamp(3rem, 8vw, 7rem);
+  padding: clamp(2rem, 5vw, 4.5rem);
+  background:
+    radial-gradient(circle at 95% 0%, rgba(255, 155, 46, 0.1), transparent 25rem),
+    var(--panel);
+}
+
+.gameType {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 247, 250, 0.55);
+}
+
+.gamePitch h3 {
+  margin: 0.7rem 0 1.3rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(3.2rem, 7.2vw, 6.8rem);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 0.88;
+  letter-spacing: -0.075em;
+  text-transform: uppercase;
+}
+
+.gamePitch h3 span {
+  color: var(--star-white);
+}
+
+.gamePitch h3 {
+  color: var(--game-orange);
+}
+
+.gameDescription {
+  max-width: 56ch;
+  margin: 0;
+  font-size: clamp(1rem, 1.35vw, 1.15rem);
+  line-height: 1.75;
+  color: rgba(245, 247, 250, 0.72);
+}
+
+.gameActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 2.2rem;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  min-height: 3.25rem;
+  padding: 0.8rem 1.3rem;
+  border-radius: 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: transform 180ms ease, filter 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.primaryButton {
+  color: #171009;
+  background: linear-gradient(100deg, var(--game-yellow), var(--game-orange));
+  box-shadow: 0 0.8rem 2.3rem rgba(255, 155, 46, 0.14);
+}
+
+.secondaryButton {
+  border: 1px solid rgba(245, 247, 250, 0.18);
+  color: var(--star-white);
+  background: rgba(245, 247, 250, 0.035);
+}
+
+.primaryButton:hover,
+.secondaryButton:hover {
+  transform: translateY(-2px);
+}
+
+.primaryButton:hover {
+  filter: brightness(1.06);
+}
+
+.secondaryButton:hover {
+  border-color: rgba(245, 247, 250, 0.4);
+  background: rgba(245, 247, 250, 0.07);
+}
+
+.externalNote {
+  margin: 0.8rem 0 0;
+  font-size: 0.7rem;
+  color: rgba(245, 247, 250, 0.38);
+}
+
+.gameFacts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-self: center;
+  margin: 0;
+  border-top: 1px solid rgba(245, 247, 250, 0.11);
+  border-left: 1px solid rgba(245, 247, 250, 0.11);
+}
+
+.gameFacts > div {
+  min-height: 8.5rem;
+  padding: 1.35rem;
+  border-right: 1px solid rgba(245, 247, 250, 0.11);
+  border-bottom: 1px solid rgba(245, 247, 250, 0.11);
+}
+
+.gameFacts dt {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.65rem, 2.8vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--game-yellow);
+}
+
+.gameFacts dd {
+  margin: 0.65rem 0 0;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: rgba(245, 247, 250, 0.53);
+}
+
+.eventsSection {
+  padding: 0 0 clamp(5.5rem, 10vw, 9rem);
+}
+
+.eventsCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+  gap: clamp(3rem, 9vw, 8rem);
+  overflow: hidden;
+  padding: clamp(2.2rem, 6vw, 5.5rem);
+  border: 1px solid rgba(214, 168, 79, 0.17);
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(214, 168, 79, 0.1), transparent 26rem),
+    linear-gradient(145deg, #11141a, #0b0e13);
+}
+
+.status {
+  display: inline-flex;
+  margin: 2.25rem 0 0;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(245, 247, 250, 0.12);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  color: rgba(245, 247, 250, 0.62);
+  background: rgba(245, 247, 250, 0.035);
+}
+
+.eventsMain h2 {
+  max-width: 16ch;
+  margin-top: 1.6rem;
+}
+
+.eventsCopy {
+  max-width: 47ch;
+  margin: 1.5rem 0 2rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(245, 247, 250, 0.65);
+}
+
+.eventsMain .primaryButton {
+  background: linear-gradient(100deg, var(--mission-gold), var(--gold-bright));
+}
+
+.eventTypes {
+  align-self: end;
+}
+
+.eventTypes > p {
+  margin: 0 0 1.2rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(245, 247, 250, 0.4);
+}
+
+.eventTypes ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(245, 247, 250, 0.12);
+}
+
+.eventTypes li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 1rem;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(245, 247, 250, 0.12);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: rgba(245, 247, 250, 0.7);
+}
+
+.eventTypes li span {
+  font-variant-numeric: tabular-nums;
+  color: var(--mission-gold);
+}
+
+.collaboration {
+  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  border-top: 1px solid rgba(245, 247, 250, 0.08);
+  background:
+    radial-gradient(circle at 90% 100%, rgba(138, 59, 46, 0.2), transparent 32rem),
+    #090b10;
+}
+
+.collaborationInner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(20rem, 0.7fr);
+  justify-content: space-between;
+  gap: clamp(3rem, 12vw, 10rem);
+  align-items: end;
+}
+
+.collaboration h2 {
+  max-width: 12ch;
+}
+
+.collaborationInner > div:last-child > p {
+  max-width: 50ch;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(245, 247, 250, 0.65);
+}
+
+@media (max-width: 900px) {
+  .hero {
+    min-height: auto;
+    padding: 9.5rem 0 5.5rem;
+  }
+
+  .heroGrid,
+  .gameContent,
+  .eventsCard,
+  .collaborationInner {
+    grid-template-columns: 1fr;
+  }
+
+  .heroGrid {
+    gap: 2.4rem;
+  }
+
+  .heroCopy {
+    max-width: 38rem;
+  }
+
+  .gameMedia {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: minmax(24rem, 1.35fr) minmax(10rem, 0.65fr);
+  }
+
+  .primaryArt {
+    grid-column: 1 / 3;
+    grid-row: auto;
+    border-radius: 1.1rem 1.1rem 0 0;
+  }
+
+  .secondaryArt:first-of-type {
+    border-radius: 0;
+  }
+
+  .gameContent {
+    gap: 3.5rem;
+  }
+
+  .gameFacts {
+    width: 100%;
+  }
+
+  .eventsCard,
+  .collaborationInner {
+    gap: 4rem;
+  }
+
+  .eventTypes {
+    max-width: 36rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .shell {
+    width: min(100% - 2rem, 78rem);
+  }
+
+  .hero {
+    padding: 8.5rem 0 4.4rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(3.25rem, 15vw, 4.6rem);
+    line-height: 0.94;
+  }
+
+  .sectionIntro {
+    display: block;
+    margin-bottom: 1.8rem;
+  }
+
+  .sectionIntro > p {
+    margin: 1.1rem 0 0;
+    text-align: left;
+  }
+
+  .gameFeature,
+  .eventsCard {
+    border-radius: 1rem;
+  }
+
+  .gameMedia {
+    min-height: 29rem;
+    grid-template-rows: minmax(18rem, 1fr) minmax(9rem, 0.55fr);
+    padding: 0.25rem;
+    gap: 0.25rem;
+  }
+
+  .primaryArt {
+    border-radius: 0.75rem 0.75rem 0 0;
+  }
+
+  .gameContent,
+  .eventsCard {
+    padding: 1.5rem;
+  }
+
+  .gamePitch h3 {
+    margin-top: 0.85rem;
+    font-size: clamp(3.2rem, 19vw, 5rem);
+  }
+
+  .gameActions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+
+  .gameFacts > div {
+    min-height: 7.2rem;
+    padding: 1rem;
+  }
+
+  .liveBadge {
+    top: 0.9rem;
+    left: 0.9rem;
+  }
+
+  .secondaryArt figcaption {
+    right: 0.55rem;
+    bottom: 0.55rem;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.56rem;
+  }
+
+  .eventsCard,
+  .collaborationInner {
+    gap: 3rem;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gameMedia img,
+  .textLink svg,
+  .primaryButton svg,
+  .primaryButton,
+  .secondaryButton {
+    transition: none;
+  }
+}
