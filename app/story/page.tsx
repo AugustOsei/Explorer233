@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '../components/sections/Footer';
+import DispatchCountdown from '../components/sections/DispatchCountdown';
 import StoryBody from './StoryBody';
 import { dispatchSE101 as d, nextDispatch } from '../../content/dispatch-se1-01';
 
@@ -49,6 +50,10 @@ export default function StoryPage() {
             >
               {d.title}
             </h1>
+            <p className="story-synopsis font-body mt-5">
+              Explorer 233 unveils its first interstellar ship in Accra. Before the night is
+              over, someone promises to kill one of its scientists.
+            </p>
             <p
               className="font-body mt-5 tabnum"
               style={{
@@ -58,8 +63,11 @@ export default function StoryPage() {
                 color: 'var(--lunar-silver)',
               }}
             >
-              {d.setting} · {MINUTES} min read · {d.status}
+              {d.setting} · {MINUTES} min read
             </p>
+            <a href="#read-dispatch" className="btn-join mt-7">
+              Start reading
+            </a>
           </div>
         </div>
       </header>
@@ -85,11 +93,16 @@ export default function StoryPage() {
           >
             {nextDispatch.code} — {nextDispatch.title}
           </h2>
+
+          <div className="mt-10">
+            <DispatchCountdown />
+          </div>
+
           <p
-            className="font-body mt-4"
+            className="font-body mt-10"
             style={{ fontSize: 'var(--step-0)', lineHeight: 1.7, color: 'var(--lunar-silver)' }}
           >
-            The next dispatch lands soon. Join the mission and it reaches you the moment it does.
+            Join the mission and it reaches you the moment it lands.
           </p>
           <Link href="/#join" className="btn-join mt-8">
             Join the mission

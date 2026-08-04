@@ -27,11 +27,14 @@ export default function StoryBody({
   const body = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    try {
-      setResumable(Boolean(localStorage.getItem('e233.reader.v1')));
-    } catch {
-      /* no storage, no resume affordance */
-    }
+    const id = window.setTimeout(() => {
+      try {
+        setResumable(Boolean(localStorage.getItem('e233.reader.v1')));
+      } catch {
+        /* no storage, no resume affordance */
+      }
+    }, 0);
+    return () => window.clearTimeout(id);
   }, []);
 
   useEffect(() => {
@@ -61,7 +64,7 @@ export default function StoryBody({
         <div style={{ width: `${progress * 100}%` }} />
       </div>
 
-      <div className="chapter-shell" style={{ paddingTop: 'clamp(2.5rem, 6vh, 4rem)' }}>
+      <div id="read-dispatch" className="chapter-shell" style={{ paddingTop: 'clamp(2.5rem, 6vh, 4rem)', scrollMarginTop: '6rem' }}>
         <div className="story-open-bar">
           <button type="button" className="btn-join" onClick={() => setReading(true)}>
             {resumable ? 'Resume reading' : 'Reading mode'}
@@ -70,6 +73,14 @@ export default function StoryBody({
             Paginated, distraction-free, remembers your place.
           </p>
         </div>
+        <nav className="story-scene-nav" aria-label="Dispatch scenes">
+          {scenes.map((scene, index) => (
+            <a key={scene.id} href={`#${scene.id}`}>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              {scene.heading ?? `Scene ${index + 1}`}
+            </a>
+          ))}
+        </nav>
       </div>
 
       <div ref={body} className="story-article">
@@ -85,6 +96,10 @@ export default function StoryBody({
                   className="object-cover"
                 />
                 <div className="story-plate-scrim" aria-hidden />
+                <figcaption className="story-plate-caption">
+                  <span>{scene.heading}</span>
+                  {scene.sub ? ` · ${scene.sub}` : ''}
+                </figcaption>
               </figure>
             )}
 

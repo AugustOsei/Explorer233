@@ -1,10 +1,14 @@
 /**
- * Dispatch SE1-01 — "The Baobab"
+ * Dispatch SE1-01 — "The Grand Opening"
  *
- * Source: "SE1-01 — The Baobab — Draft 1" (Drive, 19 July 2026) — confirmed by
- * August as the canonical draft, superseding the older v0.4 "Baobab
- * Commissioning". Text is the author's, lightly abridged for web reading;
- * scene headings come from the draft's own location/date slugs.
+ * Source: "SE1-01 — The Grand Opening — Draft 1" (Drive) — confirmed by August
+ * as the canonical draft, superseding the older v0.4 "Baobab Commissioning".
+ * Text is the author's, lightly abridged for web reading; scene headings come
+ * from the draft's own location/date slugs.
+ *
+ * The title tracks the draft's own header — THE GRAND OPENING. THE GRAND
+ * THREAT. It was briefly "The Baobab" here, which named the building rather
+ * than the episode and threw away the half of the hook that sells it.
  *
  * Canon details that other pages must match:
  *   · Timeline — Mars contact 2047, Baobab opening 2048 (NOT 2037)
@@ -49,10 +53,10 @@ export type Dispatch = {
 
 export const dispatchSE101: Dispatch = {
   code: 'SE1-01',
-  title: 'The Baobab',
+  title: 'The Grand Opening',
   season: 'Dispatch One',
   setting: 'Mars, 2047 → Accra, 2048',
-  status: 'Draft 1',
+  status: 'Dispatch One',
   scenes: [
     {
       id: 'mars',

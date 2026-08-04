@@ -55,16 +55,19 @@ export default function ReadingMode({
 
   // Restore saved preferences + position.
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORE_KEY);
-      if (!raw) return;
-      const saved = JSON.parse(raw) as { theme?: ThemeId; size?: SizeId; page?: number };
-      if (saved.theme) setTheme(saved.theme);
-      if (saved.size) setSize(saved.size);
-      if (typeof saved.page === 'number') setPage(saved.page);
-    } catch {
-      /* corrupt or unavailable storage is not worth breaking the reader over */
-    }
+    const id = window.setTimeout(() => {
+      try {
+        const raw = localStorage.getItem(STORE_KEY);
+        if (!raw) return;
+        const saved = JSON.parse(raw) as { theme?: ThemeId; size?: SizeId; page?: number };
+        if (saved.theme) setTheme(saved.theme);
+        if (saved.size) setSize(saved.size);
+        if (typeof saved.page === 'number') setPage(saved.page);
+      } catch {
+        /* corrupt or unavailable storage is not worth breaking the reader over */
+      }
+    }, 0);
+    return () => window.clearTimeout(id);
   }, []);
 
   useEffect(() => {
