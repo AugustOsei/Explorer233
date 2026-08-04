@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
 import SiteNav from "./components/SiteNav";
+import HashScrollFix from "./components/HashScrollFix";
 import { SITE_DESCRIPTION, SITE_URL } from "../lib/seo";
 
 const inter = Inter({
@@ -104,6 +105,7 @@ export default function RootLayout({
           gtag('config', 'G-V1J9NQE6JH');
         `}</Script>
         <SmoothScroll />
+        <HashScrollFix />
         <SiteNav />
         {children}
       </body>

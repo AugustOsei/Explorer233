@@ -21,7 +21,6 @@ export default function TermsPage() {
         <p>Purchases, tickets and partner services may include additional terms shown at checkout or registration. Those specific terms apply to that transaction.</p>
         <h2>Contact</h2>
         <p>For permissions or questions, contact <a href="mailto:hello@explorer233.com">hello@explorer233.com</a>.</p>
-        <p className="legal-note">Launch notice: this summary should receive legal review before publication.</p>
       </article>
       <Footer />
     </main>

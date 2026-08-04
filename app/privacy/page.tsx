@@ -21,7 +21,6 @@ export default function PrivacyPage() {
         <p>Store orders and messages may require additional contact or fulfilment information. That information is used only to provide the service you requested and meet applicable legal obligations.</p>
         <h2>Contact</h2>
         <p>Questions or data requests can be sent to <a href="mailto:hello@explorer233.com">hello@explorer233.com</a>.</p>
-        <p className="legal-note">Launch notice: this summary should be reviewed against the final mailing, analytics and commerce providers before publication.</p>
       </article>
       <Footer />
     </main>
