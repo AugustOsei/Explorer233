@@ -3,6 +3,9 @@ import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { unsubscribeUrl } from '../../../lib/unsubscribeToken';
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://explorer233.com';
+const FROM = 'Explorer 233 <theteam@explorer233.com>';
+
 function getResend() {
   const key = process.env.RESEND_API_KEY;
   if (!key) throw new Error('RESEND_API_KEY is not set');
@@ -23,16 +26,23 @@ const welcomeHtml = (email: string, unsubscribeLink: string) => `<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome to Explorer 233</title>
 </head>
-<body style="margin:0;padding:0;background:#05070D;font-family:'Inter',Helvetica,Arial,sans-serif;color:#F4F1EA;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#05070D;min-height:100vh;">
+<body style="margin:0;padding:0;background:#FFFFFF;font-family:'Inter',Helvetica,Arial,sans-serif;color:#1A1D24;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#FFFFFF;">
     <tr>
       <td align="center" style="padding:48px 24px;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
 
-          <!-- Logo / wordmark -->
+          <!-- Logo -->
           <tr>
-            <td style="padding-bottom:40px;text-align:center;">
-              <p style="margin:0;font-size:11px;font-weight:500;letter-spacing:0.32em;text-transform:uppercase;color:rgba(232,179,57,0.8);">
+            <td align="center" style="padding-bottom:20px;">
+              <img src="${SITE_URL}/logo-mark-dark.png" width="52" alt="Explorer 233" style="display:block;width:52px;height:auto;" />
+            </td>
+          </tr>
+
+          <!-- Wordmark -->
+          <tr>
+            <td style="padding-bottom:32px;text-align:center;">
+              <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:#8A8F98;">
                 Explorer 233 · Accra, Ghana
               </p>
             </td>
@@ -40,61 +50,56 @@ const welcomeHtml = (email: string, unsubscribeLink: string) => `<!DOCTYPE html>
 
           <!-- Hero line -->
           <tr>
-            <td style="padding-bottom:24px;text-align:center;border-top:1px solid rgba(244,241,234,0.08);padding-top:40px;">
-              <h1 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#F4F1EA;">
-                The call has been heeded.
+            <td style="padding-bottom:20px;text-align:center;border-top:1px solid #EDEDEF;padding-top:32px;">
+              <h1 style="margin:0;font-size:28px;font-weight:700;letter-spacing:-0.01em;line-height:1.2;color:#1A1D24;">
+                Welcome aboard.
               </h1>
-            </td>
-          </tr>
-
-          <!-- Gold rule -->
-          <tr>
-            <td align="center" style="padding-bottom:28px;">
-              <div style="width:48px;height:1px;background:linear-gradient(90deg,#E8B339,transparent);"></div>
             </td>
           </tr>
 
           <!-- Body -->
           <tr>
-            <td style="padding-bottom:36px;text-align:center;">
-              <p style="margin:0 0 18px;font-size:16px;line-height:1.75;color:rgba(244,241,234,0.72);">
-                Some people look up at the stars and feel small.<br />
-                Others feel <em>called</em>.<br /><br />
-                You just proved which kind you are.
+            <td style="padding-bottom:28px;text-align:center;">
+              <p style="margin:0 0 16px;font-size:16px;line-height:1.65;color:#4A4F58;">
+                You're now part of Explorer 233 — an African science-fiction saga about a
+                Ghanaian-led space exploration company answering signals from other worlds.
               </p>
-              <p style="margin:0;font-size:16px;line-height:1.75;color:rgba(244,241,234,0.72);">
-                Every dispatch will reach you the moment it lands — the story as it arrives,
-                with no noise in between.
+              <p style="margin:0;font-size:16px;line-height:1.65;color:#4A4F58;">
+                Expect new dispatches, story world reveals and event announcements — only
+                when there's something worth sharing, never just noise.
               </p>
             </td>
           </tr>
 
-          <!-- Mystery beat -->
+          <!-- CTA -->
           <tr>
-            <td style="padding:28px 32px;border:1px solid rgba(232,179,57,0.2);border-radius:12px;background:rgba(232,179,57,0.04);text-align:center;margin-bottom:36px;">
-              <p style="margin:0;font-size:13px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:rgba(232,179,57,0.7);">
-                What is Explorer 233, exactly?
-              </p>
-              <p style="margin:12px 0 0;font-size:15px;line-height:1.65;color:rgba(244,241,234,0.6);">
-                A fictional space agency? A game? A community? A blend of all?<br />
-                <strong style="color:#F4F1EA;">Find out soon.</strong>
-              </p>
+            <td align="center" style="padding-bottom:32px;">
+              <a href="${SITE_URL}/story" style="display:inline-block;padding:0.75rem 1.8rem;font-size:14px;font-weight:600;color:#FFFFFF;background:#1A1D24;border-radius:6px;text-decoration:none;">
+                Begin Dispatch One
+              </a>
             </td>
           </tr>
 
-          <tr><td style="height:36px;"></td></tr>
+          <tr>
+            <td style="padding-bottom:32px;text-align:center;">
+              <p style="margin:0;font-size:14px;line-height:1.6;color:#8A8F98;">
+                Want to collaborate or support the project?
+                <a href="mailto:hello@explorer233.com?subject=Explorer%20233&body=Tell%20us%20who%20you%20are%20and%20how%20you%20would%20like%20to%20be%20involved." style="color:#1A1D24;text-decoration:underline;">Get in touch.</a>
+              </p>
+            </td>
+          </tr>
 
           <!-- Footer -->
           <tr>
-            <td style="text-align:center;border-top:1px solid rgba(244,241,234,0.06);padding-top:28px;">
-              <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,234,0.25);">
+            <td style="text-align:center;border-top:1px solid #EDEDEF;padding-top:24px;">
+              <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#B4B8BF;">
                 © 2026 Explorer 233 · Accra, Ghana
               </p>
-              <p style="margin:0 0 6px;font-size:11px;color:rgba(244,241,234,0.2);">
+              <p style="margin:0 0 6px;font-size:11px;color:#B4B8BF;">
                 You're receiving this because ${email} signed up at explorer233.com
               </p>
-              <p style="margin:0;font-size:11px;color:rgba(244,241,234,0.2);">
-                <a href="${unsubscribeLink}" style="color:rgba(244,241,234,0.35);">Unsubscribe</a>
+              <p style="margin:0;font-size:11px;color:#B4B8BF;">
+                <a href="${unsubscribeLink}" style="color:#8A8F98;">Unsubscribe</a>
               </p>
             </td>
           </tr>
@@ -105,6 +110,24 @@ const welcomeHtml = (email: string, unsubscribeLink: string) => `<!DOCTYPE html>
   </table>
 </body>
 </html>`;
+
+const welcomeText = (email: string, unsubscribeLink: string) => `EXPLORER 233 · ACCRA, GHANA
+
+Welcome aboard.
+
+You're now part of Explorer 233 — an African science-fiction saga about a
+Ghanaian-led space exploration company answering signals from other worlds.
+
+Expect new dispatches, story world reveals and event announcements — only when
+there's something worth sharing, never just noise.
+
+Begin Dispatch One: ${SITE_URL}/story
+
+Want to collaborate or support the project? Get in touch: hello@explorer233.com
+
+—
+You're receiving this because ${email} signed up at explorer233.com
+Unsubscribe: ${unsubscribeLink}`;
 
 export async function POST(req: NextRequest) {
   try {
@@ -148,11 +171,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Send welcome email
+    const unsubscribeLink = unsubscribeUrl(clean);
     await getResend().emails.send({
-      from: 'Explorer 233 <explorer233@augustwheel.com>',
+      from: FROM,
       to: clean,
-      subject: 'The call has been heeded.',
-      html: welcomeHtml(clean, unsubscribeUrl(clean)),
+      subject: 'Welcome aboard.',
+      html: welcomeHtml(clean, unsubscribeLink),
+      text: welcomeText(clean, unsubscribeLink),
+      headers: { 'List-Unsubscribe': `<${unsubscribeLink}>` },
     });
 
     return NextResponse.json({ success: true }, { status: 200 });

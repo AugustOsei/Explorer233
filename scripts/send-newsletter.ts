@@ -14,7 +14,7 @@ import path from 'path';
 import { pathToFileURL } from 'url';
 
 const SEGMENT_NAME = 'Explorer 233 — Subscribers';
-const FROM = 'Explorer 233 <explorer233@augustwheel.com>';
+const FROM = 'Explorer 233 <theteam@explorer233.com>';
 
 interface NewsletterContent {
   subject: string;
