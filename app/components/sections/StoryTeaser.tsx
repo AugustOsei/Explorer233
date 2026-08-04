@@ -27,7 +27,7 @@ export default function StoryTeaser() {
           <div className="home-dispatch-copy">
             <p className="eyebrow">Begin the story</p>
             <h2>The Grand Opening</h2>
-            <p className="caption-meta">10-minute read · Free</p>
+            <p className="caption-meta">16-minute read · Free</p>
             <p className="home-dispatch-synopsis">
               Explorer 233 unveils its first interstellar ship in Accra. Before the night ends,
               an impossible file opens on founder Laura Osei Baako’s desk—and someone promises to
