@@ -1666,12 +1666,11 @@ body.dispatch-entry-preview .dispatch-reader-chrome[data-active] { transform: tr
     var(--deep-space-black);
 }
 .home-dispatch-bridge {
-  max-width: 33ch;
+  max-width: 44rem;
   margin: 0 0 clamp(3rem, 7vw, 6rem);
-  font: 440 clamp(1.65rem, 3.2vw, 3rem)/1.22 'Space Grotesk', sans-serif;
-  letter-spacing: -0.035em;
-  color: var(--star-white);
-  text-wrap: balance;
+  font: 400 clamp(1.05rem, 1.2vw, 1.2rem)/1.7 'Inter', sans-serif;
+  letter-spacing: 0;
+  color: rgba(245, 247, 250, 0.78);
 }
 .home-dispatch-feature {
   display: grid;

@@ -12,8 +12,7 @@ export default function StoryTeaser() {
     <section ref={ref} className="home-dispatch">
       <div className="chapter-shell">
         <p data-reveal className="home-dispatch-bridge" style={{ opacity: 0 }}>
-          That message changes humanity’s future. Explorer 233 is created to find its senders—and
-          must survive those determined to keep humanity home.
+          Explorer 233 is created to find the senders. Not everyone wants humanity to answer.
         </p>
 
         <article data-reveal data-reveal-delay="0.05" className="home-dispatch-feature" style={{ opacity: 0 }}>
