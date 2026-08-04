@@ -32,17 +32,13 @@ export default function SignalConvergence() {
   const root = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sentenceRef = useRef<HTMLParagraphElement>(null);
-  const carrierRef = useRef<HTMLDivElement>(null);
-  const carrierLineRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const section = root.current;
     const canvas = canvasRef.current;
     const sentence = sentenceRef.current;
-    const carrier = carrierRef.current;
-    const carrierLine = carrierLineRef.current;
     const context = canvas?.getContext('2d');
-    if (!section || !canvas || !sentence || !carrier || !carrierLine || !context) return;
+    if (!section || !canvas || !sentence || !context) return;
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let width = 0;
@@ -84,7 +80,7 @@ export default function SignalConvergence() {
       maskContext.textAlign = 'center';
       maskContext.textBaseline = 'middle';
       const lineHeight = fontSize * 0.83;
-      const centerY = height * 0.51;
+      const centerY = height * (width < 600 ? 0.58 : 0.64);
       maskContext.fillText('WE ARE', width / 2, centerY - lineHeight / 2);
       maskContext.fillText('HERE', width / 2, centerY + lineHeight / 2);
 
@@ -121,7 +117,6 @@ export default function SignalConvergence() {
       const pulseOut = 1 - smooth((progress - 0.56) / 0.18);
       const pulseStrength = pulseIn * pulseOut;
       const reveal = smooth((progress - 0.27) / 0.3);
-      const messageOut = 1 - smooth((progress - 0.8) / 0.13);
       const t = time * 0.001;
 
       context.fillStyle = 'rgba(174, 183, 194, 0.22)';
@@ -160,7 +155,7 @@ export default function SignalConvergence() {
         const localReveal = smooth((reveal - point.order) / 0.17);
         if (localReveal <= 0) continue;
         const shimmer = 0.91 + Math.sin(t * 0.72 + point.hash * 18) * 0.09;
-        context.globalAlpha = localReveal * messageOut * shimmer;
+        context.globalAlpha = localReveal * shimmer;
         const size = width < 600 ? 2.35 : 2.65;
         context.fillRect(point.x - size / 2, point.y - size / 2, size, size);
       }
@@ -173,19 +168,12 @@ export default function SignalConvergence() {
       if (reduced) {
         sentence.style.opacity = '1';
         sentence.style.transform = 'none';
-        carrier.style.opacity = '1';
-        carrier.style.transform = 'none';
-        carrierLine.style.transform = 'scaleX(1)';
         draw(performance.now());
         return;
       }
       const sentenceOut = smooth((progress - 0.07) / 0.2);
-      const carrierIn = smooth((progress - 0.79) / 0.13);
       sentence.style.opacity = String(1 - sentenceOut);
       sentence.style.transform = `translateY(${-sentenceOut * 10}px)`;
-      carrier.style.opacity = String(carrierIn);
-      carrier.style.transform = `translateY(${(1 - carrierIn) * 14}px)`;
-      carrierLine.style.transform = `scaleX(${carrierIn})`;
       draw(performance.now());
     };
 
@@ -250,11 +238,6 @@ export default function SignalConvergence() {
             The silence ended after humanity established a permanent settlement on Mars. Signals
             began arriving from worlds near and far. Most carried the same message.
           </p>
-        </div>
-
-        <div ref={carrierRef} className="signal-carrier chapter-shell">
-          <span ref={carrierLineRef} className="signal-carrier-line" aria-hidden="true" />
-          <p>Explorer 233 is created to find the senders. Not everyone wants humanity to answer.</p>
         </div>
 
         <p className="sr-only">The shared message reads: We are here.</p>
