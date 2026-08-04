@@ -1757,7 +1757,6 @@ body.dispatch-entry-preview .dispatch-reader-chrome[data-active] { transform: tr
 .experience-card:hover .experience-card-image { transform: scale(1.04); filter: saturate(1.08); }
 .experience-card:hover .experience-card-arrow { transform: translate(0.25rem,-0.25rem); }
 .experience-card--about { background: radial-gradient(circle at 68% 28%, rgba(214,168,79,0.2), transparent 28%), linear-gradient(145deg,#171b15,#090a08); }
-.experience-monogram { position: absolute; top: 10%; right: -5%; z-index: -1; font: 330 clamp(8rem,16vw,15rem)/1 var(--font-space-grotesk),sans-serif; letter-spacing: -.08em; color: rgba(214,168,79,0.22); }
 
 .join-single {
   display: grid;

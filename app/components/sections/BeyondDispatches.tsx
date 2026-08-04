@@ -25,8 +25,8 @@ const EXPERIENCES = [
     title: 'About & Journal',
     text: 'Meet August Peekay and follow the work of building the story franchise.',
     href: '/about',
-    image: null,
-    alt: '',
+    image: '/images/home-about-card.jpg',
+    alt: 'August Peekay illustrated in a spacesuit helmet beside a launching rocket',
     className: 'experience-card--about',
   },
 ];
@@ -43,10 +43,8 @@ export default function BeyondDispatches() {
         <div className="experience-grid">
           {EXPERIENCES.map((experience) => (
             <Link key={experience.title} href={experience.href} className={`experience-card ${experience.className}`}>
-              {experience.image ? (
+              {experience.image && (
                 <Image src={experience.image} alt={experience.alt} fill sizes="(max-width: 800px) 100vw, 34vw" className="experience-card-image object-cover" />
-              ) : (
-                <span className="experience-monogram" aria-hidden="true">AP</span>
               )}
               <span className="experience-card-scrim" aria-hidden="true" />
               <span className="experience-card-content">
