@@ -399,16 +399,14 @@ export default function Departure() {
                   color: 'var(--star-white)',
                 }}
               >
-                Nipa Nsa
+                Buckle up.
               </h2>
               <p
                 className="font-body mt-4"
                 style={{ fontSize: 'var(--step-0)', lineHeight: 1.65, color: 'var(--star-white)', maxWidth: '44ch' }}
               >
-                Explorer 233’s first interstellar ship, built to leave the Solar System and
-                return with an answer.
+                We’re venturing into a world of adventure — one episode at a time.
               </p>
-              <p className="caption-meta mt-4">Akan proverb · One hand cannot lift a load</p>
             </div>
           </div>
         </div>
