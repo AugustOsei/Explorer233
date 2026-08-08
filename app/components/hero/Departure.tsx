@@ -60,27 +60,29 @@ export default function Departure() {
 
     const frames: Array<HTMLImageElement | undefined> = new Array(FRAMES);
     const frameLoads: Array<Promise<void> | undefined> = new Array(FRAMES);
+    // A frame counts as ready only once it is *decoded*, not merely loaded.
+    // `complete && naturalWidth > 0` is true the instant the bytes land, and
+    // drawing then makes the first drawImage of every frame decode a 1280x720
+    // JPEG synchronously inside a scroll tick.
+    const ready = new Set<number>();
     let current = -1;
     let desired = 0;
     let disposed = false;
     let pumpTimer: number | undefined;
 
-    const isReady = (image: HTMLImageElement | undefined) =>
-      Boolean(image?.complete && image.naturalWidth > 0);
-
     const draw = (index: number, force = false) => {
       const target = Math.min(Math.max(Math.round(index), 0), FRAMES - 1);
       desired = target;
       let i = target;
-      if (!isReady(frames[i])) {
+      if (!ready.has(i)) {
         for (let distance = 1; distance < FRAMES; distance++) {
           const before = target - distance;
           const after = target + distance;
-          if (before >= 0 && isReady(frames[before])) {
+          if (before >= 0 && ready.has(before)) {
             i = before;
             break;
           }
-          if (after < FRAMES && isReady(frames[after])) {
+          if (after < FRAMES && ready.has(after)) {
             i = after;
             break;
           }
@@ -88,7 +90,7 @@ export default function Departure() {
       }
       if (i === current && !force) return;
       const img = frames[i];
-      if (!img || !isReady(img)) return;
+      if (!img || !ready.has(i) || img.naturalWidth === 0) return;
       current = i;
       const cw = canvas.width;
       const ch = canvas.height;
@@ -111,16 +113,28 @@ export default function Departure() {
 
     const loadFrame = (index: number) => {
       const i = Math.min(Math.max(index, 0), FRAMES - 1);
-      const existing = frames[i];
-      if (existing && isReady(existing)) return Promise.resolve();
+      if (ready.has(i)) return Promise.resolve();
       if (frameLoads[i]) return frameLoads[i];
 
       const request = new Promise<void>((resolve) => {
         const image = new window.Image();
         image.decoding = 'async';
-        image.onload = () => {
+
+        const settle = () => {
+          ready.add(i);
+          // Repaint only if the reader is near this frame — otherwise a late
+          // arrival from the prefetch queue would yank the canvas backwards.
           if (!disposed && Math.abs(i - desired) <= 8) draw(desired, true);
           resolve();
+        };
+
+        image.onload = () => {
+          // Decode off the main thread so the scrub never stalls on it. Engines
+          // that reject decode() still paint correctly — the bytes are there,
+          // they just decode lazily on first draw as before.
+          const decoded = image.decode?.();
+          if (decoded) decoded.then(settle, settle);
+          else settle();
         };
         image.onerror = () => resolve();
         frames[i] = image;
@@ -214,29 +228,81 @@ export default function Departure() {
       };
     }
 
-    // Keep the full master sequence available, but background-load only sparse
-    // anchor frames. The exact current frame and its neighbours are requested
-    // above as the visitor scrolls. This preserves visual continuity while
-    // avoiding a compulsory download of all 472 frames (roughly 21 MB).
+    // Prefetch in two passes.
+    //
+    // Pass 1 — sparse anchors, started before the visitor scrolls. `draw` falls
+    // back to the nearest ready frame, so once these land every scroll position
+    // already has *something* within `frameStep` to show. ~60 frames, ~2.5 MB.
+    //
+    // Pass 2 — every remaining frame, in playback order, refining that coarse
+    // pass to the full 472. This is the part that costs real bandwidth (~21 MB
+    // all told), so it only starts once the visitor actually scrolls into the
+    // sequence. Someone who lands and leaves never pays for it.
+    //
+    // Previously both were one sparse pass gated on first scroll, which meant a
+    // first-time visitor began scrolling with an empty buffer and then watched
+    // what is really a 60-frame version of a 472-frame shot. Returning visitors
+    // saw it play smoothly off disk cache, which is why it only ever looked
+    // broken to new arrivals.
     const frameStep = window.innerWidth <= 640 ? 10 : 8;
-    const queue: number[] = [];
-    for (let i = 0; i < FRAMES; i += frameStep) queue.push(i);
-    if (queue[queue.length - 1] !== FRAMES - 1) queue.push(FRAMES - 1);
+    const anchors: number[] = [];
+    for (let i = 0; i < FRAMES; i += frameStep) anchors.push(i);
+    if (anchors[anchors.length - 1] !== FRAMES - 1) anchors.push(FRAMES - 1);
+
+    const queued = new Set<number>(anchors);
+    const queue = [...anchors];
     let queueCursor = 0;
-    let backgroundStarted = false;
+    let pumping = false;
+    let refineQueued = false;
 
     const pumpFrames = () => {
-      if (disposed || queueCursor >= queue.length) return;
+      pumpTimer = undefined;
+      if (disposed || queueCursor >= queue.length) {
+        pumping = false;
+        return;
+      }
+      pumping = true;
       const batch = queue.slice(queueCursor, queueCursor + 6);
       queueCursor += batch.length;
       void Promise.all(batch.map(loadFrame)).then(() => {
-        if (!disposed) pumpTimer = window.setTimeout(pumpFrames, 120);
+        // Yield between batches so prefetching never competes with a scroll
+        // tick, but without the old 120ms stall that made the fill slower than
+        // an average visitor scrolls.
+        if (disposed) pumping = false;
+        else pumpTimer = window.setTimeout(pumpFrames, 16);
       });
+    };
+
+    // Guarded so the refinement pass and the initial idle callback can both ask
+    // to start without ever running two pumps against the same cursor.
+    const startPump = () => {
+      if (!disposed && !pumping) pumpFrames();
+    };
+
+    const queueRefinement = () => {
+      if (refineQueued) return;
+      refineQueued = true;
+      for (let i = 0; i < FRAMES; i++) {
+        if (!queued.has(i)) {
+          queued.add(i);
+          queue.push(i);
+        }
+      }
+      // The pump stops when it drains the queue, so if pass 1 already finished
+      // it needs restarting.
+      startPump();
     };
 
     void loadFrame(0).then(() => {
       if (disposed) return;
       resize();
+      // Frame 0 and the fonts get the network to themselves first; the anchor
+      // pass fills in while the visitor is still reading the title card.
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(startPump, { timeout: 1500 });
+      } else {
+        pumpTimer = window.setTimeout(startPump, 300);
+      }
     });
 
     const st = ScrollTrigger.create({
@@ -247,10 +313,7 @@ export default function Departure() {
       anticipatePin: 1,
       scrub: 0.8,
       onUpdate: (self) => {
-        if (!backgroundStarted && self.progress > 0.01) {
-          backgroundStarted = true;
-          pumpFrames();
-        }
+        if (self.progress > 0.01) queueRefinement();
         apply(self.progress);
       },
     });
@@ -271,6 +334,11 @@ export default function Departure() {
   // into a black rectangle instead.
   return (
     <section ref={root} className="relative" style={{ background: 'var(--deep-space-black)' }}>
+      {/* Frame 0 is the vessel sitting in its chamber, already painted behind
+          the closed doors before anyone scrolls — so it is above the fold and
+          wants a preload. React hoists this into <head>. */}
+      <link rel="preload" as="image" href={framePath(1)} fetchPriority="high" />
+
       <div className="relative h-[100svh] w-full overflow-hidden">
         <canvas
           ref={canvasRef}
