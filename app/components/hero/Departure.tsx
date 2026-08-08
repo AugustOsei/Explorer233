@@ -144,15 +144,51 @@ export default function Departure() {
       return request;
     };
 
+    // Size from the canvas's own box, not from window.innerHeight.
+    //
+    // iOS Safari fires `resize` repeatedly as the URL bar collapses, which
+    // happens on the very first scroll — exactly when the chamber doors are
+    // parting. Keying off window.innerHeight meant each of those events
+    // reallocated a ~5MB backing store, cleared it, and forced a full redraw
+    // mid-animation, which is what made the doors judder on iPhone. The
+    // container is `h-[100svh]`, and svh deliberately does not move with the
+    // URL bar, so the element's own box is stable across exactly the events
+    // that were causing the thrash.
+    //
+    // The no-op guard matters as much as the sizing: setting canvas.width at
+    // all clears the bitmap, so it must only happen when something really did
+    // change.
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.floor(window.innerWidth * dpr);
-      canvas.height = Math.floor(window.innerHeight * dpr);
+      const w = Math.floor(canvas.clientWidth * dpr);
+      const h = Math.floor(canvas.clientHeight * dpr);
+      if (w === 0 || h === 0) return;
+      if (w === canvas.width && h === canvas.height) return;
+      canvas.width = w;
+      canvas.height = h;
       draw(current < 0 ? 0 : current, true);
     };
 
     resize();
+    // ResizeObserver tracks the element, so URL-bar collapse never reaches it.
+    // The window listener stays for devicePixelRatio changes (dragging the
+    // window between displays), where the box is unchanged but the buffer is.
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
     window.addEventListener('resize', resize);
+
+    // An element at opacity 0 is still composited every frame, and these two are
+    // the expensive kind: a full-viewport `mix-blend-mode: screen` layer and a
+    // 10px blur. On iOS that cost is charged during the door animation, when
+    // neither is even visible. `visibility: hidden` drops them from compositing
+    // entirely. Only written on a state change — a style write per scroll tick
+    // would cost more than it saves.
+    const shown = new Map<HTMLElement, boolean>();
+    const setVisible = (node: HTMLElement | null, visible: boolean) => {
+      if (!node || shown.get(node) === visible) return;
+      shown.set(node, visible);
+      node.style.visibility = visible ? 'visible' : 'hidden';
+    };
 
     const apply = (p: number) => {
       // Doors hold shut, then withdraw. Frame 0 (the vessel in its chamber) is
@@ -164,6 +200,7 @@ export default function Departure() {
         // Burns off well before the doors finish, so no light bar is left lying
         // across the revealed vessel.
         const seam = Math.sin(Math.min(open / 0.55, 1) * Math.PI);
+        setVisible(layers.seam, seam > 0.002);
         layers.seam.style.opacity = String(seam * 0.85);
         layers.seam.style.transform = `translateX(-50%) scaleX(${0.2 + open * 0.8})`;
       }
@@ -197,7 +234,9 @@ export default function Departure() {
       draw(targetFrame);
 
       if (layers.bloom) {
-        layers.bloom.style.opacity = String(Math.sin(span(p, 0.3, 0.46) * Math.PI) * 0.5);
+        const glow = Math.sin(span(p, 0.3, 0.46) * Math.PI) * 0.5;
+        setVisible(layers.bloom, glow > 0.002);
+        layers.bloom.style.opacity = String(glow);
       }
 
       // One caption, over the ascent, gone before the stars. The scrim rides
@@ -224,6 +263,7 @@ export default function Departure() {
       void loadFrame(0).then(() => resize());
       return () => {
         disposed = true;
+        ro.disconnect();
         window.removeEventListener('resize', resize);
       };
     }
@@ -323,6 +363,7 @@ export default function Departure() {
     return () => {
       disposed = true;
       if (pumpTimer !== undefined) window.clearTimeout(pumpTimer);
+      ro.disconnect();
       window.removeEventListener('resize', resize);
       st.kill();
     };
