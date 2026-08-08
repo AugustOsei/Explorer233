@@ -211,6 +211,11 @@ export default function Departure() {
       // was. The first frame is the title card now.
       if (layers.titles) {
         const out = span(p, 0.14, 0.24);
+        // This fade (0.14–0.24) overlaps the doors parting (0.16–0.30), so it
+        // is charged at the worst possible moment. Once cleared, drop the whole
+        // full-viewport card rather than leaving it composited at opacity 0 for
+        // the remaining three quarters of the sequence.
+        setVisible(layers.titles, out < 0.999);
         layers.titles.style.opacity = String(1 - out);
         layers.titles.style.transform = `translateY(${-out * 30}px)`;
         // The card holds a real link now, and it covers the whole viewport.
@@ -248,7 +253,12 @@ export default function Departure() {
         const vis = inn * (1 - out);
         layers.line.style.opacity = String(vis);
         layers.line.style.transform = `translateY(${(1 - inn) * 22 - out * 30}px)`;
-        if (layers.linescrim) layers.linescrim.style.opacity = String(vis);
+        if (layers.linescrim) {
+          // Half-viewport gradient, invisible for most of the shot — including
+          // all of the door animation. No reason to composite it there.
+          setVisible(layers.linescrim, vis > 0.002);
+          layers.linescrim.style.opacity = String(vis);
+        }
       }
 
       // Hold the final frame until the pin releases. Fading the canvas before
@@ -431,7 +441,11 @@ export default function Departure() {
         <div
           data-l="titles"
           className="absolute inset-0 z-[5] flex flex-col items-center justify-center px-6 text-center"
-          style={{ opacity: 1 }}
+          // Promoted so the fade-out is a compositor opacity change rather than
+          // a repaint of display-sized text — it runs while the doors are
+          // parting, which is the frame budget that matters most here. Dropped
+          // from compositing entirely once it has cleared (see `setVisible`).
+          style={{ opacity: 1, willChange: 'opacity, transform' }}
         >
           {/* Say the premise. Plainly.
 
