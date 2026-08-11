@@ -327,7 +327,7 @@ export default function StoryBody({
                   if (isSignalMoment(paragraph)) {
                     return (
                       <p key={paragraphId} id={paragraphId} className="dispatch-signal-moment" data-reader-paragraph>
-                        <span>We are here</span>
+                        <span>We are here.</span>
                       </p>
                     );
                   }

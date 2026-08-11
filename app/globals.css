@@ -1418,10 +1418,8 @@ body.dispatch-entry-preview .dispatch-reader-chrome[data-active] { transform: tr
 .dispatch-paragraph:first-child { margin-top: 0; }
 .dispatch-lede { font-size: calc(var(--reader-font-size) * 1.08); line-height: 1.65; color: var(--reader-strong); }
 .dispatch-dialogue { color: var(--reader-strong); }
-.dispatch-signal-moment { width: min(92vw, 72rem); margin: clamp(4rem, 10vh, 7rem) 50%; transform: translateX(-50%); scroll-margin-top: 22vh; text-align: center; }
-.dispatch-signal-moment span { display: block; font: 540 clamp(3.1rem, 11vw, 9rem)/0.9 var(--font-space-grotesk), sans-serif; letter-spacing: 0.03em; text-transform: uppercase; color: var(--reader-strong); text-shadow: 0 0 42px color-mix(in srgb, var(--reader-accent) 24%, transparent); }
-.dispatch-signal-moment::before,
-.dispatch-signal-moment::after { content: ''; display: block; width: min(20rem, 40vw); height: 1px; margin: 1.5rem auto; background: linear-gradient(90deg, transparent, var(--reader-accent), transparent); opacity: 0.65; }
+.dispatch-signal-moment { margin: clamp(2.2rem, 5vh, 3.5rem) 0; scroll-margin-top: 22vh; text-align: center; }
+.dispatch-signal-moment span { display: inline-block; font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif; font-size: calc(var(--reader-font-size) * 1.05); font-weight: 600; font-variant: small-caps; letter-spacing: 0.16em; color: var(--reader-strong); }
 
 .dispatch-reader[data-illustrations='off'] .dispatch-scene { padding-top: clamp(5rem, 10vh, 8rem); }
 .dispatch-end { padding: clamp(7rem, 15vh, 11rem) 0; background: radial-gradient(circle at 50% 0%, rgba(214,168,79,0.1), transparent 38%), #05070b; }
@@ -1470,8 +1468,6 @@ body.dispatch-entry-preview .dispatch-reader-chrome[data-active] { transform: tr
   .dispatch-scene-title h2 { font-size: clamp(2.35rem, 12vw, 4.2rem); }
   .dispatch-prose { width: min(65ch, calc(100% - 2.25rem)); }
   .dispatch-paragraph { line-height: 1.68; }
-  .dispatch-signal-moment { width: calc(100vw - 1.5rem); }
-  .dispatch-signal-moment span { font-size: clamp(2.8rem, 16vw, 5rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
