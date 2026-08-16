@@ -12,8 +12,8 @@ export default function ExploreDoors() {
     <section className="world-preview" aria-labelledby="world-preview-title">
       <div className="chapter-shell world-preview-grid">
         <div className="world-preview-copy">
-          <p className="eyebrow">The World Gallery</p>
-          <h2 id="world-preview-title">Enter the world.</h2>
+          <p className="eyebrow">Enter the world</p>
+          <h2 id="world-preview-title">Image Gallery</h2>
           <p>Meet the characters and discover the ships, places and artwork of Explorer 233.</p>
           <Link href="/world" className="btn-ghost world-preview-link">
             Explore the gallery <span aria-hidden="true">→</span>
