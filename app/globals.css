@@ -1518,7 +1518,7 @@ body.dispatch-entry-preview .dispatch-reader-chrome[data-active] { transform: tr
   display: flex;
   align-items: center;
   margin-top: -1px;
-  padding-block: clamp(5rem, 11vh, 8rem) clamp(1.75rem, 4vh, 3rem);
+  padding-block: clamp(5rem, 11vh, 8rem) clamp(4rem, 10vh, 7rem);
   background: var(--deep-space-black);
   isolation: isolate;
 }
@@ -1574,7 +1574,6 @@ body.dispatch-entry-preview .dispatch-reader-chrome[data-active] { transform: tr
 .home-dispatch {
   position: relative;
   z-index: 3;
-  margin-top: -14svh;
   padding-block: 0 clamp(5rem, 11vw, 9rem);
   border-top: 1px solid rgba(174, 183, 194, 0.08);
   background:
