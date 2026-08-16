@@ -44,7 +44,7 @@ export default function JoinPartner() {
       <div className="chapter-shell relative z-10">
         <div data-reveal className="join-single" style={{ opacity: 0 }}>
           <div>
-            <h2 className="join-single-title">Stay close to the signal.</h2>
+            <h2 className="join-single-title">Subscribe to Explorer 233.</h2>
             <p
               className="font-body mt-4"
               style={{ fontSize: 'var(--step-0)', lineHeight: 1.7, color: 'var(--lunar-silver)', maxWidth: '48ch' }}
