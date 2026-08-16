@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { useReveal } from '../useReveal';
-import SignalConvergence from './SignalConvergence';
 
 /**
  * The single orientation beat after the cinematic. The homepage previously
@@ -13,7 +12,6 @@ export default function TheSignal() {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <>
     <section ref={ref} id="story-premise" tabIndex={-1} className="premise-section relative overflow-hidden">
       <Image
         src="/images/scene-mars.jpg"
@@ -26,26 +24,24 @@ export default function TheSignal() {
 
       <div className="chapter-shell relative z-10">
         <div className="premise-copy">
+          <p data-reveal className="eyebrow" style={{ opacity: 0 }}>
+            The most asked question
+          </p>
           <h2 data-reveal className="premise-title" style={{ opacity: 0 }}>
-            In this universe, space is no longer silent.
+            What is Explorer 233?
           </h2>
 
           <div data-reveal data-reveal-delay="0.05" className="premise-body" style={{ opacity: 0 }}>
             <p>
-              Explorer 233 is an African science-fiction saga about a Ghanaian-led space
-              exploration company responding to signals from star systems near and far —
-              messages calling directly to humanity.
+              Explorer 233 is a science-fiction story released monthly right here on this
+              site. It follows a Ghanaian space exploration company preparing to venture into
+              the cosmos after signals from unknown worlds begin reaching Earth mostly
+              carrying the same message: we are here.
             </p>
-            <p>
-              For generations, scientists asked why a universe this vast seemed silent. That
-              mystery is known as the Fermi paradox.
-            </p>
+            <p>Beyond the story, the Explorer 233 universe includes games, art and gear inspired by it.</p>
           </div>
         </div>
       </div>
     </section>
-
-    <SignalConvergence />
-    </>
   );
 }
