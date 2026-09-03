@@ -158,16 +158,89 @@ export default function DayZeroHero() {
     return () => ctx.revert();
   }, [reduced]);
 
-  // Autoplay can still be refused (iOS Low Power Mode, data saver). The poster
-  // sits underneath as a real element rather than only in the video's `poster`
-  // attribute, so a refused play leaves a composed frame, not a black box.
+  // Keeping the loop running.
+  //
+  // The poster sits underneath as a real element rather than only in the
+  // video's `poster` attribute, so a refused play leaves a composed frame
+  // rather than a black box. But "not broken" is not the same as "playing",
+  // and the first version of this only ever tried once, swallowed the
+  // rejection, and gave up — which is exactly what iOS does to it:
+  //
+  //   - Low Power Mode refuses autoplay outright, for every video, in Safari
+  //     AND in iOS Chrome (both are WebKit). A promise rejection is the only
+  //     signal you get. It is, however, only *auto*play that is blocked —
+  //     playback started from a real user gesture is still allowed, so the
+  //     retry below recovers as soon as the visitor touches the page.
+  //   - WebKit also pauses offscreen and backgrounded video to save power,
+  //     and does not always resume it on its own.
+  //
+  // So: try immediately, and if that fails, try again on the first genuine
+  // user gesture, on tab return, and whenever the hero scrolls back into view.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    const play = () => void video.play().catch(() => {});
-    play();
-    video.addEventListener('loadeddata', play);
-    return () => video.removeEventListener('loadeddata', play);
+
+    // Scroll is deliberately not in this list: it does not count as user
+    // activation, so retrying on it would not lift the autoplay block. On a
+    // phone a scroll ends in `touchend` anyway, which does.
+    const GESTURES = ['touchend', 'pointerup', 'click', 'keydown'] as const;
+
+    let disposed = false;
+    let listening = false;
+
+    const onGesture = () => void attempt();
+
+    const listen = () => {
+      if (listening || disposed) return;
+      listening = true;
+      GESTURES.forEach((g) => window.addEventListener(g, onGesture, { passive: true }));
+    };
+
+    const unlisten = () => {
+      if (!listening) return;
+      listening = false;
+      GESTURES.forEach((g) => window.removeEventListener(g, onGesture));
+    };
+
+    const attempt = async () => {
+      if (disposed || !video.paused) return;
+      try {
+        await video.play();
+        // Playing — stop holding global listeners we no longer need.
+        unlisten();
+      } catch {
+        // Blocked. Arm the gesture retry and wait for the visitor.
+        listen();
+      }
+    };
+
+    void attempt();
+    video.addEventListener('loadeddata', onGesture);
+
+    const onVisibility = () => {
+      if (!document.hidden) void attempt();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    // Pause once the hero is fully scrolled past — decoding a loop nobody can
+    // see costs battery on exactly the devices that are strictest about it —
+    // and pick it up again on the way back.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) void attempt();
+        else if (!video.paused) video.pause();
+      },
+      { threshold: 0.01 }
+    );
+    io.observe(video);
+
+    return () => {
+      disposed = true;
+      unlisten();
+      video.removeEventListener('loadeddata', onGesture);
+      document.removeEventListener('visibilitychange', onVisibility);
+      io.disconnect();
+    };
   }, [reduced]);
 
   return (
