@@ -1768,3 +1768,225 @@ body.dispatch-entry-preview .dispatch-reader-chrome[data-active] { transform: tr
   .hero-enter::after { animation: none; }
   .world-preview-card, .experience-card-image, .experience-card-arrow { transition: none; }
 }
+
+/* ── Day Zero hero: the intercepted transmission ───────────────────
+   The homepage's first screen, and deliberately outside the house style.
+   Everything below it is gold-on-void and ceremonial; this is Day Zero
+   cutting into the channel, so it uses bone-white on soot, hard edges and
+   no gold at all. Nothing here should be reused by an Explorer 233 section. */
+.dzh {
+  position: relative;
+  background: var(--deep-space-black);
+  border-bottom: 1px solid rgba(174, 183, 194, 0.1);
+}
+
+.dzh-stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  /* svh, not vh: iOS reports vh against the *expanded* URL-bar layout, which
+     would push the scroll cue below the fold on first paint. */
+  height: 100svh;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* The poster is a real element under the video rather than only the video's
+   `poster` attribute. One layer then covers three cases: the loop still
+   downloading, autoplay refused (iOS Low Power Mode), and reduced motion,
+   where the video never mounts at all. */
+.dzh-poster,
+.dzh-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.dzh-video { z-index: 1; }
+
+/* Legibility grade, weighted to the bottom-left where the copy sits. Kept
+   deliberately lighter than a normal text scrim: the firelight and the drifting
+   smoke are the whole point of the shot, and an earlier, heavier pass buried
+   both — the figure read as a dark smudge. Legibility is bought back with the
+   text-shadow on the copy instead, which costs the image nothing. */
+.dzh-grade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(5, 7, 11, 0.9) 0%, rgba(5, 7, 11, 0.58) 24%, rgba(5, 7, 11, 0.12) 54%, transparent 76%),
+    linear-gradient(to right, rgba(5, 7, 11, 0.62) 0%, rgba(5, 7, 11, 0.22) 40%, transparent 66%);
+}
+
+/* Resting haze — always present, so the hero reads as a monitored feed even
+   before the burst fires and after it settles. */
+.dzh-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.34;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.26) 0px,
+    rgba(0, 0, 0, 0.26) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* The interrupt itself: coarse static GSAP drives from ~0.9 to 0 in half a
+   second on load. Held at 0 in CSS so it never shows before the timeline runs,
+   or at all if JS fails. */
+.dzh-burst {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.16) 0px,
+      rgba(255, 255, 255, 0.16) 2px,
+      transparent 2px,
+      transparent 5px
+    ),
+    repeating-linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.09) 0px,
+      rgba(255, 255, 255, 0.09) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+
+.dzh-shell {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  padding-bottom: clamp(2rem, 5vh, 3.5rem);
+}
+
+.dzh-copy {
+  max-width: 46rem;
+  /* Buys back the legibility the lightened grade gives up, without dimming a
+     single pixel of the shot. */
+  text-shadow: 0 2px 18px rgba(5, 7, 11, 0.85), 0 1px 4px rgba(5, 7, 11, 0.7);
+}
+
+/* Not the `eyebrow` utility — that one belongs to Explorer 233's register.
+   This is wider-tracked and boxed like a broadcast slug. */
+.dzh-interrupt {
+  display: inline-block;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--deep-space-black);
+  background: var(--star-white);
+  padding: 0.4rem 0.7rem 0.35rem;
+  margin-bottom: 1.3rem;
+  text-shadow: none;
+}
+
+.dzh-title {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: clamp(3.2rem, 14vw, 10rem);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  color: var(--star-white);
+}
+
+/* Tracking pulled way in from 0.42em: that was set for four digits sitting
+   alone, and at that spacing a full phrase stops being readable as words. */
+.dzh-date {
+  margin-top: 1.1rem;
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--step-0);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245, 247, 250, 0.68);
+}
+/* The date itself stays the bright part of the line — it is the one piece of
+   this the reader needs to remember. */
+.dzh-when { color: var(--star-white); }
+
+.dzh-voice {
+  margin-top: 1.8rem;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: var(--step-1);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: rgba(245, 247, 250, 0.92);
+  max-width: 30ch;
+  text-wrap: balance;
+}
+
+.dzh-cta-row { margin-top: 2rem; }
+
+/* Undersold on purpose — a rule and a word. No button, no arrow, nothing that
+   looks like it wants the click. */
+.dzh-cta {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  color: rgba(245, 247, 250, 0.84);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(245, 247, 250, 0.45);
+  padding-bottom: 0.28rem;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.dzh-cta:hover {
+  color: var(--star-white);
+  border-bottom-color: var(--star-white);
+}
+
+/* Sits apart from the copy block so the scrubbed hand-off fade does not take
+   the cue with it while the hero is still the screen the reader is on. */
+.dzh-cue {
+  margin-top: clamp(1.75rem, 4vh, 2.75rem);
+  text-shadow: 0 1px 10px rgba(5, 7, 11, 0.8);
+}
+
+/* On a wide screen the cue sitting directly under "Continue watching" turns two
+   tracked uppercase lines into what reads as a small menu, and the undersold
+   CTA loses by association. Park it on the opposite edge instead, where it is
+   an affordance rather than a second option. */
+@media (min-width: 900px) {
+  .dzh-cue {
+    position: absolute;
+    right: clamp(1.5rem, 5vw, 4rem);
+    bottom: 0;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .dzh-voice { max-width: 26ch; }
+  .dzh-title { letter-spacing: -0.035em; }
+  .dzh-grade {
+    background:
+      linear-gradient(to top, rgba(5, 7, 11, 0.93) 0%, rgba(5, 7, 11, 0.66) 32%, rgba(5, 7, 11, 0.18) 62%, transparent 84%),
+      linear-gradient(to right, rgba(5, 7, 11, 0.5) 0%, rgba(5, 7, 11, 0.28) 55%, rgba(5, 7, 11, 0.12) 100%);
+  }
+}
+
+/* Reduced motion: a still poster and steady copy. The video is not merely
+   paused — DayZeroHero never mounts it — and neither the static burst nor the
+   scrubbed hand-off ever runs, so these rules only settle the resting layers. */
+@media (prefers-reduced-motion: reduce) {
+  .dzh-scanlines { opacity: 0.22; }
+  .dzh-burst { opacity: 0 !important; }
+  .dzh-cta { transition: none; }
+}

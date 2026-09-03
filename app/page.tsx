@@ -1,4 +1,4 @@
-import Departure from './components/hero/Departure';
+import DayZeroHero from './components/hero/DayZeroHero';
 import TheSignal from './components/sections/TheSignal';
 import StoryTeaser from './components/sections/StoryTeaser';
 import ExploreDoors from './components/sections/ExploreDoors';
@@ -40,7 +40,7 @@ export default function Home() {
         Skip to content
       </a>
 
-      <Departure />
+      <DayZeroHero />
 
       <TheSignal />
 

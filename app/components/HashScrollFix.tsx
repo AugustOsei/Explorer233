@@ -5,14 +5,17 @@ import { useEffect } from 'react';
 
 /**
  * Next's built-in hash scroll (triggered by <Link href="/#join"> when
- * navigating in from another page) fires before Departure's GSAP
- * ScrollTrigger has inserted its pin spacer (+=215% of viewport — see
- * hero/Departure.tsx). It lands short by exactly that spacer's height
- * because the document is still shorter than its settled layout.
+ * navigating in from another page) fires before the document has settled to
+ * its final height, so it lands short.
  *
- * This waits for document height to stop changing (frame load, pin
- * spacer insertion, etc.) and then corrects the scroll to the real
- * target position. No-op if there is no hash on navigation.
+ * This originally existed for one specific culprit: the Departure hero's GSAP
+ * pin spacer (+=215% of viewport), which was inserted after the initial scroll
+ * and made the document far taller. The homepage now opens on DayZeroHero,
+ * which does not pin, so that particular gap is gone — but late image and
+ * media loads still shift height, and other routes still rely on this.
+ *
+ * It waits for document height to stop changing and then corrects the scroll
+ * to the real target position. No-op if there is no hash on navigation.
  */
 export default function HashScrollFix() {
   const pathname = usePathname();
