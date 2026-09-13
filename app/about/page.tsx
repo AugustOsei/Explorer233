@@ -167,7 +167,7 @@ export default function AboutPage() {
             <article key={fact.question}>
               <h3>{fact.question}</h3>
               <p>{fact.answer}</p>
-              {fact.question === 'Where should I begin?' ? <Link href="/story">Read Dispatch One →</Link> : null}
+              {fact.question === 'Where should I begin?' ? <Link href="/story/dispatch-one">Read Dispatch One →</Link> : null}
             </article>
           ))}
         </div>

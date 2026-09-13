@@ -300,14 +300,14 @@ export default function DayZeroHero() {
                 carried by the slug and the voice line below; this line is
                 allowed to just be information. */}
             <p data-dzh-line className="dzh-date">
-              Out <span className="tabnum dzh-when">09.11</span>
+              <span className="dzh-when">Available now</span> · Dispatch Two
             </p>
 
             {/* Day Zero's register, not Explorer 233's: clipped, ideological,
                 cold. Drawn from the sect's own lines in SE1-02 — "the old world
                 is already dead" / "there will be no pretending". */}
             <p data-dzh-line className="dzh-voice">
-              The old world is already dead. Only the pretending remains.
+              Day Zero will do anything to stop humanity from leaving Earth.
             </p>
 
             {/* "Continue watching" was deliberately undersold to the point of
@@ -316,8 +316,8 @@ export default function DayZeroHero() {
                 episode. It still gets the quiet treatment — a rule and a line,
                 no button — but it now says where it goes. */}
             <p data-dzh-line className="dzh-cta-row">
-              <Link href="/story" className="dzh-cta">
-                New here? Catch up on Dispatch One
+              <Link href="/story/dispatch-two" className="dzh-cta">
+                Read Day Zero
               </Link>
             </p>
           </div>

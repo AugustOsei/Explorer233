@@ -32,13 +32,13 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   openGraph: {
     title: "Explorer 233 — An African Science-Fiction Saga",
-    description: "Signals are reaching Earth. Explorer 233 was created in Ghana to find their senders. Read Dispatch One free.",
+    description: "Signals are reaching Earth. Explorer 233 was created in Ghana to find their senders. Dispatch Two is now available.",
     images: [{ url: "/explorer.png", width: 1200, height: 630, alt: "Explorer 233 — An African science-fiction universe" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Explorer 233 — An African Science-Fiction Saga",
-    description: "Signals are reaching Earth. Explorer 233 was created in Ghana to find their senders. Read Dispatch One free.",
+    description: "Signals are reaching Earth. Explorer 233 was created in Ghana to find their senders. Dispatch Two is now available.",
     images: ["/explorer.png"],
   },
 };

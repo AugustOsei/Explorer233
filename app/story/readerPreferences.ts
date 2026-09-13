@@ -1,4 +1,5 @@
-export const READER_STORE_KEY = 'e233.dispatch.se1-01.v2';
+export const READER_STORE_KEY = 'e233.reader.preferences.v1';
+export const LEGACY_READER_STORE_KEY = 'e233.dispatch.se1-01.v2';
 export const READER_PREFERENCES_EVENT = 'e233:reader-preferences';
 export const READER_ENTER_EVENT = 'e233:reader-enter';
 
@@ -29,6 +30,10 @@ export type SavedReader = Partial<ReaderPreferences> & {
   paragraphId?: string;
   progress?: number;
 };
+
+export function readerProgressKey(code: string) {
+  return `e233.dispatch.${code.toLowerCase()}.progress.v1`;
+}
 
 export const DEFAULT_READER_PREFERENCES: ReaderPreferences = {
   theme: 'void',

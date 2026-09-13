@@ -5,10 +5,12 @@ import { WORLD_CARDS } from '../content/world-gallery';
 import { SITE_URL } from '../lib/seo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const updated = new Date('2026-08-04');
+  const updated = new Date('2026-09-13');
   const corePages = [
     { path: '', priority: 1, changeFrequency: 'weekly' as const, images: [`${SITE_URL}/explorer.png`] },
-    { path: '/story', priority: 0.9, changeFrequency: 'monthly' as const, images: [`${SITE_URL}/images/dispatch-one-wide.png`] },
+    { path: '/story', priority: 0.9, changeFrequency: 'monthly' as const, images: [`${SITE_URL}/images/dispatch-two-poster.jpg`] },
+    { path: '/story/dispatch-one', priority: 0.8, changeFrequency: 'yearly' as const, images: [`${SITE_URL}/images/dispatch-one-wide.png`] },
+    { path: '/story/dispatch-two', priority: 0.9, changeFrequency: 'yearly' as const, images: [`${SITE_URL}/images/dispatch-two-poster.jpg`] },
     { path: '/world', priority: 0.8, changeFrequency: 'monthly' as const, images: [`${SITE_URL}/images/crew-wide.png`] },
     { path: '/games-events', priority: 0.7, changeFrequency: 'weekly' as const, images: [`${SITE_URL}/images/games/chop-first/cover-orbital.jpg`] },
     { path: '/games-events/chop-first', priority: 0.8, changeFrequency: 'monthly' as const, images: [`${SITE_URL}/images/games/chop-first/cover-orbital.jpg`] },

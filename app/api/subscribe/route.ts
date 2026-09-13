@@ -74,7 +74,7 @@ const welcomeHtml = (email: string, unsubscribeLink: string) => `<!DOCTYPE html>
           <!-- CTA -->
           <tr>
             <td align="center" style="padding-bottom:32px;">
-              <a href="${SITE_URL}/story" style="display:inline-block;padding:0.75rem 1.8rem;font-size:14px;font-weight:600;color:#FFFFFF;background:#1A1D24;border-radius:6px;text-decoration:none;">
+              <a href="${SITE_URL}/story/dispatch-one" style="display:inline-block;padding:0.75rem 1.8rem;font-size:14px;font-weight:600;color:#FFFFFF;background:#1A1D24;border-radius:6px;text-decoration:none;">
                 Begin Dispatch One
               </a>
             </td>
@@ -121,7 +121,7 @@ Ghanaian-led space exploration company answering signals from other worlds.
 Expect new dispatches, story world reveals and event announcements — only when
 there's something worth sharing, never just noise.
 
-Begin Dispatch One: ${SITE_URL}/story
+Begin Dispatch One: ${SITE_URL}/story/dispatch-one
 
 Want to collaborate or support the project? Get in touch: theteam@augustwheel.com
 

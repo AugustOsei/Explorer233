@@ -3,16 +3,18 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   DEFAULT_READER_PREFERENCES,
+  LEGACY_READER_STORE_KEY,
   READER_ENTER_EVENT,
   READER_PREFERENCES_EVENT,
   READER_SIZES,
   READER_STORE_KEY,
   READER_THEMES,
+  readerProgressKey,
   type ReaderPreferences,
   type SavedReader,
 } from './readerPreferences';
 
-export default function StoryEntry({ firstSceneId }: { firstSceneId: string }) {
+export default function StoryEntry({ firstSceneId, code, dispatchLabel }: { firstSceneId: string; code: string; dispatchLabel: string }) {
   const [saved, setSaved] = useState<SavedReader | null>(null);
   const [preferences, setPreferences] = useState<ReaderPreferences>(DEFAULT_READER_PREFERENCES);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
@@ -21,21 +23,25 @@ export default function StoryEntry({ firstSceneId }: { firstSceneId: string }) {
   useEffect(() => {
     const id = window.setTimeout(() => {
       try {
-        const raw = localStorage.getItem(READER_STORE_KEY);
-        if (!raw) return;
-        const parsed = JSON.parse(raw) as SavedReader;
+        const preferencesRaw = localStorage.getItem(READER_STORE_KEY);
+        const legacyRaw = code === 'SE1-01' ? localStorage.getItem(LEGACY_READER_STORE_KEY) : null;
+        const progressRaw = localStorage.getItem(readerProgressKey(code)) ?? legacyRaw;
+        const parsed = preferencesRaw ? (JSON.parse(preferencesRaw) as SavedReader) : legacyRaw ? (JSON.parse(legacyRaw) as SavedReader) : {};
         setPreferences({
           theme: parsed.theme ?? DEFAULT_READER_PREFERENCES.theme,
           size: parsed.size ?? DEFAULT_READER_PREFERENCES.size,
           illustrations: parsed.illustrations ?? DEFAULT_READER_PREFERENCES.illustrations,
         });
-        if ((parsed.progress ?? 0) > 0.02) setSaved(parsed);
+        if (progressRaw) {
+          const progress = JSON.parse(progressRaw) as SavedReader;
+          if ((progress.progress ?? 0) > 0.02) setSaved(progress);
+        }
       } catch {
         /* Reading still works when storage is unavailable. */
       }
     }, 0);
     return () => window.clearTimeout(id);
-  }, []);
+  }, [code]);
 
   useEffect(() => () => {
     if (entryPreviewTimer.current) window.clearTimeout(entryPreviewTimer.current);
@@ -126,7 +132,7 @@ export default function StoryEntry({ firstSceneId }: { firstSceneId: string }) {
               </div>
               <button type="button" onClick={() => setPreferencesOpen(false)} aria-label="Close reading preferences">Close</button>
             </div>
-            <p className="story-preferences-intro">Choose how Dispatch One appears. You can change this again while reading.</p>
+            <p className="story-preferences-intro">Choose how {dispatchLabel} appears. You can change this again while reading.</p>
 
             <fieldset>
               <legend>Text size</legend>

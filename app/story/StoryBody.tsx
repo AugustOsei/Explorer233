@@ -5,10 +5,12 @@ import { useEffect, useRef, useState } from 'react';
 import type { Scene } from '../../content/dispatch-se1-01';
 import {
   READER_ENTER_EVENT,
+  LEGACY_READER_STORE_KEY,
   READER_PREFERENCES_EVENT,
   READER_SIZES,
   READER_STORE_KEY,
   READER_THEMES,
+  readerProgressKey,
   type ReaderPreferences,
   type ReaderSize,
   type ReaderTheme,
@@ -50,7 +52,7 @@ export default function StoryBody({
   useEffect(() => {
     const id = window.setTimeout(() => {
       try {
-        const raw = localStorage.getItem(READER_STORE_KEY);
+        const raw = localStorage.getItem(READER_STORE_KEY) ?? localStorage.getItem(LEGACY_READER_STORE_KEY);
         if (raw) {
           const saved = JSON.parse(raw) as SavedReader;
           if (saved.theme) setTheme(saved.theme);
@@ -147,7 +149,7 @@ export default function StoryBody({
           saveTimer.current = window.setTimeout(() => {
             try {
               localStorage.setItem(
-                READER_STORE_KEY,
+                readerProgressKey(code),
                 JSON.stringify({
                   theme,
                   size,
@@ -178,7 +180,7 @@ export default function StoryBody({
       window.cancelAnimationFrame(frame);
       if (saveTimer.current) window.clearTimeout(saveTimer.current);
     };
-  }, [illustrations, scenes, size, theme, title]);
+  }, [code, illustrations, scenes, size, theme, title]);
 
   const goToScene = (id: string) => {
     setContentsOpen(false);

@@ -91,7 +91,7 @@ export default async function WorldEntryPage({ params }: WorldEntryProps) {
           <p className={styles.role}>{card.role}</p>
           <p className={styles.bio}>{card.bio}</p>
           {card.category === 'promotional' && card.id === 'grand-opening' ? (
-            <Link href="/story" className={styles.action}>Read Dispatch One <span aria-hidden="true">→</span></Link>
+            <Link href="/story/dispatch-one" className={styles.action}>Read Dispatch One <span aria-hidden="true">→</span></Link>
           ) : null}
         </div>
       </header>

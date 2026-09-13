@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useReveal } from '../useReveal';
 
-/** The signal resolves into one clear next step: begin Dispatch One. */
+/** The latest transmission, with a clear route back to the beginning. */
 export default function StoryTeaser() {
   const ref = useReveal<HTMLElement>();
 
@@ -14,28 +14,30 @@ export default function StoryTeaser() {
         <article data-reveal className="home-dispatch-feature" style={{ opacity: 0 }}>
           <div className="home-dispatch-art">
             <Image
-              src="/images/home-dispatch.jpg"
-              alt="Explorer 233 personnel, the Baobab headquarters and spacecraft beneath Earth and the Moon"
+              src="/images/dispatch-two-poster.jpg"
+              alt="A masked Day Zero figure stands against a red signal-filled sky"
               fill
               sizes="(max-width: 800px) 100vw, 58vw"
               className="object-cover"
             />
             <div className="home-dispatch-scrim" aria-hidden="true" />
-            <p className="home-dispatch-art-label">Season One · Dispatch SE1-01</p>
+            <p className="home-dispatch-art-label">Season One · Dispatch SE1-02</p>
           </div>
 
           <div className="home-dispatch-copy">
-            <p className="eyebrow">Begin the story</p>
-            <h2>The Grand Opening</h2>
-            <p className="caption-meta">16-minute read · Free</p>
+            <p className="eyebrow">Available now · Dispatch Two</p>
+            <h2>Day Zero</h2>
+            <p className="caption-meta">18-minute read · Free</p>
             <p className="home-dispatch-synopsis">
-              Explorer 233 unveils its first interstellar ship in Accra. Before the night ends,
-              an impossible file opens on founder Laura Osei Baako’s desk—and someone promises to
-              kill one of her scientists.
+              A midnight traffic stop pulls Constable Constantine Bediako into Day Zero—and
+              toward a choice that will place the movement inside the Baobab.
             </p>
-            <Link href="/story" className="btn-join home-dispatch-cta">
-              Begin Dispatch One <span aria-hidden="true">→</span>
-            </Link>
+            <div className="home-dispatch-actions">
+              <Link href="/story/dispatch-two" className="btn-join home-dispatch-cta">
+                Read Dispatch Two <span aria-hidden="true">→</span>
+              </Link>
+              <Link href="/story/dispatch-one" className="home-dispatch-start">New here? Start with Dispatch One</Link>
+            </div>
           </div>
         </article>
       </div>
